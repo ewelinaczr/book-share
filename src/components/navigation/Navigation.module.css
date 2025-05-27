@@ -1,0 +1,23 @@
+.navigationBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+}
+
+.navLinks,
+.navIconLinks {
+  display: flex;
+}
+
+.navLink,
+.navIconLink {
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+}
+
+.navLink:hover,
+.navIconLink:hover {
+  background-color: var(--black);
+  color: var(--white);
+}
