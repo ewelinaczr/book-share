@@ -1,4 +1,4 @@
-export interface Book {
+interface Book {
   bookID: string;
   title: string;
   authors: string;
@@ -13,19 +13,4 @@ export interface Book {
   publisher: string;
 }
 
-/*
-  {
-    bookID: '59',
-    title: 'The Changeling Sea',
-    authors: 'Patricia A. McKillip',
-    average_rating: '4.06',
-    isbn: '0141312629',
-    isbn13: '9780141312620',
-    language_code: 'eng',
-    '  num_pages': '137',
-    ratings_count: '4454',
-    text_reviews_count: '302',
-    publication_date: '4/14/2003',
-    publisher: 'Firebird'
-  },
-  */
+export default Book;

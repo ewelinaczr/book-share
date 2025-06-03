@@ -1,4 +1,6 @@
-const booksMock = [
+import Book from "@/interfaces/Book";
+
+const booksMock: Book[] = [
   {
     bookID: "7600",
     title: "One Hundred Years Of Solitude",
@@ -140,3 +142,5 @@ const booksMock = [
     publisher: "Bantam Classics",
   },
 ];
+
+export default booksMock;
