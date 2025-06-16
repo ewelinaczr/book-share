@@ -14,7 +14,7 @@ function List({ title, items }: ListProps) {
       <h2>{title}</h2>
       <div className={styles.listContainer}>
         {items.map((item: Book) => (
-          <ListItem key={item.bookID} item={item} />
+          <ListItem key={item._id} item={item} />
         ))}
       </div>
     </div>

@@ -7,18 +7,22 @@ interface ListItemProps {
 }
 
 export default function ListItem({ item }: ListItemProps) {
+  const { title, authors, ratingsCount, averageRating, imageLinks } =
+    item.volumeInfo;
   return (
     <div>
-      <Image
-        src={`/covers/${item.isbn}.jpg`}
-        alt={item.title}
-        width={100}
-        height={150}
-      />
-      {item.title}
-      {item.authors}
-      {item.average_rating}
-      {item.ratings_count}
+      {imageLinks?.smallThumbnail || imageLinks?.thumbnail ? (
+        <Image
+          src={imageLinks.smallThumbnail ?? imageLinks.thumbnail ?? ""}
+          alt={title}
+          width={100}
+          height={150}
+        />
+      ) : null}
+      {title}
+      {authors}
+      {averageRating}
+      {ratingsCount}
     </div>
   );
 }
