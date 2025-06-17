@@ -4,11 +4,6 @@ import List from "@/components/list/List";
 import AddToBookshelf from "@/components/bookshelf/AddToBookshelf";
 
 export default async function Bookshelf() {
-  const res = await fetch("http://localhost:3000/api/csv", {
-    cache: "no-store",
-  });
-  const data = await res.json();
-
   return (
     <>
       <h1>My Virtual Bookshelf</h1>
