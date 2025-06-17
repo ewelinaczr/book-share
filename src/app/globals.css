@@ -47,37 +47,30 @@ li {
   list-style-type: none;
 }
 
+path.leaflet-interactive:focus {
+  outline: none;
+}
+
+.leaflet-tooltip {
+  font-size: 1.2rem;
+}
+
 /* For Large Desktop View */
 @media (min-width: 1200px) {
-  body {
-    padding: 0 6rem;
-  }
 }
 
 /* For Desktop View */
 @media screen and (min-width: 1024px) {
-  body {
-    padding: 0 4rem;
-  }
 }
 
 /* For Tablet View */
 @media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-  body {
-    padding: 0 3rem;
-  }
 }
 
 /* For Mobile Portrait View */
 @media screen and (max-device-width: 480px) and (orientation: portrait) {
-  body {
-    padding: 0 2rem;
-  }
 }
 
 /* For Mobile Landscape View */
 @media screen and (max-device-width: 640px) and (orientation: landscape) {
-  body {
-    padding: 0 1.5rem;
-  }
 }
