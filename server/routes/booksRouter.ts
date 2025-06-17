@@ -1,7 +1,8 @@
-const express = require("express");
-const booksController = require("../controllers/booksController");
+import { Router } from "express";
+import * as booksController from "../controllers/booksController";
 
-const router = express.Router();
+const router = Router();
+
 router.route("/").get(booksController.getBooks).post(booksController.saveBook);
 router
   .route("/:id")
@@ -9,4 +10,4 @@ router
   .patch(booksController.updateBook)
   .get(booksController.getBookById);
 
-module.exports = router;
+export default router;

@@ -1,13 +1,14 @@
-require("dotenv").config({ path: "../config.env" });
-const app = require("./index");
-const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+import app from "./index";
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
-let cached = global.mongoose;
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
 async function connectToDatabase() {
@@ -15,7 +16,7 @@ async function connectToDatabase() {
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(MONGODB_URI, { bufferCommands: false })
-      .then((mongoose) => mongoose);
+      .then((mongoose: typeof import("mongoose")) => mongoose);
   }
   cached.conn = await cached.promise;
   return cached.conn;

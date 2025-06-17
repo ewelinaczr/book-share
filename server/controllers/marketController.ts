@@ -1,11 +1,25 @@
-const Book = require("../models/bookModel");
-const User = require("../models/userModel");
-const MarketBook = require("../models/marketBookModel");
+import { Request, Response } from "express";
+import Book from "../models/bookModel";
+import User from "../models/userModel";
+import MarketBook from "../models/marketBookModel";
 
-exports.addBookToMarket = async (req, res) => {
+interface UserRequest extends Request {
+  user?: { _id: string };
+}
+
+export const addBookToMarket = async (
+  req: UserRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { book, status, deadline, rating } = req.body;
-    const userId = req.user._id;
+    const userId = req.user?._id;
+    if (!userId) {
+      res
+        .status(400)
+        .json({ status: "error", message: "User not found in request." });
+      return;
+    }
 
     // 1. Check if the book exists in books collection by id
     let bookToSave = await Book.findOne({ id: book.id });
@@ -13,17 +27,32 @@ exports.addBookToMarket = async (req, res) => {
       bookToSave = await Book.create(book);
     }
     const bookBook = await Book.findById(bookToSave._id);
-
+    if (!bookBook || !bookBook._id) {
+      res
+        .status(400)
+        .json({ status: "error", message: "Book not found after creation." });
+      return;
+    }
+    const bookIdStr = bookBook._id.toString();
     //2. Check if book already exists in user's market collection
     const user = await User.findById(userId).populate("market").lean();
-    const bookExists = user.market.some(
-      (marketBook) => marketBook.book.toString() === bookBook._id.toString()
-    );
+    if (!user) {
+      res.status(400).json({ status: "error", message: "User not found." });
+      return;
+    }
+    const bookExists =
+      user.market &&
+      Array.isArray(user.market) &&
+      user.market.some(
+        (marketBook: any) =>
+          marketBook.book && marketBook.book.toString() === bookIdStr
+      );
     if (bookExists) {
-      return res.status(400).json({
+      res.status(400).json({
         status: "error",
         message: "Book already exists in your market.",
       });
+      return;
     }
 
     // 3. Create MarketBook with book
@@ -46,7 +75,7 @@ exports.addBookToMarket = async (req, res) => {
       status: "success",
       data: { marketBook: marketBook },
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(400).json({
       status: "error",
       message: err.message,
@@ -54,9 +83,12 @@ exports.addBookToMarket = async (req, res) => {
   }
 };
 
-exports.getUserBooksFromMarket = async (req, res) => {
+export const getUserBooksFromMarket = async (
+  req: UserRequest,
+  res: Response
+): Promise<void> => {
   try {
-    const userId = req.user._id;
+    const userId = req.user?._id;
     const { status } = req.query;
 
     // 1. Get user and populate market and book
@@ -68,18 +100,20 @@ exports.getUserBooksFromMarket = async (req, res) => {
       .lean();
 
     if (!user) {
-      return res.status(404).json({
+      res.status(404).json({
         status: "error",
         message: "User not found",
       });
+      return;
     }
 
     // 2. Filter market by status if provided
     let filteredMarket = user.market || [];
     if (status) {
       filteredMarket = filteredMarket.filter(
-        (entry) =>
-          entry.status && entry.status.toLowerCase() === status.toLowerCase()
+        (entry: any) =>
+          entry.status &&
+          entry.status.toLowerCase() === (status as string).toLowerCase()
       );
     }
 
@@ -87,7 +121,7 @@ exports.getUserBooksFromMarket = async (req, res) => {
       status: "success",
       data: filteredMarket,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       status: "error",
       message: err.message,
@@ -95,7 +129,10 @@ exports.getUserBooksFromMarket = async (req, res) => {
   }
 };
 
-exports.getMarketBooksByUserId = async (req, res) => {
+export const getMarketBooksByUserId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     let query = { ownerId: req.params.id };
 
@@ -105,7 +142,7 @@ exports.getMarketBooksByUserId = async (req, res) => {
       status: "success",
       data: marketBooks,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       status: "error",
       message: err.message,
@@ -113,7 +150,10 @@ exports.getMarketBooksByUserId = async (req, res) => {
   }
 };
 
-exports.getAllBooksFromMarket = async (req, res) => {
+export const getAllBooksFromMarket = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { status } = req.query;
 
   // 1. Get all market books and populate book and ownerId
@@ -127,8 +167,9 @@ exports.getAllBooksFromMarket = async (req, res) => {
     let filteredMarket = marketBooks || [];
     if (status) {
       filteredMarket = filteredMarket.filter(
-        (entry) =>
-          entry.status && entry.status.toLowerCase() === status.toLowerCase()
+        (entry: any) =>
+          entry.status &&
+          entry.status.toLowerCase() === (status as string).toLowerCase()
       );
     }
 
@@ -136,7 +177,7 @@ exports.getAllBooksFromMarket = async (req, res) => {
       status: "success",
       data: filteredMarket,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       status: "error",
       message: err.message,

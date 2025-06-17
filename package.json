@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:server": "ts-node --project tsconfig.server.json server/server.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -20,19 +21,24 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "validator": "^13.15.15",
-        "leaflet": "^1.9.4",
+    "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
     "leaflet-geosearch": "^4.2.0",
     "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@types/leaflet": "^1.9.18",
-    "@types/node": "^20",
+    "@eslint/eslintrc": "^3",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.19.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/validator": "^13.15.2",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

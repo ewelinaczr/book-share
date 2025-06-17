@@ -1,9 +1,25 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcryptjs");
+import mongoose, { Document, Schema } from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
 
-const UserSchema = new mongoose.Schema({
-  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  photo?: string;
+  password: string;
+  passwordConfirm: string;
+  rating?: number;
+  experience?: number;
+  location?: { lat: string; lng: string };
+  bookshelf: mongoose.Types.ObjectId[];
+  market: mongoose.Types.ObjectId[];
+  correctPassword?: (
+    candidatePassword: string,
+    userPassword: string
+  ) => Promise<boolean>;
+}
+
+const UserSchema = new Schema<IUser>({
   name: { type: String, required: [true, "Please provide your name"] },
   email: {
     type: String,
@@ -22,7 +38,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please confirm your password"],
     validate: {
-      validator: function (el) {
+      validator: function (this: IUser, el: string) {
         return el === this.password;
       },
       message: "Passwords do not match!",
@@ -40,22 +56,12 @@ const UserSchema = new mongoose.Schema({
   market: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarketBook" }],
 });
 
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  // Hash the password before saving
-  this.password = await bcrypt.hash(this.password, 12);
-  // Remove passwordConfirm after hashing
-  this.passwordConfirm = undefined;
-  next();
-});
-
 UserSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
+  candidatePassword: string,
+  userPassword: string
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-const User = mongoose.model("User", UserSchema);
-
-module.exports = User;
+const User = mongoose.model<IUser>("User", UserSchema);
+export default User;
