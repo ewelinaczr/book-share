@@ -1,12 +1,5 @@
-import AddToBookshelf from "./AddToBookshelf";
-import Bookshelf from "./Bookshelf";
+import BookshelfClient from "./BookshelfClient";
 
 export default function BookshelfPage() {
-  return (
-    <>
-      <h1>My Virtual Bookshelf</h1>
-      <AddToBookshelf />
-      <Bookshelf />
-    </>
-  );
+  return <BookshelfClient />;
 }

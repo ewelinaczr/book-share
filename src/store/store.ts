@@ -8,7 +8,7 @@ export const store = configureStore({
     [bookshelfApi.reducerPath]: bookshelfApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(userApi.middleware),
+    getDefaultMiddleware().concat(userApi.middleware, bookshelfApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
