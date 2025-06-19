@@ -12,3 +12,10 @@ export interface BookshelfBook {
   rating: Number;
   book: Book; // Full Book object
 }
+
+export interface AddBookshelfBook {
+  status: BookStatus;
+  own: Boolean;
+  rating: Number;
+  isbn: string;
+}

@@ -4,6 +4,7 @@ import type { BookshelfBook, BookStatus } from "../interfaces/BookshelfBook";
 export const bookshelfApi = createApi({
   reducerPath: "bookshelfApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/bookshelf" }),
+  tagTypes: ["Bookshelf"],
   endpoints: (builder) => ({
     getBookshelf: builder.query<BookshelfBook[], { status?: BookStatus }>({
       query: (params) => ({
@@ -12,6 +13,7 @@ export const bookshelfApi = createApi({
         credentials: "include",
         params,
       }),
+      providesTags: ["Bookshelf"],
     }),
     addBookToBookshelf: builder.mutation<BookshelfBook, Partial<BookshelfBook>>(
       {
@@ -21,6 +23,7 @@ export const bookshelfApi = createApi({
           body,
           credentials: "include",
         }),
+        invalidatesTags: ["Bookshelf"],
       }
     ),
   }),
