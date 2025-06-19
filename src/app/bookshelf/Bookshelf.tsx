@@ -1,7 +1,6 @@
 "use client";
 
 import List from "@/components/list/List";
-import AddToBookshelf from "@/components/bookshelf/AddToBookshelf";
 import { BookStatus } from "@/interfaces/BookshelfBook";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
 
@@ -16,7 +15,7 @@ const bookshelfCategories = [
   { status: BookStatus.READ, title: "Read" },
 ];
 
-export default function BookshelfClient() {
+export default function Bookshelf() {
   const bookshelfData = bookshelfCategories.map(({ status }) =>
     useBookshelfByStatus(status)
   );
@@ -37,8 +36,6 @@ export default function BookshelfClient() {
 
   return (
     <>
-      <h1>My Virtual Bookshelf</h1>
-      <AddToBookshelf />
       {bookshelfCategories.map(({ title }, idx) => (
         <List
           key={title}
