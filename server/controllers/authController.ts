@@ -10,6 +10,35 @@ const signToken = (id: string) => {
   );
 };
 
+const createSendToken = (user: any, statusCode: number, res: Response) => {
+  const token = signToken(user._id.toString());
+
+  res.cookie("jwt", token, {
+    expires: new Date(
+      Date.now() +
+        parseInt(process.env.JWT_COOKIE_EXPIRES_IN as string) *
+          24 *
+          60 *
+          60 *
+          1000
+    ),
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
+    secure: process.env.NODE_ENV !== "development",
+  });
+
+  (user as any).password = undefined;
+  (user as any).passwordConfirm = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 export const signup = async (req: Request, res: Response): Promise<void> => {
   try {
     const newUser = await User.create(req.body);
@@ -20,18 +49,7 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
-    const token = signToken(newUser._id.toString());
-
-    (newUser as any).password = undefined;
-    (newUser as any).passwordConfirm = undefined;
-
-    res.status(201).json({
-      status: "success",
-      token,
-      data: {
-        user: newUser,
-      },
-    });
+    createSendToken(newUser, 201, res);
   } catch (err: any) {
     res.status(400).json({
       status: "error",
@@ -50,7 +68,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     });
     return;
   }
-
   try {
     const user = await User.findOne({ email }).select("+password");
 
@@ -68,18 +85,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ status: "error", message: "User ID not found." });
       return;
     }
-    const token = signToken(user._id.toString());
-
-    (user as any).password = undefined;
-    (user as any).passwordConfirm = undefined;
-
-    res.status(200).json({
-      status: "success",
-      token,
-      data: {
-        user,
-      },
-    });
+    createSendToken(user, 200, res);
   } catch (err: any) {
     res.status(500).json({
       status: "error",
@@ -104,6 +110,8 @@ export const protect = async (
       req.headers.authorization.startsWith("Bearer ")
     ) {
       token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
     }
     if (!token) {
       res.status(401).json({
@@ -124,6 +132,7 @@ export const protect = async (
       return;
     }
     req.user = { _id: user._id.toString() };
+    res.locals.user = user;
     next();
   } catch (err: any) {
     res.status(401).json({
@@ -133,15 +142,53 @@ export const protect = async (
   }
 };
 
+export const isLoggedIn = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (req.cookies.jwt) {
+      // Verify the JWT from cookies
+      const token = req.cookies.jwt;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+        id: string;
+      };
+      // Check if the user still exists
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return next();
+      }
+      // Save user data to res.locals for use in routes
+      res.locals.user = user;
+      return next();
+    }
+    // If no JWT, call next() so the route can handle unauthenticated state
+    return next();
+  } catch (err: any) {
+    res.status(401).json({
+      status: "error",
+      message: "User is not logged in or token is invalid.",
+    });
+  }
+};
+
 export const logout = (req: Request, res: Response) => {
   res.cookie("jwt", "", {
     expires: new Date(0),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
+    secure: process.env.NODE_ENV !== "development",
   });
   res.status(200).json({
     status: "success",
     message: "Logged out successfully.",
+  });
+};
+
+export const me = (req: Request, res: Response) => {
+  res.status(200).json({
+    status: "success",
+    data: res.locals.user ?? null,
   });
 };
