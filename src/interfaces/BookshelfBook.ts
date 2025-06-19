@@ -1,14 +1,21 @@
+import Book from "./Book";
+
 export enum BookStatus {
-  CURRENTLY_READING,
-  WANT_TO_READ,
-  READ,
-  BORROWED,
-  TO_BORROW,
+  READING = "reading",
+  WANT_TO_READ = "wantToRead",
+  READ = "read",
 }
 
 export interface BookshelfBook {
   status: BookStatus;
   own: Boolean;
   rating: Number;
-  book: String; // Book._id
+  book: Book; // Full Book object
+}
+
+export interface AddBookshelfBook {
+  status: BookStatus;
+  own: Boolean;
+  rating: Number;
+  isbn: string;
 }
