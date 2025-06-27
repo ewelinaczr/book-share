@@ -12,7 +12,7 @@ export const addBookToMarket = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { book, status, deadline, rating } = req.body;
+    const { book, status, deadline } = req.body;
     const userId = req.user?._id;
     if (!userId) {
       res
@@ -60,7 +60,6 @@ export const addBookToMarket = async (
       book: bookBook._id,
       status: status,
       deadline: deadline,
-      rating: rating,
       ownerId: userId,
     });
 
@@ -107,8 +106,12 @@ export const getUserBooksFromMarket = async (
       return;
     }
 
-    // 2. Filter market by status if provided
-    let filteredMarket = user.market || [];
+    // 2. Filter market books: exclude borrowed books
+    let filteredMarket = (user.market || []).filter(
+      (entry: any) => !entry.exchangedWith || !entry.exchangedWith.userId
+    );
+
+    // 3. Filter market by status if provided
     if (status) {
       filteredMarket = filteredMarket.filter(
         (entry: any) =>
@@ -117,10 +120,7 @@ export const getUserBooksFromMarket = async (
       );
     }
 
-    res.status(200).json({
-      status: "success",
-      data: filteredMarket,
-    });
+    res.status(200).json(filteredMarket);
   } catch (err: any) {
     res.status(500).json({
       status: "error",
@@ -138,10 +138,7 @@ export const getMarketBooksByUserId = async (
 
     const marketBooks = await MarketBook.find(query).populate("book");
 
-    res.status(200).json({
-      status: "success",
-      data: marketBooks,
-    });
+    res.status(200).json(marketBooks);
   } catch (err: any) {
     res.status(500).json({
       status: "error",
@@ -156,15 +153,29 @@ export const getAllBooksFromMarket = async (
 ): Promise<void> => {
   const { status } = req.query;
 
-  // 1. Get all market books and populate book and ownerId
   try {
-    const marketBooks = await MarketBook.find()
+    const marketBooks = await MarketBook.find({
+      $or: [
+        { exchangedWith: null },
+        { "exchangedWith.user": { $exists: false } },
+      ],
+    })
       .populate("book")
-      .populate("ownerId", "name")
+      .populate("ownerId", "name location")
       .lean();
 
-    // 2. Filter market by status if provided
-    let filteredMarket = marketBooks || [];
+    const booksWithOwner = marketBooks.map((entry: any) => {
+      const { ownerId, ...rest } = entry;
+      return {
+        ...rest,
+        ownerId: ownerId?._id,
+        ownerName: ownerId?.name,
+        ownerLocation: ownerId?.location,
+      };
+    });
+
+    // Filter by status if provided
+    let filteredMarket = booksWithOwner;
     if (status) {
       filteredMarket = filteredMarket.filter(
         (entry: any) =>
@@ -173,14 +184,120 @@ export const getAllBooksFromMarket = async (
       );
     }
 
-    res.status(200).json({
-      status: "success",
-      data: filteredMarket,
-    });
+    res.status(200).json(filteredMarket);
   } catch (err: any) {
     res.status(500).json({
       status: "error",
       message: err.message,
+    });
+  }
+};
+
+export const exchangeMarketBook = async (
+  req: UserRequest,
+  res: Response
+): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+    const marketBookId = req.params.id;
+    const { status, date } = req.body;
+
+    if (!status) {
+      res
+        .status(400)
+        .json({ message: "Status is required to make an exchange" });
+      return;
+    }
+
+    if (status === "borrow") {
+      // Keep in the Market, but disactivate the offer
+      const updated = await MarketBook.findByIdAndUpdate(
+        marketBookId,
+        {
+          $set: {
+            exchangedWith: {
+              userId,
+              status,
+              date: date ?? new Date(),
+            },
+          },
+        },
+        { new: true }
+      );
+
+      if (!updated) {
+        res.status(404).json({ message: "MarketBook not found." });
+        return;
+      }
+      res.status(200).json(updated);
+    } else {
+      // Remove from the Market
+      const removed = await MarketBook.findByIdAndDelete(marketBookId);
+
+      if (!removed) {
+        res
+          .status(404)
+          .json({ message: "MarketBook not found or already removed." });
+        return;
+      }
+      // Remove the reference from the owner's market array
+      await User.findByIdAndUpdate(removed.ownerId, {
+        $pull: { market: marketBookId },
+      });
+
+      res.status(200).json(removed);
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+export const getBorrowedBooks = async (
+  req: UserRequest,
+  res: Response
+): Promise<void> => {
+  const userId = req.user?._id;
+
+  try {
+    const borrowedBooks = await MarketBook.find({
+      "exchangedWith.userId": userId,
+      "exchangedWith.status": "borrow",
+    })
+      .populate("book")
+      .populate("ownerId", "name location");
+
+    res.status(200).json(borrowedBooks);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to fetch borrowed books.",
+      error: error.message,
+    });
+  }
+};
+
+export const getBorrowedFromMe = async (
+  req: UserRequest,
+  res: Response
+): Promise<void> => {
+  const userId = req.user?._id;
+
+  try {
+    const booksBorrowedFromMe = await MarketBook.find({
+      ownerId: userId,
+      "exchangedWith.status": "borrow",
+      "exchangedWith.userId": { $exists: true },
+    })
+      .populate("book")
+      .populate("exchangedWith.userId", "name email");
+
+    res.status(200).json(booksBorrowedFromMe);
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to fetch books borrowed from you.",
+      error: error.message,
     });
   }
 };

@@ -8,5 +8,6 @@ router.post("/signup", authController.signup);
 router.get("/me", authController.isLoggedIn, authController.me);
 router.route("/").get(usersController.getAllUsers);
 router.route("/:id").get(usersController.getUserById);
+router.route("/location/:id").patch(usersController.updateUserLocation);
 
 export default router;

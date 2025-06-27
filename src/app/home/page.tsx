@@ -1,18 +1,14 @@
-import booksMock from "@/data/booksMock";
-
-import List from "@/components/list/List";
-import AddBookOffer from "@/components/offers/AddBookOffer";
-import { MapPanel } from "@/components/mapPanel/MapPanel";
+import AddBookOffer from "@/app/home/addOffer/AddBookOffer";
+import { Market } from "@/app/home/market/Market";
+import UserOffers from "./userOffers/UserOffers";
 
 export default async function Home() {
   return (
     <>
       <h1>Home</h1>
-      <MapPanel />
+      <Market />
       <AddBookOffer />
-      <List title="Borrowed" items={booksMock} />
-      <List title="Borrowed from Me" items={booksMock} />
-      <List title="To Borrow" items={booksMock} />
+      <UserOffers />
     </>
   );
 }

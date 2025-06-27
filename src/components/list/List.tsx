@@ -1,20 +1,19 @@
 import React from "react";
-import Book from "@/interfaces/Book";
-import ListItem from "../listItem/ListItem";
 import styles from "./List.module.css";
 
-interface ListProps {
+interface ListProps<T> {
   title: string;
-  items: Book[];
+  items: T[];
+  renderItem: (item: T) => React.ReactNode;
 }
 
-function List({ title, items }: ListProps) {
+function List<T>({ title, items, renderItem }: ListProps<T>) {
   return (
     <div>
       <h2>{title}</h2>
       <div className={styles.listContainer}>
-        {items.map((item: Book) => (
-          <ListItem key={item._id} item={item} />
+        {items.map((item, index) => (
+          <div key={index}>{renderItem(item)}</div>
         ))}
       </div>
     </div>
