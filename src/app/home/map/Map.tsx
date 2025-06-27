@@ -12,7 +12,7 @@ import styles from "./Map.module.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { PointerI } from "../mapPanel/MapTypes";
+import { PointerI } from "../market/MapTypes";
 
 interface MapProps {
   userPosition: LatLngTuple;

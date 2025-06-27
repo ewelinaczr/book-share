@@ -3,6 +3,7 @@
 import List from "@/components/list/List";
 import { BookStatus } from "@/interfaces/BookshelfBook";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
+import ListItem from "@/components/listItem/ListItem";
 
 function useBookshelfByStatus(status: BookStatus) {
   const { data, isLoading, isError, error } = useGetBookshelfQuery({ status });
@@ -45,9 +46,9 @@ export default function Bookshelf() {
               ? bookshelfData[idx].data.map((b) => b.book)
               : []
           }
+          renderItem={(item) => <ListItem key={item._id} item={item} />}
         />
       ))}
-      <List title="Recommendations" items={[]} />
     </>
   );
 }

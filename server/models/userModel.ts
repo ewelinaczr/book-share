@@ -51,6 +51,7 @@ const UserSchema = new Schema<IUser>({
       lat: { type: String, required: true },
       lng: { type: String, required: true },
     },
+    _id: false,
   },
   bookshelf: [{ type: mongoose.Schema.Types.ObjectId, ref: "BookshelfBook" }],
   market: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarketBook" }],
