@@ -1,6 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
-import validator from "validator";
 import bcrypt from "bcryptjs";
+import { validateEmail } from "../../shared/validators/emailValidator";
+import { validatePassword } from "../../shared/validators/passwordValidator";
+import { confirmPassword } from "../../shared/validators/passwordConfirmValidator";
 
 export interface IUser extends Document {
   name: string;
@@ -26,20 +28,25 @@ const UserSchema = new Schema<IUser>({
     required: [true, "Please provide your email"],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email"],
+    validate: [validateEmail, "Please provide a valid email"],
   },
   photo: String,
   password: {
     type: String,
     required: [true, "Please provide a password"],
-    minlength: 8,
+    minlength: [8, "Password must be at least 8 characters"],
+    validate: [
+      validatePassword,
+      "Password must be at least 8 characters and include letters and numbers",
+    ],
   },
   passwordConfirm: {
     type: String,
     required: [true, "Please confirm your password"],
+    select: false, // Do not store or return this field from DB
     validate: {
-      validator: function (this: IUser, el: string) {
-        return el === this.password;
+      validator: function (this: IUser, val: string) {
+        return confirmPassword(this.password, val);
       },
       message: "Passwords do not match!",
     },
@@ -62,6 +69,13 @@ UserSchema.methods.correctPassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
+
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = "";
+  next();
+});
 
 const User = mongoose.model<IUser>("User", UserSchema);
 export default User;
