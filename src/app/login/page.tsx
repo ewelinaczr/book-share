@@ -1,6 +1,6 @@
 import React from "react";
 
-import { LogInForm } from "./logInForm";
+import { LogInForm } from "./LogInForm";
 
 function page() {
   return <LogInForm />;

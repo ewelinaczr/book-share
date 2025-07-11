@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { loginUser } from "../../api/loginApi";
 import { useRouter } from "next/navigation";
+import { useLoginMutation } from "@/api/userApi";
+import { validateEmail } from "../../../shared/validators/emailValidator";
+import { validatePassword } from "../../../shared/validators/passwordValidator";
 
 import Input from "@/components/inputs/Input";
 
@@ -19,15 +21,16 @@ export function LogInForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>();
   const [formError, setFormError] = useState("");
+  const [login] = useLoginMutation();
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    setFormError("");
     try {
-      await loginUser(data);
+      await login(data).unwrap();
       router.push("/");
-    } catch (err: any) {
-      setFormError(err.message);
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      setFormError(error?.data?.message || "Login failed. Please try again.");
     }
   };
 
@@ -38,17 +41,25 @@ export function LogInForm() {
           id="email"
           label="Email"
           type="email"
-          {...register("email", { required: "Email is required" })}
+          {...register("email", {
+            required: "Email is required",
+            validate: (value) => validateEmail(value) || "Invalid email format",
+          })}
           error={errors.email?.message}
         />
         <Input
           id="password"
           label="Password"
           type="password"
-          {...register("password", { required: "Password is required" })}
+          {...register("password", {
+            required: "Password is required",
+            validate: (value) =>
+              validatePassword(value) ||
+              "Password must be at least 8 characters long and contain letters and numbers",
+          })}
           error={errors.password?.message}
         />
-        {formError && <div>{formError}</div>}
+        <div>{formError ? <p>{formError}</p> : null}</div>
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Logging in..." : "Login"}
         </button>

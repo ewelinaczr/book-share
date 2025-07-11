@@ -2,8 +2,12 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signupUser } from "../../api/signupApi";
 import { useRouter } from "next/navigation";
+import { useSignupMutation } from "@/api/userApi";
+import { validateEmail } from "../../../shared/validators/emailValidator";
+import { validatePassword } from "../../../shared/validators/passwordValidator";
+import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
+
 import Input from "@/components/inputs/Input";
 
 type SignupFormInputs = {
@@ -21,15 +25,16 @@ export function SignUpForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>();
   const [formError, setFormError] = useState("");
+  const [signup] = useSignupMutation();
   const router = useRouter();
 
   const onSubmit = async (data: SignupFormInputs) => {
-    setFormError("");
     try {
-      await signupUser(data);
+      await signup(data).unwrap();
       router.push("/");
-    } catch (err: any) {
-      setFormError(err.message);
+    } catch (error: any) {
+      console.error("Signup failed:", error);
+      setFormError(error?.data?.message || "Signup failed. Please try again.");
     }
   };
 
@@ -49,7 +54,10 @@ export function SignUpForm() {
           id="email"
           label="Email"
           type="email"
-          {...register("email", { required: "Email is required" })}
+          {...register("email", {
+            required: "Email is required",
+            validate: (value) => validateEmail(value) || "Invalid email format",
+          })}
           error={errors.email?.message}
         />
         <Input
@@ -58,10 +66,9 @@ export function SignUpForm() {
           type="password"
           {...register("password", {
             required: "Password is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters",
-            },
+            validate: (value) =>
+              validatePassword(value) ||
+              "Password must be at least 8 characters long and contain letters and numbers",
           })}
           error={errors.password?.message}
         />
@@ -72,7 +79,7 @@ export function SignUpForm() {
           {...register("passwordConfirm", {
             required: "Please confirm your password",
             validate: (value) =>
-              value === password || "Passwords do not match!",
+              confirmPassword(password, value) || "Passwords do not match",
           })}
           error={errors.passwordConfirm?.message}
         />

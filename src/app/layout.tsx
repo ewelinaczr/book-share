@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ReduxProvider from "../store/Provider";
 import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        {children}
+        <ReduxProvider>
+          <Navigation />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

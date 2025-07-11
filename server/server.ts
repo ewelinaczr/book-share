@@ -24,9 +24,10 @@ async function connectToDatabase() {
 
 connectToDatabase()
   .then(() => {
-    const PORT = 4000;
-    app.listen(PORT, () => {
-      console.log(`Backend running on http://localhost:${PORT}`);
+    app.listen(process.env.APP_PORT, () => {
+      console.log(
+        `Backend running on http://localhost:${process.env.APP_PORT}`
+      );
     });
   })
   .catch((err) => {

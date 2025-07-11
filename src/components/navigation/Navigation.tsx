@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import styles from "./Navigation.module.css";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
-import { logoutUser } from "@/api/logoutApi";
 import { useRouter } from "next/navigation";
+import { useGetCurrentUserQuery, useLogoutMutation } from "@/api/userApi";
 
 const navLinks = [
   { name: "Home", path: "home" },
@@ -18,12 +17,34 @@ const navIconLinks = [
 ];
 
 export default function Navigation() {
-  const { user, loading } = useCurrentUser();
+  const { data } = useGetCurrentUserQuery();
+  const [logout] = useLogoutMutation();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await logoutUser();
-    router.refresh();
+    try {
+      await logout();
+      router.refresh();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const renderButton = () => {
+    return data ? (
+      <li className={styles.navLink}>
+        <button onClick={handleLogout}>Log out</button>
+      </li>
+    ) : (
+      <>
+        <li className={styles.navLink}>
+          <Link href="/login">Log in</Link>
+        </li>
+        <li className={styles.navLink}>
+          <Link href="/signup">Sign up</Link>
+        </li>
+      </>
+    );
   };
 
   return (
@@ -41,21 +62,7 @@ export default function Navigation() {
             <Link href={`/${link.path}`}>{link.name}</Link>
           </li>
         ))}
-        {!loading &&
-          (user ? (
-            <li className={styles.navLink}>
-              <button onClick={handleLogout}>Log out</button>
-            </li>
-          ) : (
-            <>
-              <li className={styles.navLink}>
-                <Link href="/login">Log in</Link>
-              </li>
-              <li className={styles.navLink}>
-                <Link href="/signup">Sign up</Link>
-              </li>
-            </>
-          ))}
+        {renderButton()}
       </ul>
     </nav>
   );
