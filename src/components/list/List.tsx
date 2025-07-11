@@ -1,21 +1,37 @@
-import React from "react";
+import React, { useRef } from "react";
 import styles from "./List.module.css";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 interface ListProps<T> {
-  title: string;
   items: T[];
   renderItem: (item: T) => React.ReactNode;
 }
 
-function List<T>({ title, items, renderItem }: ListProps<T>) {
+function List<T>({ items, renderItem }: ListProps<T>) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -130, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 130, behavior: "smooth" });
+  };
+
   return (
-    <div>
-      <h2>{title}</h2>
-      <div className={styles.listContainer}>
+    <div className={styles.scrollWrapper}>
+      <button onClick={scrollLeft} className={styles.arrow}>
+        <IoIosArrowBack />
+      </button>
+      <div className={styles.listContainer} ref={scrollRef}>
         {items.map((item, index) => (
           <div key={index}>{renderItem(item)}</div>
         ))}
       </div>
+      <button onClick={scrollRight} className={styles.arrow}>
+        <IoIosArrowForward />
+      </button>
     </div>
   );
 }

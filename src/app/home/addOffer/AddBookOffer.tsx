@@ -8,6 +8,8 @@ import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import Input from "@/components/inputs/Input";
 import Select from "@/components/inputs/Select";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
+import Button, { ButtonType } from "@/components/button/Button";
+import Header from "@/components/header/Header";
 
 interface FetchStatus {
   success: boolean;
@@ -69,39 +71,52 @@ export default function AddBookOffer() {
 
   return (
     <>
-      <div>
-        Add Book Offer
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Select
-            label="Status"
-            options={[
-              { value: MarketBookStatus.BORROW, label: "Borrow book" },
-              { value: MarketBookStatus.CLAIM, label: "Give book back" },
-              { value: MarketBookStatus.TRADE, label: "Trade" },
-            ]}
-            {...register("status")}
-            error={errors.status?.message}
-          />
-          <Input
-            id="deadline"
-            label="deadline"
-            type="date"
-            {...register("deadline")}
-            error={errors.deadline?.message}
-          />
-          <Input
-            id="isbn"
-            label="ISBN"
-            type="text"
-            {...register("isbn")}
-            error={errors.isbn?.message}
-          />
-          <div>{formError ? formError : ""}</div>
-          <button type="submit" disabled={isSubmitting}>
+      <div className={styles.container}>
+        <Header label={"Add Book Offer to the Markat"} />
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <div className={styles.inputs}>
+            <div className={styles.inputContainer}>
+              <Select
+                label="Offer type"
+                options={[
+                  { value: MarketBookStatus.BORROW, label: "Borrow book" },
+                  { value: MarketBookStatus.CLAIM, label: "Give book back" },
+                  { value: MarketBookStatus.TRADE, label: "Trade" },
+                ]}
+                {...register("status")}
+                error={errors.status?.message}
+              />
+              <Input
+                id="deadline"
+                className={styles.input}
+                label="Borrow deadline"
+                type="date"
+                {...register("deadline")}
+                error={errors.deadline?.message}
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <Input
+                id="isbn"
+                className={styles.input}
+                label="Find book by ISBN"
+                type="text"
+                {...register("isbn")}
+                error={errors.isbn?.message}
+              />
+            </div>
+            <div>{formError ? formError : ""}</div>
+          </div>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            buttonType={ButtonType.PRIMARY}
+            className={styles.button}
+          >
             {isSubmitting || isLoading
               ? "Adding book..."
               : "Add book to Market"}
-          </button>
+          </Button>
         </form>
         <div>{fetchStatus ? fetchStatus.message : ""}</div>
       </div>

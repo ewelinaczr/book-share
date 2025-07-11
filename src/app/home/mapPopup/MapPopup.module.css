@@ -1,11 +1,70 @@
 .container {
   background-color: var(--white);
+  /* border: 1px solid var(--black); */
+  border-right: 6px solid var(--color-brand-secondary);
+  /* border-bottom-left-radius: 2rem;
+  border-top-left-radius: 2rem; */
   width: 40rem;
-  height: 45rem;
+  height: 51rem;
   position: absolute;
-  top: 2.5rem;
-  right: 2.5rem;
+  top: 8rem;
+  right: 4rem;
   z-index: 1000;
-  border-radius: 2rem;
   padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.majorInfo {
+  display: flex;
+  align-items: start;
+  width: fit-content;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.infoLabel {
+  font-size: 1.2rem;
+  color: var(--color-grey-2);
+}
+
+.ratingContainer {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.contact {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.button {
+  width: fit-content;
 }

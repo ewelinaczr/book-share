@@ -1,4 +1,5 @@
 import React, { forwardRef, SelectHTMLAttributes } from "react";
+import styles from "./Select.module.css";
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
@@ -8,18 +9,17 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({ label, error, options, ...props }, ref) => (
-    <div>
-      <label>
-        {label}
-        <select ref={ref} {...props}>
-          <option value="">Select...</option>
-          {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+    <div className={styles.container}>
+      <label className={styles.label}>{label} </label>
+      <select ref={ref} {...props} className={styles.select}>
+        <option value="">Select...</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+
       {error && <div>{error}</div>}
     </div>
   )

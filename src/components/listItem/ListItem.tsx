@@ -1,28 +1,39 @@
 import React from "react";
-import Book from "@/interfaces/Book";
 import Image from "next/image";
-
-interface ListItemProps {
-  item: Book;
+import styles from "./ListItem.module.css";
+interface ListItemProps<T> {
+  item: T;
+  selectItem: (item: T) => void;
+  getTitle: (item: T) => string;
+  getImageSrc: (item: T) => string | null;
+  selected: boolean;
 }
 
-export default function ListItem({ item }: ListItemProps) {
-  const { title, authors, ratingsCount, averageRating, imageLinks } =
-    item.volumeInfo;
+export default function ListItem<T>({
+  item,
+  selectItem,
+  getTitle,
+  getImageSrc,
+  selected,
+}: ListItemProps<T>) {
+  const title = getTitle(item);
+  const imageSrc = getImageSrc(item);
+
   return (
-    <div>
-      {imageLinks?.smallThumbnail || imageLinks?.thumbnail ? (
-        <Image
-          src={imageLinks.smallThumbnail ?? imageLinks.thumbnail ?? ""}
-          alt={title}
-          width={100}
-          height={150}
-        />
-      ) : null}
-      {title}
-      {authors}
-      {averageRating}
-      {ratingsCount}
+    <div
+      onClick={() => {
+        console.log(item);
+        selectItem(item);
+      }}
+      className={`${styles.container} ${selected ? styles.selected : ""}`}
+    >
+      {imageSrc ? (
+        <Image src={imageSrc} alt={title} width={100} height={150} />
+      ) : (
+        <div className={styles.placeholder}>
+          <span className={styles.placeholderText}>{title}</span>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import styles from "./Market.module.css";
-import bookPointersMock from "./bookPointersMock";
 
 import { MapWrapper } from "../map/MapWrapper";
 import { MapPopup } from "../mapPopup/MapPopup";
-import MarketGrid from "../grid/GridWrapper";
 import { useGetAllMarketBooksQuery } from "@/api/marketApi";
-import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import MarketGrid from "../grid/GridWrapper";
+import Button, { ButtonType } from "@/components/button/Button";
+import Input from "@/components/inputs/Input";
+import { CiSearch } from "react-icons/ci";
 
 enum MarketView {
   GRID,
@@ -28,6 +30,7 @@ export function Market() {
   const [previewIndex, setPreviewIndex] = useState<number | undefined>(
     undefined
   );
+  const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError)
@@ -43,21 +46,45 @@ export function Market() {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => setMarketView(MarketView.GRID)}>Grid</button>
-      <button onClick={() => setMarketView(MarketView.MAP)}>Map</button>
+      <div className={styles.searchContainer}>
+        <div className={styles.layoutButtons}>
+          <Button
+            buttonType={
+              markatView === MarketView.GRID
+                ? ButtonType.PRIMARY
+                : ButtonType.SECONDARY
+            }
+            onClick={() => setMarketView(MarketView.GRID)}
+          >
+            Grid
+          </Button>
+          <Button
+            buttonType={
+              markatView === MarketView.MAP
+                ? ButtonType.PRIMARY
+                : ButtonType.SECONDARY
+            }
+            onClick={() => setMarketView(MarketView.MAP)}
+          >
+            Map
+          </Button>
+        </div>
+        <Input
+          placeholder={"Seach for a book..."}
+          width={"38rem"}
+          icon={<CiSearch />}
+        />
+      </div>
       {markatView === MarketView.GRID ? (
-        <MarketGrid books={data} />
+        <MarketGrid
+          books={data}
+          selectItem={(item: MarketBook) => setDisplayedBook(item)}
+          selectedItemId={displayedBook?.book._id}
+        />
       ) : (
         <MapWrapper setPreviewIndex={setPreviewIndex} />
       )}
-
-      <MapPopup
-        preview={
-          previewIndex !== undefined
-            ? bookPointersMock[previewIndex]
-            : undefined
-        }
-      />
+      <MapPopup book={displayedBook} />
     </div>
   );
 }

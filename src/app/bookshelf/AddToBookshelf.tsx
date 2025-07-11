@@ -9,6 +9,8 @@ import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 
 import Input from "@/components/inputs/Input";
 import Select from "@/components/inputs/Select";
+import Header from "@/components/header/Header";
+import Button, { ButtonType } from "@/components/button/Button";
 
 interface FetchStatus {
   success: boolean;
@@ -55,7 +57,6 @@ export default function AddToBookshelf() {
           rating: data.rating,
           book: bookData,
         };
-        console.log("PRINT bookshelfBook", bookshelfBook);
         addBookToBookshelf(bookshelfBook);
       } else {
         setFormError("Book not found by provided ISBN");
@@ -70,8 +71,8 @@ export default function AddToBookshelf() {
 
   return (
     <>
-      <div>
-        AddToBookshelf
+      <div className={styles.container}>
+        <Header label="Add Book to the Bookshelf" />
         <form onSubmit={handleSubmit(onSubmit)}>
           <Select
             label="Status"
@@ -110,11 +111,15 @@ export default function AddToBookshelf() {
             error={errors.isbn?.message}
           />
           <div>{formError ? formError : ""}</div>
-          <button type="submit" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            buttonType={ButtonType.PRIMARY}
+          >
             {isSubmitting || isLoading
               ? "Adding book..."
               : "Add book to Your Bookshelf"}
-          </button>
+          </Button>
         </form>
         <div>{fetchStatus ? fetchStatus.message : ""}</div>
       </div>

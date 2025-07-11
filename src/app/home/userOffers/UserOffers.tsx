@@ -1,13 +1,14 @@
 "use client";
 
-import List from "@/components/list/List";
 import {
   useGetBorrowedBooksQuery,
   useGetBorrowedFromMeQuery,
   useGetUserMarketBooksQuery,
 } from "@/api/marketApi";
-import { MarketBook } from "@/interfaces/MarketBook";
-import ListItem from "@/components/listItem/ListItem";
+
+import styles from "./UserOffers.module.css";
+
+import UserOffer from "./UserOffer";
 
 export default function UserOffers() {
   const { data: borrowedBooks } = useGetBorrowedBooksQuery();
@@ -15,40 +16,21 @@ export default function UserOffers() {
   const { data: myBooks } = useGetUserMarketBooksQuery({});
 
   return (
-    <>
-      {myBooks ? (
-        <List
-          title="My Listed Market Books/ to borrow"
-          items={myBooks}
-          renderItem={(item: MarketBook) =>
-            item.book?._id ? (
-              <ListItem key={item.book._id} item={item.book} />
-            ) : null
-          }
-        />
-      ) : null}
-      {borrowedBooks ? (
-        <List
-          title="Borrowed"
-          items={borrowedBooks}
-          renderItem={(item: MarketBook) =>
-            item.book?._id ? (
-              <ListItem key={item.book._id} item={item.book} />
-            ) : null
-          }
-        />
-      ) : null}
-      {borrowedFromMeBooks ? (
-        <List
-          title="Borrowed from Me"
-          items={borrowedFromMeBooks}
-          renderItem={(item: MarketBook) =>
-            item.book?._id ? (
-              <ListItem key={item.book._id} item={item.book} />
-            ) : null
-          }
-        />
-      ) : null}
-    </>
+    <div className={styles.container}>
+      <div className={styles.listContainer}>
+        {myBooks ? (
+          <UserOffer title="My Market Offers" books={myBooks} />
+        ) : null}
+        {borrowedBooks ? (
+          <UserOffer title="Borrowed Books" books={borrowedBooks} />
+        ) : null}
+        {borrowedFromMeBooks ? (
+          <UserOffer
+            title="Books borowed from Me"
+            books={borrowedFromMeBooks}
+          ></UserOffer>
+        ) : null}
+      </div>
+    </div>
   );
 }

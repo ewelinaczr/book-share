@@ -1,12 +1,12 @@
 import AddToBookshelf from "./AddToBookshelf";
 import Bookshelf from "./Bookshelf";
+import styles from "./pageStyles.module.css";
 
 export default function BookshelfPage() {
   return (
-    <>
-      <h1>My Virtual Bookshelf</h1>
+    <div className={styles.container}>
       <AddToBookshelf />
       <Bookshelf />
-    </>
+    </div>
   );
 }

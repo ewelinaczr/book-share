@@ -1,0 +1,17 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3rem;
+  width: 75rem;
+  margin-left: 4rem;
+  margin-top: 4rem;
+}
+
+.dots {
+  width: 75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4rem;
+  margin-top: 2rem;
+}
