@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./AddBookOffer.module.css";
 import { useForm } from "react-hook-form";
 import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
@@ -14,6 +14,22 @@ interface FetchStatus {
   message: string;
 }
 
+function getFetchStatus(
+  isError: boolean,
+  isSuccess: boolean
+): FetchStatus | undefined {
+  if (isError) {
+    return { success: false, message: "Something went wrong" };
+  }
+  if (isSuccess) {
+    return {
+      success: true,
+      message: "Book successfully added to Market",
+    };
+  }
+  return undefined;
+}
+
 export default function AddBookOffer() {
   const {
     register,
@@ -21,27 +37,11 @@ export default function AddBookOffer() {
     formState: { errors, isSubmitting },
   } = useForm<AddMarketBook>();
   const [formError, setFormError] = useState("");
-  const [fetchStatus, setFetchStatus] = useState<FetchStatus | undefined>(
-    undefined
-  );
 
   const [addBookToMarket, { isLoading, isSuccess, isError }] =
     useAddBookToMarketMutation();
 
-  useEffect(() => {
-    if (isError) {
-      setFetchStatus({
-        success: false,
-        message: "Something went wrong",
-      });
-    }
-    if (isSuccess) {
-      setFetchStatus({
-        success: true,
-        message: "Book successfully added to Your Bookshelf",
-      });
-    }
-  }, [isError, isSuccess]);
+  const fetchStatus = getFetchStatus(isError, isSuccess);
 
   const onSubmit = async (data: AddMarketBook) => {
     setFormError("");
