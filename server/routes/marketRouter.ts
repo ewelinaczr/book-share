@@ -15,4 +15,16 @@ router
 
 router.route("/:id").get(marketController.getMarketBooksByUserId);
 
+router
+  .route("/exchange/:id")
+  .patch(authController.protect, marketController.exchangeMarketBook);
+
+router
+  .route("/exchange/borrowed")
+  .get(authController.protect, marketController.getBorrowedBooks);
+
+router
+  .route("/exchange/borrowed-from-me")
+  .get(authController.protect, marketController.getBorrowedBooks);
+
 export default router;

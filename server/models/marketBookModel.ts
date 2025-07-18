@@ -5,6 +5,11 @@ export interface IMarketBook extends Document {
   deadline?: Date;
   ownerId: mongoose.Types.ObjectId;
   book: mongoose.Types.ObjectId;
+  exchangedWith?: {
+    userId: mongoose.Types.ObjectId;
+    status: "borrow" | "claim" | "trade";
+    date?: Date;
+  };
 }
 
 const MarketBookSchema = new Schema<IMarketBook>({
@@ -20,6 +25,20 @@ const MarketBookSchema = new Schema<IMarketBook>({
     required: true,
   },
   book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
+  exchangedWith: {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    status: {
+      type: String,
+      enum: ["borrow", "claim", "trade"],
+    },
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+  },
 });
 
 const MarketBook = mongoose.model<IMarketBook>("MarketBook", MarketBookSchema);
