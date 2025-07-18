@@ -9,16 +9,16 @@ function useBookshelfByStatus(status: BookStatus) {
   return { data, isLoading, isError, error };
 }
 
-const bookshelfCategories = [
-  { status: BookStatus.READING, title: "Currently Reading" },
-  { status: BookStatus.WANT_TO_READ, title: "Want to Read" },
-  { status: BookStatus.READ, title: "Read" },
-];
-
 export default function Bookshelf() {
-  const bookshelfData = bookshelfCategories.map(({ status }) =>
-    useBookshelfByStatus(status)
-  );
+  const reading = useBookshelfByStatus(BookStatus.READING);
+  const wantToRead = useBookshelfByStatus(BookStatus.WANT_TO_READ);
+  const read = useBookshelfByStatus(BookStatus.READ);
+
+  const bookshelfData = [
+    { title: "Currently Reading", ...reading },
+    { title: "Want to Read", ...wantToRead },
+    { title: "Read", ...read },
+  ];
 
   const isLoading = bookshelfData.some((cat) => cat.isLoading);
   const isError = bookshelfData.some((cat) => cat.isError);
@@ -36,15 +36,11 @@ export default function Bookshelf() {
 
   return (
     <>
-      {bookshelfCategories.map(({ title }, idx) => (
+      {bookshelfData.map(({ title, data }, idx) => (
         <List
           key={title}
           title={title}
-          items={
-            bookshelfData[idx].data
-              ? bookshelfData[idx].data.map((b) => b.book)
-              : []
-          }
+          items={data ? data.map((b: any) => b.book) : []}
         />
       ))}
       <List title="Recommendations" items={[]} />

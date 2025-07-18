@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./AddToBookshelf.module.css";
 import { useForm } from "react-hook-form";
 import { AddBookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
@@ -15,6 +15,22 @@ interface FetchStatus {
   message: string;
 }
 
+function getFetchStatus(
+  isError: boolean,
+  isSuccess: boolean
+): FetchStatus | undefined {
+  if (isError) {
+    return { success: false, message: "Something went wrong" };
+  }
+  if (isSuccess) {
+    return {
+      success: true,
+      message: "Book successfully added to Your Bookshelf",
+    };
+  }
+  return undefined;
+}
+
 export default function AddToBookshelf() {
   const {
     register,
@@ -22,27 +38,11 @@ export default function AddToBookshelf() {
     formState: { errors, isSubmitting },
   } = useForm<AddBookshelfBook>();
   const [formError, setFormError] = useState("");
-  const [fetchStatus, setFetchStatus] = useState<FetchStatus | undefined>(
-    undefined
-  );
 
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
     useAddBookToBookshelfMutation();
 
-  useEffect(() => {
-    if (isError) {
-      setFetchStatus({
-        success: false,
-        message: "Something went wrong",
-      });
-    }
-    if (isSuccess) {
-      setFetchStatus({
-        success: true,
-        message: "Book successfully added to Your Bookshelf",
-      });
-    }
-  }, [isError, isSuccess]);
+  const fetchStatus = getFetchStatus(isError, isSuccess);
 
   const onSubmit = async (data: AddBookshelfBook) => {
     setFormError("");
@@ -55,7 +55,6 @@ export default function AddToBookshelf() {
           rating: data.rating,
           book: bookData,
         };
-        console.log("PRINT bookshelfBook", bookshelfBook);
         addBookToBookshelf(bookshelfBook);
       } else {
         setFormError("Book not found by provided ISBN");
@@ -65,59 +64,54 @@ export default function AddToBookshelf() {
     }
   };
 
-  if (isError) {
-  }
-
   return (
-    <>
-      <div>
-        AddToBookshelf
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Select
-            label="Status"
-            options={[
-              { value: BookStatus.READING, label: "Currently reading" },
-              { value: BookStatus.WANT_TO_READ, label: "Want to read" },
-              { value: BookStatus.READ, label: "Read" },
-            ]}
-            {...register("status")}
-            error={errors.status?.message}
-          />
-          <Select
-            label="Own"
-            options={[
-              { value: 1, label: "yes" },
-              { value: 0, label: "no" },
-            ]}
-            {...register("own")}
-            error={errors.own?.message}
-          />
-          <Select
-            label="Rating"
-            options={[
-              { value: 1, label: "1" },
-              { value: 2, label: "2" },
-              { value: 3, label: "3" },
-            ]}
-            {...register("rating")}
-            error={errors.rating?.message}
-          />
-          <Input
-            id="isbn"
-            label="ISBN"
-            type="text"
-            {...register("isbn")}
-            error={errors.isbn?.message}
-          />
-          <div>{formError ? formError : ""}</div>
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting || isLoading
-              ? "Adding book..."
-              : "Add book to Your Bookshelf"}
-          </button>
-        </form>
-        <div>{fetchStatus ? fetchStatus.message : ""}</div>
-      </div>
-    </>
+    <div>
+      AddToBookshelf
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Select
+          label="Status"
+          options={[
+            { value: BookStatus.READING, label: "Currently reading" },
+            { value: BookStatus.WANT_TO_READ, label: "Want to read" },
+            { value: BookStatus.READ, label: "Read" },
+          ]}
+          {...register("status")}
+          error={errors.status?.message}
+        />
+        <Select
+          label="Own"
+          options={[
+            { value: 1, label: "yes" },
+            { value: 0, label: "no" },
+          ]}
+          {...register("own")}
+          error={errors.own?.message}
+        />
+        <Select
+          label="Rating"
+          options={[
+            { value: 1, label: "1" },
+            { value: 2, label: "2" },
+            { value: 3, label: "3" },
+          ]}
+          {...register("rating")}
+          error={errors.rating?.message}
+        />
+        <Input
+          id="isbn"
+          label="ISBN"
+          type="text"
+          {...register("isbn")}
+          error={errors.isbn?.message}
+        />
+        <div>{formError ? formError : ""}</div>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting || isLoading
+            ? "Adding book..."
+            : "Add book to Your Bookshelf"}
+        </button>
+      </form>
+      <div>{fetchStatus ? fetchStatus.message : ""}</div>
+    </div>
   );
 }
