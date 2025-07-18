@@ -117,10 +117,7 @@ export const getBooksFromBookshelf = async (
       );
     }
 
-    res.status(200).json({
-      status: "success",
-      data: filteredBookshelf,
-    });
+    res.status(200).json(filteredBookshelf);
   } catch (err: any) {
     res.status(500).json({
       status: "error",
