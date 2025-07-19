@@ -25,8 +25,8 @@ export default function MarketGrid({
     .slice((currentPage - 1) * 18, currentPage * 18);
 
   return (
-    <div>
-      <ul className={styles.container}>
+    <div className={styles.container}>
+      <ul className={styles.grid}>
         {currentItems?.map((i) => {
           if (!i.book) {
             return null;
