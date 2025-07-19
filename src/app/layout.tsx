@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import ReduxProvider from "../store/Provider";
 import "./globals.css";
-import ReduxProvider from "./Provider";
 
 import Navigation from "@/components/navigation/Navigation";
 

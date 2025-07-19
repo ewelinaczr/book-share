@@ -1,0 +1,13 @@
+.container {
+  height: 3rem;
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  font-weight: 500;
+  background-color: var(--white);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0 1rem;
+}

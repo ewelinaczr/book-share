@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
-import bookPointersMock from "../market/bookPointersMock";
+import bookPointersMock from "./bookPointersMock";
 
 export function MapWrapper({ setPreviewIndex }) {
   const Map = useMemo(
     () =>
       // Load the Map component only in the browser (not during server-side rendering)
-      dynamic(() => import("@/app/home/map/Map"), {
+      dynamic(() => import("@/app/home/marketPanel/map/Map"), {
         loading: () => <p>A map is loading</p>,
         ssr: false,
       }),

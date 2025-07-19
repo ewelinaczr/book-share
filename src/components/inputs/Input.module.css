@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.input {
+  height: 3rem;
+  padding-left: 1rem;
+  min-width: 30rem;
+  border: 1px solid var(--black);
+  border-radius: 4px;
+}
+
+.label {
+  margin-bottom: 0.4rem;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}

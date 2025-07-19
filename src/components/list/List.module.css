@@ -1,4 +1,28 @@
 .listContainer {
   display: flex;
   gap: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 18px;
+  scrollbar-width: none;
+}
+
+.listContainer::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.scrollWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1;
 }
