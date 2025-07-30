@@ -9,4 +9,5 @@ export interface User {
   location?: { lat: string; lng: string };
   bookshelf: string[];
   market: string[];
+  _id: string;
 }

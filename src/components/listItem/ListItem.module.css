@@ -4,6 +4,7 @@
   gap: 0.2rem;
   outline: 6px solid var(--white);
   height: 15rem;
+  position: relative;
 }
 
 .selected {

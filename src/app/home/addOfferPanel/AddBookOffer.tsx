@@ -4,10 +4,10 @@ import styles from "./AddBookOffer.module.css";
 import { useForm } from "react-hook-form";
 import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
+import { useAddBookToMarketMutation } from "@/api/marketApi";
+import Select from "@/components/inputs/Select";
 
 import Input from "@/components/inputs/Input";
-import Select from "@/components/inputs/Select";
-import { useAddBookToMarketMutation } from "@/api/marketApi";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Header from "@/components/headers/Header";
 
@@ -51,12 +51,9 @@ export default function AddBookOffer() {
       const bookData = await fetchBookByIsbn(data.isbn);
       if (bookData) {
         const marketBook = {
-          status: Object.values(MarketBookStatus)[
-            Number(data.status)
-          ] as MarketBookStatus,
+          status: data.status,
           book: bookData,
         };
-        console.log("market book", marketBook);
         addBookToMarket(marketBook);
       } else {
         setFormError("Book not found by provided ISBN");
@@ -85,14 +82,6 @@ export default function AddBookOffer() {
                 ]}
                 {...register("status")}
                 error={errors.status?.message}
-              />
-              <Input
-                id="deadline"
-                className={styles.input}
-                label="Borrow deadline"
-                type="date"
-                {...register("deadline")}
-                error={errors.deadline?.message}
               />
             </div>
             <div className={styles.inputContainer}>

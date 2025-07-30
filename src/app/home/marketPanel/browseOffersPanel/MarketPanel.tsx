@@ -8,6 +8,8 @@ import Label from "@/components/label/Label";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import TextArea from "@/components/textArea/TextArea";
 import styles from "./MarketPanel.module.css";
+import { useGetCurrentUserQuery } from "@/api/userApi";
+import { useExchangeMarketBookMutation } from "@/api/marketApi";
 
 const pacifico = Pacifico({
   subsets: ["latin"],
@@ -27,9 +29,12 @@ enum Page {
 export function MarketPanel({ book }: MapPopupProps) {
   const marketBook = book?.book;
   const volumeInfo = marketBook?.volumeInfo;
+  const ownerName = book?.ownerName;
   const status = book?.status;
   const [message, setMessage] = useState("");
   const [page, setPage] = useState<Page>(Page.BOOK_DETAILS);
+  const { data } = useGetCurrentUserQuery();
+  const [exchangeMarketBook] = useExchangeMarketBookMutation();
 
   useEffect(() => {
     if (book) {
@@ -52,7 +57,7 @@ export function MarketPanel({ book }: MapPopupProps) {
           />
         </div>
         <Button className={styles.button} buttonType={ButtonType.PRIMARY}>
-          Message OwnerName
+          {`Message ${ownerName ?? "Owner"}`}
         </Button>
       </div>
     );
@@ -73,11 +78,32 @@ export function MarketPanel({ book }: MapPopupProps) {
         <div className={styles.info}>
           <p className={styles.infoLabel}>{text}</p>
         </div>
-        <Button className={styles.button} buttonType={ButtonType.PRIMARY}>
+        <Button
+          className={styles.button}
+          buttonType={ButtonType.PRIMARY}
+          onClick={() => exchangeBook()}
+        >
           {`${offer} Book`}
         </Button>
       </div>
     );
+  };
+
+  const exchangeBook = () => {
+    if (!data || !book?._id) {
+      return;
+    }
+    if (data._id === book.ownerId) {
+      // Can't exchange your own book
+    }
+    const currentDate = new Date();
+    const oneMonthLater = new Date(currentDate);
+    oneMonthLater.setMonth(currentDate.getMonth() + 1);
+    exchangeMarketBook({
+      bookId: book._id,
+      status: book.status,
+      date: oneMonthLater,
+    });
   };
 
   const renderBookDetailsPage = (volumeInfo: GoogleBooksVolumeInfo) => {

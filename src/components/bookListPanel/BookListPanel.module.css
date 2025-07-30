@@ -1,0 +1,35 @@
+.container {
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+  border-left: 6px solid var(--color-brand-secondary);
+  margin: 0rem 4rem 4rem 4rem;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  margin: 1rem 4rem;
+  margin-top: 2rem;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emptyList {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-bottom: 3rem;
+  margin-left: 4rem;
+}
+
+.title {
+  font-family: Pacifico, Pacifico Fallback;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+}

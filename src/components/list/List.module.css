@@ -1,12 +1,12 @@
 .listContainer {
   display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 3rem;
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 18px;
   scrollbar-width: none;
+  width: 104.6rem;
 }
 
 .listContainer::-webkit-scrollbar {
@@ -23,6 +23,10 @@
   background: none;
   border: none;
   font-size: 20px;
-  cursor: pointer;
   z-index: 1;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }

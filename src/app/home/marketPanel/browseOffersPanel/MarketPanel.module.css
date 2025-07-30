@@ -58,6 +58,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-align: justify;
+  font-size: 1.4rem;
 }
 
 .fullDescription {
@@ -66,6 +67,7 @@
   max-height: 37rem;
   padding-right: 2rem;
   scrollbar-gutter: stable;
+  font-size: 1.4rem;
 }
 .scrollableElement::-webkit-scrollbar {
   width: 0.4rem;

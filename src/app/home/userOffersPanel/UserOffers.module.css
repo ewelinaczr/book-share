@@ -10,10 +10,6 @@
   margin: 0.8rem;
 }
 
-.itemContainer {
-  margin-right: 3rem;
-}
-
 .statusContainer {
   display: flex;
   align-items: center;

@@ -1,31 +1,42 @@
-.itemContainer {
-  margin-right: 2.6rem;
-}
-
 .container {
-  padding: 0rem 4rem;
+  margin: 2rem 4rem;
   display: flex;
   flex-direction: column;
-  height: 25rem;
+  width: 100rem;
 }
 
 .detailsContainer {
   display: flex;
   flex-direction: row;
   gap: 10rem;
+  margin-top: 2rem;
+}
+
+.titleAuthor {
+  display: flex;
+}
+
+.hidden {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+
+.visible {
+  height: 22rem;
+  overflow: hidden;
+  transition: height 0.5s ease;
 }
 
 .majorInfo {
   display: flex;
   flex-direction: column;
-  width: 10rem;
   min-width: 10rem;
   margin-right: 2rem;
 }
 
 .title {
   font-weight: bold;
-  font-size: 2rem;
 }
 
 .info {
@@ -46,18 +57,12 @@
   gap: 0.2rem;
 }
 
-.description {
-  text-align: justify;
-  display: -webkit-box;
-  -webkit-line-clamp: 8;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .ownContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  justify-content: center;
 }
 
 .myBookInfo {
@@ -70,10 +75,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
 }
 
 .text {
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+.fullDescription {
+  overflow-y: auto;
+  text-align: justify;
+  max-height: 16rem;
+  padding-right: 2rem;
+  scrollbar-gutter: stable;
+  font-size: 1.4rem;
+}
+.scrollableElement::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+.scrollableElement::-webkit-scrollbar-track {
+  background: #fafafa;
+  border-radius: 4px;
+}
+
+.scrollableElement::-webkit-scrollbar-thumb {
+  background-color: var(--color-brand-secondary);
+  border-radius: 4px;
 }

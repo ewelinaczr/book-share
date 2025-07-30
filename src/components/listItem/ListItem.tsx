@@ -4,25 +4,26 @@ import styles from "./ListItem.module.css";
 
 interface ListItemProps<T> {
   item: T;
+  selected: boolean;
   selectItem: (item: T) => void;
   getTitle: (item: T) => string;
   getImageSrc: (item: T) => string | null;
-  selected: boolean;
+  renderLabel?: (item: T) => React.ReactNode;
 }
 
 export default function ListItem<T>({
   item,
+  selected,
   selectItem,
   getTitle,
   getImageSrc,
-  selected,
+  renderLabel,
 }: ListItemProps<T>) {
   const title = getTitle(item);
   const imageSrc = getImageSrc(item);
   return (
     <div
       onClick={() => {
-        console.log(item);
         selectItem(item);
       }}
       className={`${styles.container} ${selected ? styles.selected : ""}`}
@@ -34,6 +35,7 @@ export default function ListItem<T>({
           <span className={styles.placeholderText}>{title}</span>
         </div>
       )}
+      {renderLabel ? renderLabel(item) : null}
     </div>
   );
 }
