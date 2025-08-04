@@ -1,22 +1,23 @@
+.scrollWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .listContainer {
   display: flex;
   gap: 3rem;
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 18px;
+  padding: 15px;
   scrollbar-width: none;
-  width: 104.6rem;
+  width: 100%;
 }
 
 .listContainer::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
-
-.scrollWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+  display: none;
 }
 
 .arrow {
@@ -29,4 +30,5 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  width: 2rem;
 }

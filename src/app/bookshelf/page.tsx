@@ -4,7 +4,7 @@ import styles from "./pageStyles.module.css";
 
 export default function BookshelfPage() {
   return (
-    <div className={styles.container}>
+    <div>
       <AddToBookshelf />
       <Bookshelf />
     </div>

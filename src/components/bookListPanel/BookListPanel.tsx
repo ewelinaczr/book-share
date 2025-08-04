@@ -40,46 +40,59 @@ export default function BookListPanel<T>({
 }: BookListPanelProps<T>) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 
+  const renderEmptyList = () => {
+    return (
+      <>
+        <div className={styles.header}>
+          <span className={styles.title}>{title}</span>
+        </div>
+        <div className={styles.emptyList}>List is empty</div>
+      </>
+    );
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.listContainer}>
-        {books.length === 0 ? (
-          <div className={styles.emptyList}>List is empty</div>
-        ) : (
-          <>
-            <div className={styles.header}>
-              <span className={styles.title}>{title}</span>
+      {books.length === 0 ? (
+        renderEmptyList()
+      ) : (
+        <>
+          <div className={styles.header}>
+            <span className={styles.title}>{title}</span>
+          </div>
+          <div className={styles.list}>
+            <List
+              items={books}
+              renderItem={(item) => {
+                const { id, title, imageSrc } = getData(item);
+                return (
+                  <div className={styles.itemContainer} key={id}>
+                    <ListItem<T>
+                      item={item}
+                      selected={
+                        selectedItem ? getData(selectedItem).id === id : false
+                      }
+                      selectItem={setSelectedItem}
+                      getTitle={() => title}
+                      getImageSrc={() => imageSrc}
+                      renderLabel={renderLabel}
+                    />
+                  </div>
+                );
+              }}
+            />
+          </div>
+          {selectedItem ? (
+            <BookDetails<T> selectedItem={selectedItem} getBookData={getData}>
+              {renderFooter?.(selectedItem)}
+            </BookDetails>
+          ) : (
+            <div className={styles.noSelectedItem}>
+              Choose a book to explore its details
             </div>
-            <div className={styles.list}>
-              <List
-                items={books}
-                renderItem={(item) => {
-                  const { id, title, imageSrc } = getData(item);
-                  return (
-                    <div className={styles.itemContainer} key={id}>
-                      <ListItem<T>
-                        item={item}
-                        selected={
-                          selectedItem ? getData(selectedItem).id === id : false
-                        }
-                        selectItem={setSelectedItem}
-                        getTitle={() => title}
-                        getImageSrc={() => imageSrc}
-                        renderLabel={renderLabel}
-                      />
-                    </div>
-                  );
-                }}
-              />
-            </div>
-            {selectedItem && (
-              <BookDetails<T> selectedItem={selectedItem} getBookData={getData}>
-                {renderFooter?.(selectedItem)}
-              </BookDetails>
-            )}
-          </>
-        )}
-      </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

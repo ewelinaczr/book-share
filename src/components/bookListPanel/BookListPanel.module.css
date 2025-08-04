@@ -5,7 +5,7 @@
   margin: 0rem 4rem 4rem 4rem;
   padding: 0 2rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .header {
@@ -23,8 +23,8 @@
   display: flex;
   align-items: center;
   height: 100%;
-  margin-bottom: 3rem;
   margin-left: 4rem;
+  margin-bottom: 2rem;
 }
 
 .title {
@@ -32,4 +32,9 @@
   font-style: normal;
   font-weight: 400;
   font-size: 2rem;
+}
+
+.noSelectedItem {
+  margin: 2rem 4rem;
+  font-weight: bold;
 }

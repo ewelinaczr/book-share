@@ -2,6 +2,8 @@
 
 import { BookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
+import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
 import styles from "./Bookshelf.module.css";
 
@@ -25,6 +27,19 @@ export default function Bookshelf() {
     isLoading: readBookLoading,
     isError: readBookError,
   } = useGetBookshelfQuery({ status: BookStatus.READ });
+
+  const renderRatingFooter = (selectedItem: BookshelfBook) => {
+    const rating = +selectedItem.rating;
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(i <= rating ? <FaStar key={i} /> : <CiStar key={i} />);
+    }
+    return (
+      <div className={styles.ratingContainer}>
+        Your rating<div className={styles.stars}> {stars}</div>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -69,6 +84,7 @@ export default function Bookshelf() {
                 item.book.volumeInfo.imageLinks?.thumbnail ??
                 null,
             })}
+            renderFooter={(i: BookshelfBook) => renderRatingFooter(i)}
           />
         ) : null}
       </div>
