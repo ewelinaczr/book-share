@@ -1,11 +1,8 @@
 .container {
   background-color: var(--white);
-  border-right: 6px solid var(--color-brand-secondary);
-  width: 40rem;
-  height: 51rem;
-  position: absolute;
-  top: 8rem;
-  right: 4rem;
+  max-height: 53rem;
+  margin-top: 2rem;
+  margin-right: 4rem;
   z-index: 1000;
   padding: 2rem 3rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
@@ -134,4 +131,11 @@
   align-self: center;
   font-size: 2rem;
   margin-bottom: 3rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem;
+    padding: 2rem 2rem;
+  }
 }
