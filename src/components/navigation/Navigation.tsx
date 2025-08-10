@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetCurrentUserQuery, useLogoutMutation } from "@/api/userApi";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { IoIosMenu } from "react-icons/io";
 import { FiUser } from "react-icons/fi";
 import { BsEnvelope } from "react-icons/bs";
 import styles from "./Navigation.module.css";
@@ -30,6 +31,7 @@ export default function Navigation() {
   const [logout] = useLogoutMutation();
   const router = useRouter();
   const [selectedPage, setSelectedPage] = useState("Home");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -91,6 +93,27 @@ export default function Navigation() {
         ))}
         {renderButton()}
       </ul>
+      <div className={styles.hamburgerMenu}>
+        <IoIosMenu
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className={styles.hamburgerMenu}
+        />
+        {isMenuOpen ? (
+          <ul className={styles.mobileNavIconLinks}>
+            {navIconLinks.map((link) => {
+              return (
+                <li key={link.name} className={styles.mobileNavIconLink}>
+                  <Link href={`/${link.path}`} className={styles.mobileLink}>
+                    <div className={styles.mobileNotification}></div>
+                    <div>{link.icon}</div>
+                    <div>{link.name}</div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
+      </div>
     </nav>
   );
 }

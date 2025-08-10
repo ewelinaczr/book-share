@@ -2,7 +2,6 @@
   margin: 2rem 4rem;
   display: flex;
   flex-direction: column;
-  width: 100rem;
 }
 
 .detailsContainer {
@@ -44,7 +43,7 @@
   flex-direction: column;
   margin-bottom: 1rem;
   width: 100%;
-  width: max-content;
+  width: auto;
 }
 
 .infoLabel {
@@ -102,4 +101,34 @@
 .scrollableElement::-webkit-scrollbar-thumb {
   background-color: var(--color-brand-secondary);
   border-radius: 4px;
+}
+
+@media (max-width: 1150px) {
+  .visible {
+    height: 100%;
+    overflow: auto;
+  }
+  .detailsContainer {
+    flex-direction: column;
+    gap: 0rem;
+  }
+  .container {
+    margin: 2rem 3rem;
+  }
+}
+@media (max-width: 700px) {
+  .titleContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+  }
+  .myBookInfo {
+    flex-direction: column;
+    align-items: start;
+    gap: 2rem;
+  }
+  .titleAuthor {
+    flex-direction: column;
+  }
 }
