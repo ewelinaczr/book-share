@@ -55,3 +55,74 @@
   top: 0;
   right: 0;
 }
+
+.hamburgerMenu {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.mobileNavIconLinks {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  position: absolute;
+  right: 2rem;
+  top: 6rem;
+  background-color: white;
+  border: 1px solid var(--gray);
+  padding: 2rem;
+  padding-left: 3rem;
+  align-items: start;
+  justify-content: center;
+  z-index: 2000;
+  border-radius: 0.6rem;
+}
+
+.mobileNavIconLink {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  cursor: pointer;
+  width: 100%;
+}
+
+.mobileLink {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 3rem;
+}
+
+.mobileNotification {
+  background-color: var(--color-notification-alert);
+  border-radius: 1rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  position: absolute;
+  top: 0;
+  left: -1rem;
+}
+
+@media (max-width: 700px) {
+  .navigationBar {
+    margin: 0 2rem;
+  }
+
+  .navIconLinks {
+    display: none;
+  }
+  .hamburgerMenu {
+    display: flex;
+  }
+}
+
+@media (min-width: 701px) {
+  .hamburgerMenu {
+    display: none;
+  }
+  .navIconLinks {
+    display: flex;
+  }
+}
