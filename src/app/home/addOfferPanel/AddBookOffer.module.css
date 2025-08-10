@@ -24,3 +24,18 @@
 .button {
   width: 20rem;
 }
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem;
+  }
+  .inputs {
+    flex-direction: column;
+  }
+  .inputContainer {
+    width: 100%;
+  }
+  .button {
+    width: 100%;
+  }
+}

@@ -51,6 +51,7 @@ export function Market() {
       <div className={styles.searchContainer}>
         <div className={styles.layoutButtons}>
           <Button
+            className={styles.button}
             buttonType={
               markatView === MarketView.GRID
                 ? ButtonType.PRIMARY
@@ -61,6 +62,7 @@ export function Market() {
             Grid
           </Button>
           <Button
+            className={styles.button}
             buttonType={
               markatView === MarketView.MAP
                 ? ButtonType.PRIMARY
@@ -77,16 +79,18 @@ export function Market() {
           icon={<CiSearch />}
         />
       </div>
-      {markatView === MarketView.GRID ? (
-        <MarketGrid
-          books={data}
-          selectItem={(item: MarketBook) => setDisplayedBook(item)}
-          selectedItemId={displayedBook?.book._id}
-        />
-      ) : (
-        <MapWrapper setPreviewIndex={setPreviewIndex} />
-      )}
-      <MarketPanel book={displayedBook} />
+      <div className={styles.marketPanelContainer}>
+        {markatView === MarketView.GRID ? (
+          <MarketGrid
+            books={data}
+            selectItem={(item: MarketBook) => setDisplayedBook(item)}
+            selectedItemId={displayedBook?.book._id}
+          />
+        ) : (
+          <MapWrapper setPreviewIndex={setPreviewIndex} />
+        )}
+        <MarketPanel book={displayedBook} />
+      </div>
     </div>
   );
 }
