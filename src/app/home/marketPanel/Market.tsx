@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./Market.module.css";
-
-import { MapWrapper } from "./map/MapWrapper";
-import { MarketPanel } from "./browseOffersPanel/MarketPanel";
+import { CiSearch } from "react-icons/ci";
 import { useGetAllMarketBooksQuery } from "@/api/marketApi";
 import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import { MapWrapper } from "./map/MapWrapper";
+import { BookMarketPanel } from "./browseOffersPanel/BookMarketPanel";
+import { PickUpSpotPanel } from "./pickUpSpotPanel/PickUpSpotPanel";
 import MarketGrid from "./grid/MarketGrid";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
-import { CiSearch } from "react-icons/ci";
+import styles from "./Market.module.css";
 
 enum MarketView {
   GRID,
@@ -26,11 +27,10 @@ function useMarketByStatus(status?: MarketBookStatus) {
 
 export function Market() {
   const { data, isLoading, isError, error } = useMarketByStatus();
-  const [markatView, setMarketView] = useState<MarketView>(MarketView.GRID);
-  const [previewIndex, setPreviewIndex] = useState<number | undefined>(
-    undefined
-  );
+  const [marketView, setMarketView] = useState<MarketView>(MarketView.GRID);
   const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);
+  const [displayedPickUpSpot, setDisplayedPickUpSpot] =
+    useState<PickUpSpot | null>(null);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError)
@@ -44,8 +44,6 @@ export function Market() {
 
   if (!data) return <div>No books maching criteria</div>;
 
-  console.log("PRINT", data);
-
   return (
     <div className={styles.container}>
       <div className={styles.searchContainer}>
@@ -53,24 +51,24 @@ export function Market() {
           <Button
             className={styles.button}
             buttonType={
-              markatView === MarketView.GRID
+              marketView === MarketView.GRID
                 ? ButtonType.PRIMARY
                 : ButtonType.SECONDARY
             }
             onClick={() => setMarketView(MarketView.GRID)}
           >
-            Grid
+            Book Offers
           </Button>
           <Button
             className={styles.button}
             buttonType={
-              markatView === MarketView.MAP
+              marketView === MarketView.MAP
                 ? ButtonType.PRIMARY
                 : ButtonType.SECONDARY
             }
             onClick={() => setMarketView(MarketView.MAP)}
           >
-            Map
+            Pick up Spots
           </Button>
         </div>
         <Input
@@ -80,16 +78,22 @@ export function Market() {
         />
       </div>
       <div className={styles.marketPanelContainer}>
-        {markatView === MarketView.GRID ? (
+        {marketView === MarketView.GRID ? (
           <MarketGrid
             books={data}
             selectItem={(item: MarketBook) => setDisplayedBook(item)}
             selectedItemId={displayedBook?.book._id}
           />
         ) : (
-          <MapWrapper setPreviewIndex={setPreviewIndex} />
+          <MapWrapper
+            selectItem={(item: PickUpSpot) => setDisplayedPickUpSpot(item)}
+          />
         )}
-        <MarketPanel book={displayedBook} />
+        {marketView === MarketView.GRID ? (
+          <BookMarketPanel book={displayedBook} />
+        ) : (
+          <PickUpSpotPanel spot={displayedPickUpSpot} />
+        )}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: end;
+  border-right: 6px solid var(--color-brand-secondary);
 }
 
 .pageContainer {
@@ -19,16 +20,10 @@
   width: 100%;
 }
 
-.actionContainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: end;
-}
-
 .title {
   font-weight: bold;
   font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .info {
@@ -43,29 +38,30 @@
   color: var(--color-grey-2);
 }
 
-.ratingContainer {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
 .description {
   display: -webkit-box;
-  -webkit-line-clamp: 10;
+  /* -webkit-line-clamp: 14; */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-align: justify;
   font-size: 1.4rem;
+  margin-bottom: 2rem;
+  max-height: 28.6rem;
 }
 
 .fullDescription {
   overflow-y: auto;
   text-align: justify;
-  max-height: 37rem;
+  max-height: 44.4rem;
+  height: 44.4rem;
   padding-right: 2rem;
   scrollbar-gutter: stable;
   font-size: 1.4rem;
 }
+
+.descriptionGeneral {
+  margin-bottom: 1.4em;
+}
+
 .scrollableElement::-webkit-scrollbar {
   width: 0.4rem;
 }
@@ -91,51 +87,39 @@
 .showMore {
   font-weight: bold;
   cursor: pointer;
-  margin-top: 0.4rem;
+  margin-top: 1rem;
   align-self: flex-end;
   font-size: 1.2rem;
 }
 
-.button {
-  width: fit-content;
-}
-
-.notRated {
-  font-size: 1.2rem;
-  color: var(--gray);
-}
-
-.welcomeContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  height: 100%;
-}
-
-.welcomeStepContainer {
-  display: flex;
-  margin-bottom: 2rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.welcomeStep {
+.featureName {
   font-weight: bold;
-  margin-right: 1rem;
-  font-size: 3rem;
-  color: var(--color-brand-secondary);
+  display: inline;
+  margin-right: 0.6rem;
 }
 
-.welcome {
-  align-self: center;
-  font-size: 2rem;
-  margin-bottom: 3rem;
+.featureDescription {
+  display: inline;
+}
+
+.featuresTitle {
+  margin-bottom: 1rem;
+}
+
+.feature {
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 1150px) {
   .container {
     margin: 2rem 2rem;
     padding: 2rem 2rem;
+    height: 40rem;
+  }
+  .description {
+    -webkit-line-clamp: 10;
+  }
+  .fullDescription {
+    max-height: 32rem;
   }
 }
