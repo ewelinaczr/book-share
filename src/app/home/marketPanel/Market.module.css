@@ -1,7 +1,3 @@
-.container {
-  position: relative;
-}
-
 .searchContainer {
   display: flex;
   gap: 3rem;
