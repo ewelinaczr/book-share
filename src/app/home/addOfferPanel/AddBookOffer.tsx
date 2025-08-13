@@ -1,18 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./AddBookOffer.module.css";
 import { useForm } from "react-hook-form";
 import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
-import Select from "@/components/inputs/Select";
+import styles from "./AddBookOffer.module.css";
 
+import Select from "@/components/inputs/Select";
 import Input from "@/components/inputs/Input";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Header from "@/components/headers/Header";
+import Notification from "@/components/notification/Notification";
 
-interface FetchStatus {
-  success: boolean;
+interface Status {
+  status: "success" | "error";
   message: string;
 }
 
@@ -22,31 +23,27 @@ export default function AddBookOffer() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AddMarketBook>();
-  const [formError, setFormError] = useState("");
-  const [fetchStatus, setFetchStatus] = useState<FetchStatus | undefined>(
-    undefined
-  );
-
+  const [status, setStatus] = useState<Status | undefined>(undefined);
   const [addBookToMarket, { isLoading, isSuccess, isError }] =
     useAddBookToMarketMutation();
 
   useEffect(() => {
     if (isError) {
-      setFetchStatus({
-        success: false,
-        message: "Something went wrong",
+      setStatus({
+        status: "error",
+        message: "Something went wrong, cnannot add book to Market",
       });
     }
     if (isSuccess) {
-      setFetchStatus({
-        success: true,
-        message: "Book successfully added to Your Bookshelf",
+      setStatus({
+        status: "success",
+        message: "Book successfully added to the Market",
       });
     }
   }, [isError, isSuccess]);
 
   const onSubmit = async (data: AddMarketBook) => {
-    setFormError("");
+    setStatus(undefined);
     try {
       const bookData = await fetchBookByIsbn(data.isbn);
       if (bookData) {
@@ -56,45 +53,42 @@ export default function AddBookOffer() {
         };
         addBookToMarket(marketBook);
       } else {
-        setFormError("Book not found by provided ISBN");
+        setStatus({
+          message: "Book not found by provided ISBN",
+          status: "error",
+        });
       }
     } catch (err: any) {
-      setFormError(err.message);
+      setStatus(err.message);
     }
   };
-
-  if (isError) {
-  }
 
   return (
     <>
       <div className={styles.container}>
         <Header label={"Add Book Offer to the Markat"} />
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div className={styles.inputs}>
-            <div className={styles.inputContainer}>
-              <Select
-                label="Offer type"
-                options={[
-                  { value: MarketBookStatus.BORROW, label: "Borrow book" },
-                  { value: MarketBookStatus.CLAIM, label: "Give book back" },
-                  { value: MarketBookStatus.TRADE, label: "Trade" },
-                ]}
-                {...register("status")}
-                error={errors.status?.message}
-              />
-            </div>
-            <div className={styles.inputContainer}>
-              <Input
-                id="isbn"
-                className={styles.input}
-                label="Find book by ISBN"
-                type="text"
-                {...register("isbn")}
-                error={errors.isbn?.message}
-              />
-            </div>
-            <div>{formError ? formError : ""}</div>
+          <div className={styles.inputContainer}>
+            <Select
+              label="Offer type"
+              options={[
+                { value: MarketBookStatus.BORROW, label: "Borrow book" },
+                { value: MarketBookStatus.CLAIM, label: "Give book back" },
+                { value: MarketBookStatus.TRADE, label: "Trade" },
+              ]}
+              {...register("status")}
+              error={errors.status?.message}
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <Input
+              id="isbn"
+              className={styles.input}
+              label="Find book by ISBN"
+              type="text"
+              {...register("isbn")}
+              error={errors.isbn?.message}
+            />
           </div>
           <Button
             type="submit"
@@ -107,7 +101,11 @@ export default function AddBookOffer() {
               : "Add book to Market"}
           </Button>
         </form>
-        <div>{fetchStatus ? fetchStatus.message : ""}</div>
+        <div className={styles.notification}>
+          {status?.message ? (
+            <Notification message={status?.message} status={status?.status} />
+          ) : null}
+        </div>
       </div>
     </>
   );
