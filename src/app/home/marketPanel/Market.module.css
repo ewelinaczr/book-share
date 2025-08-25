@@ -1,0 +1,14 @@
+.container {
+  position: relative;
+}
+
+.searchContainer {
+  display: flex;
+  gap: 3rem;
+  margin: 2rem 4rem;
+}
+
+.layoutButtons {
+  display: flex;
+  gap: 0.5rem;
+}

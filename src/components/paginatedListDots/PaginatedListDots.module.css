@@ -1,0 +1,33 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  width: 1.4rem;
+  height: 1.4rem;
+  color: var(--gray);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  color: var(--gray);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: var(--gray);
+}
+
+.dot.active {
+  background-color: var(--color-brand-primary);
+}

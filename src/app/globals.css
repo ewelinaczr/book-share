@@ -3,14 +3,18 @@
   --font-geist-mono: "Geist Mono", monospace;
   --white: #ffffff;
   --black: #171717;
+  --gray: #a6a6a6;
 
   /* Main colors */
+  --color-brand-primary: #ffdab9;
+  --color-brand-secondary: #ffe5b4;
   --color-brand-purple: #885df5;
   --color-brand-green: #45cb85;
 
   /* Notification */
   --color-notification-success: #1bce20;
   --color-notification-error: #ff4419;
+  --color-notification-alert: #ff4419;
 }
 
 html {

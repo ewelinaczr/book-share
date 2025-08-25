@@ -1,0 +1,6 @@
+.title {
+  font-weight: bold;
+  margin-bottom: 2rem;
+  border-left: 6px solid var(--color-brand-secondary);
+  padding-left: 0.6rem;
+}

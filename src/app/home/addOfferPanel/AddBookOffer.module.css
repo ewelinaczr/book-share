@@ -1,0 +1,26 @@
+.container {
+  margin: 2rem 4rem;
+}
+
+.inputContainer {
+  width: 30rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  width: 100%;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.button {
+  width: 20rem;
+}

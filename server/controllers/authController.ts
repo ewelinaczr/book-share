@@ -187,8 +187,5 @@ export const logout = (req: Request, res: Response) => {
 };
 
 export const me = (req: Request, res: Response) => {
-  res.status(200).json({
-    status: "success",
-    data: res.locals.user ?? null,
-  });
+  res.status(200).json(res.locals.user ?? null);
 };

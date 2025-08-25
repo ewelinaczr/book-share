@@ -1,4 +1,34 @@
+.scrollWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .listContainer {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 15px;
+  scrollbar-width: none;
+  width: 100%;
+}
+
+.listContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 20px;
+  z-index: 1;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 2rem;
 }

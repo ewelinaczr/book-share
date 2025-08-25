@@ -25,6 +25,6 @@ router
 
 router
   .route("/exchange/borrowed-from-me")
-  .get(authController.protect, marketController.getBorrowedBooks);
+  .get(authController.protect, marketController.getBorrowedFromMe);
 
 export default router;

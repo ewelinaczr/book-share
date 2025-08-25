@@ -288,7 +288,10 @@ export const getBorrowedFromMe = async (
     const booksBorrowedFromMe = await MarketBook.find({
       ownerId: userId,
       "exchangedWith.status": "borrow",
-      "exchangedWith.userId": { $exists: true },
+      "exchangedWith.userId": {
+        $exists: true,
+        $ne: userId,
+      },
     })
       .populate("book")
       .populate("exchangedWith.userId", "name email");

@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+}
+
+.header {
+  margin: 0rem 4rem;
+}
+
+.list {
+  margin: 0.8rem;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}

@@ -8,9 +8,16 @@ export enum MarketBookStatus {
 
 export interface MarketBook {
   status: MarketBookStatus;
-  deadline: Date;
+  deadline?: Date;
+  ownerName: string;
   ownerId: String; // User._id
   book: Book; // Full Book object
+  exchangedWith: {
+    userId: string; // Who exchanged the book
+    status: MarketBookStatus;
+    date: Date; // Last exchanged date
+  };
+  _id: string;
 }
 
 export interface AddMarketBook {
