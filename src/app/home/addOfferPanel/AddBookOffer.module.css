@@ -8,21 +8,48 @@
 
 .form {
   display: flex;
-  flex-direction: column;
-  justify-content: end;
+  gap: 2rem;
   align-items: end;
-  width: 100%;
-}
-
-.inputs {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: start;
 }
 
 .button {
-  width: 20rem;
+  margin-bottom: 1.2rem;
+}
+
+.notification {
+  font-size: 1.4rem;
+  height: 2rem;
+  margin-left: 1rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem;
+  }
+  .inputs,
+  .form {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: start;
+    margin-left: 1rem;
+  }
+  .inputContainer {
+    width: 100wv;
+  }
+  .button {
+    margin-top: 1rem;
+    width: 30rem;
+  }
+}
+@media (max-width: 700px) {
+  .inputContainer {
+    width: 100wv;
+  }
+  .button {
+    width: 30rem;
+    min-width: 30rem;
+  }
 }
 
 @media (max-width: 1150px) {
