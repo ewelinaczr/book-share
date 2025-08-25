@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+}
+
+.formContainer {
+  margin: 4rem;
+  width: 40rem;
+}
+
+.formTitle {
+  font-size: 2.4rem;
+  margin-bottom: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  margin-top: 0.4rem;
+  margin-left: 0.2rem;
+  color: var(--color-notification-error);
+  height: 3rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 40rem;
+}
+
+.redirectText {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.redirect {
+  font-weight: bold;
+  margin-left: 0.6rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+@media (max-width: 1150px) {
+  .formContainer {
+    margin: 2rem;
+  }
+
+  .imageContainer {
+    display: none;
+  }
+}

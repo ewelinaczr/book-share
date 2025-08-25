@@ -1,12 +1,13 @@
 .button {
   padding: 0px 20px;
-  height: 3rem;
+  height: 3.6rem;
   border: 1px solid var(--black);
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.3s ease;
-  min-width: 10rem;
+  min-width: 15rem;
+  width: 100%;
 }
 
 .primary {
@@ -20,9 +21,9 @@
 }
 
 .button:hover:not(:disabled) {
-  background-color: var(--color-brand-primary);
+  background-color: var(--color-brand-secondary);
   color: var(--black);
-  border: 1px solid var(--color-brand-primary);
+  border: 1px solid var(--color-brand-secondary);
 }
 
 .button:disabled {

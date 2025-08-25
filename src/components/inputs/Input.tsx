@@ -15,17 +15,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {label}
         </label>
       )}
-      {icon && React.cloneElement(icon, { className: styles.icon })}
-      <input
-        id={id}
-        ref={ref}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-error` : undefined}
-        className={styles.input}
-        {...props}
-        style={icon ? { paddingLeft: "36px" } : {}}
-      />
-      {error && <span id={`${id}-error`}>{error}</span>}
+      <div className={styles.inputContainer}>
+        {icon && React.cloneElement(icon, { className: styles.icon })}
+        <input
+          id={id}
+          ref={ref}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+          className={styles.input}
+          {...props}
+          style={icon ? { paddingLeft: "36px" } : {}}
+        />
+      </div>
+      <span id={`${id}-error`} className={styles.error}>
+        {error}
+      </span>
     </div>
   )
 );
