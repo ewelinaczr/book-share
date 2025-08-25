@@ -10,7 +10,7 @@
 .grid {
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 14rem));
   row-gap: 4rem;
   margin-left: 4rem;
   margin-right: 2rem;
@@ -25,9 +25,14 @@
   align-items: center;
   margin-left: 4rem;
   margin-top: 2rem;
+  width: calc(60vw - 8rem);
 }
 
 @media (max-width: 1150px) {
+  .container {
+    min-height: 0;
+  }
+
   .grid {
     width: 100vw;
     max-width: calc(100vw - 2 * 1rem);

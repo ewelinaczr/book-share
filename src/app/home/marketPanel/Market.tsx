@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useGetAllMarketBooksQuery } from "@/api/marketApi";
 import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
@@ -31,6 +31,29 @@ export function Market() {
   const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);
   const [displayedPickUpSpot, setDisplayedPickUpSpot] =
     useState<PickUpSpot | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [marketBooks, setMarketBooks] = useState<MarketBook[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      const filteredBooks = data.filter(
+        (book: MarketBook) =>
+          book.book?.volumeInfo?.title
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          book.book?.volumeInfo?.authors?.some((author) =>
+            author.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+      );
+      setMarketBooks(filteredBooks);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (data) {
+      setMarketBooks(data);
+    }
+  }, [data]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError)
@@ -44,8 +67,31 @@ export function Market() {
 
   if (!data) return <div>No books maching criteria</div>;
 
-  return (
-    <div className={styles.container}>
+  const renderMarket = () => {
+    return (
+      <div className={styles.marketPanelContainer}>
+        {marketView === MarketView.GRID ? (
+          <MarketGrid
+            books={marketBooks}
+            selectItem={(item: MarketBook) => setDisplayedBook(item)}
+            selectedItemId={displayedBook?.book._id}
+          />
+        ) : (
+          <MapWrapper
+            selectItem={(item: PickUpSpot) => setDisplayedPickUpSpot(item)}
+          />
+        )}
+        {marketView === MarketView.GRID ? (
+          <BookMarketPanel book={displayedBook} />
+        ) : (
+          <PickUpSpotPanel spot={displayedPickUpSpot} />
+        )}
+      </div>
+    );
+  };
+
+  const renderSearch = () => {
+    return (
       <div className={styles.searchContainer}>
         <div className={styles.layoutButtons}>
           <Button
@@ -71,30 +117,46 @@ export function Market() {
             Pick up Spots
           </Button>
         </div>
-        <Input
-          placeholder={"Seach for a book..."}
-          width={"38rem"}
-          icon={<CiSearch />}
-        />
+        <div className={styles.layoutButtons}>
+          <div className={styles.searchInput}>
+            <Input
+              placeholder="Search for a book..."
+              icon={<CiSearch />}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Button
+            className={styles.button}
+            buttonType={
+              marketView === MarketView.MAP
+                ? ButtonType.PRIMARY
+                : ButtonType.SECONDARY
+            }
+            onClick={() => {
+              setMarketBooks(data);
+              setSearchQuery("");
+            }}
+          >
+            Clear Search
+          </Button>
+        </div>
       </div>
-      <div className={styles.marketPanelContainer}>
-        {marketView === MarketView.GRID ? (
-          <MarketGrid
-            books={data}
-            selectItem={(item: MarketBook) => setDisplayedBook(item)}
-            selectedItemId={displayedBook?.book._id}
-          />
-        ) : (
-          <MapWrapper
-            selectItem={(item: PickUpSpot) => setDisplayedPickUpSpot(item)}
-          />
-        )}
-        {marketView === MarketView.GRID ? (
-          <BookMarketPanel book={displayedBook} />
-        ) : (
-          <PickUpSpotPanel spot={displayedPickUpSpot} />
-        )}
+    );
+  };
+
+  const renderEmptyMarket = () => {
+    return (
+      <div className={styles.emptyMarket}>
+        No books found. Try to change cryteria.
       </div>
+    );
+  };
+
+  return (
+    <div className={styles.container}>
+      {renderSearch()}
+      {marketBooks.length > 0 ? renderMarket() : renderEmptyMarket()}
     </div>
   );
 }
