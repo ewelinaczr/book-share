@@ -2,9 +2,14 @@
 
 import { useMemo } from "react";
 import dynamic from "next/dynamic";
-import bookPointersMock from "./bookPointersMock";
+import styles from "./MapWrapper.module.css";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
 
-export function MapWrapper({ setPreviewIndex }) {
+export interface MapWrapperProps {
+  selectItem: (item: PickUpSpot) => void;
+}
+
+export function MapWrapper({ selectItem }: MapWrapperProps) {
   const Map = useMemo(
     () =>
       // Load the Map component only in the browser (not during server-side rendering)
@@ -16,10 +21,8 @@ export function MapWrapper({ setPreviewIndex }) {
   );
 
   return (
-    <Map
-      userPosition={[54.350009, 18.65105]}
-      books={bookPointersMock}
-      onSelect={setPreviewIndex}
-    />
+    <div className={styles.mapWrapper}>
+      <Map userPosition={[54.350009, 18.65105]} selectItem={selectItem} />
+    </div>
   );
 }

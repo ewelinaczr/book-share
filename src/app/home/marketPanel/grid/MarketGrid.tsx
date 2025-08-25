@@ -6,7 +6,7 @@ import ListItem from "@/components/listItem/ListItem";
 import PaginatedListDots from "@/components/paginatedListDots/PaginatedListDots";
 import styles from "./MarketGrid.module.css";
 
-export interface marketGridProps {
+export interface MarketGridProps {
   books: MarketBook[];
   selectItem: (item: MarketBook) => void;
   selectedItemId?: string;
@@ -16,7 +16,7 @@ export default function MarketGrid({
   books,
   selectItem,
   selectedItemId,
-}: marketGridProps) {
+}: MarketGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(books.length / 18);
 

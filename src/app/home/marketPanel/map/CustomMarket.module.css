@@ -1,0 +1,21 @@
+.popupContent {
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  cursor: pointer;
+}
+
+.popupIcon {
+  font-size: 2rem;
+}
+
+.invisible-marker {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  pointer-events: auto;
+}

@@ -1,34 +1,43 @@
-import {
-  MapContainer,
-  TileLayer,
-  Circle,
-  Tooltip,
-  Marker,
-} from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
-import L from "leaflet";
-import styles from "./Map.module.css";
-
+import { useMap } from "react-leaflet";
+import { LatLngBounds } from "leaflet";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import { pickUpSpots } from "./PickUpSpotsMock";
+import CustomMarker from "./CustomMarker";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { PointerI } from "./MapTypes";
+import styles from "./Map.module.css";
 
 interface MapProps {
   userPosition: LatLngTuple;
-  books: PointerI[];
-  onSelect: (index: number) => void;
+  selectItem: (item: PickUpSpot) => void;
   zoom?: number;
 }
 
-const userLocationPin = L.icon({
-  iconUrl: "/pin.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-});
+// const userLocationPin = L.icon({
+//   iconUrl: "/pin.png",
+//   iconSize: [32, 32],
+//   iconAnchor: [16, 32],
+//   popupAnchor: [0, -32],
+// });
 
-function Map({ userPosition, books, onSelect, zoom = 16 }: MapProps) {
+function Map({ userPosition, selectItem, zoom = 14 }: MapProps) {
+  const FitBoundsToMarkers = ({ positions }) => {
+    const map = useMap();
+
+    useEffect(() => {
+      if (positions.length > 0) {
+        const bounds = new LatLngBounds(positions);
+        map.fitBounds(bounds, { padding: [50, 50] }); // Optional padding
+      }
+    }, [map, positions]);
+
+    return null;
+  };
+
   return (
     <MapContainer
       center={[userPosition[0], userPosition[1] + 0.005]}
@@ -40,29 +49,25 @@ function Map({ userPosition, books, onSelect, zoom = 16 }: MapProps) {
         attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
       />
-      <Marker position={userPosition} icon={userLocationPin}>
+
+      {/* <Marker position={userPosition} icon={userLocationPin}>
         <Tooltip>Your location</Tooltip>
-      </Marker>
-      {books.map(({ lat, lng, label, category }, index) => (
-        <Circle
-          key={index}
-          center={[lat, lng]}
-          radius={80}
-          pathOptions={{
-            weight: 1,
-            color: category,
-            fillColor: category,
-            fillOpacity: 0.1,
-          }}
-          eventHandlers={{
-            click: () => onSelect(index),
-          }}
-        >
-          <Tooltip direction="right" offset={[25, 0]}>
-            {label}
-          </Tooltip>
-        </Circle>
+      </Marker> */}
+
+      {pickUpSpots.map((spot: PickUpSpot, index) => (
+        <div onClick={() => selectItem(spot)} key={index}>
+          <CustomMarker
+            key={index}
+            icon={spot.icon}
+            location={spot.location}
+            name={spot.name}
+            color={spot.color}
+          />
+        </div>
       ))}
+      <FitBoundsToMarkers
+        positions={pickUpSpots.map((spot) => spot.location)}
+      />
     </MapContainer>
   );
 }

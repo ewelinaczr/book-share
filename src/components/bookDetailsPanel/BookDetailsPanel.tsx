@@ -27,7 +27,7 @@ export default function BookDetails<T>({
       <div className={styles.titleContainer}>
         <div className={styles.titleAuthor}>
           <p className={styles.title}>{data.title}</p>
-          {data.authors?.length ? `, ${data.authors[0]}` : null}
+          {data.authors?.length ? `${data.authors[0]}` : null}
         </div>
         <div className={styles.myBookInfo}>
           {children}
