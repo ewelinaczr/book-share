@@ -76,6 +76,7 @@ export function LogInForm() {
             id="password"
             label="Password"
             type="password"
+            placeholder="Enter your password"
             icon={<SlKey />}
             {...register("password", {
               required: "Password is required",

@@ -1,11 +1,63 @@
 .container {
+  display: flex;
+  justify-content: space-around;
   margin: 3rem 4rem;
-  width: 30rem;
 }
 
-@media (max-width: 700px) {
-  .container {
+.formContainer {
+  background-color: white;
+}
+
+.formTitle {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.message {
+  height: 2rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.success {
+  color: var(--color-notification-success);
+}
+
+.error {
+  color: var(--color-notification-error);
+}
+
+.statsContainer {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+
+  margin-bottom: 2rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-weight: bold;
+}
+
+.statsIconTrophy {
+  font-size: 4rem;
+  color: var(--color-brand-primary);
+  opacity: 0.3;
+}
+
+.statsCount {
+  font-size: 2rem;
+  color: var(--color-brand-primary);
+}
+
+@media (max-width: 1150px) {
+  .formContainer {
     margin: 3rem 2rem;
-    width: auto;
   }
 }

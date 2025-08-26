@@ -68,7 +68,7 @@ export default function AddBookOffer() {
       <div className={styles.container}>
         <Header label={"Add Book Offer to the Markat"} />
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div className={styles.inputContainer}>
+          <div className={`${styles.inputContainer} ${styles.select}`}>
             <Select
               label="Offer type"
               options={[
