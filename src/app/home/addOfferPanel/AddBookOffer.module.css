@@ -2,15 +2,11 @@
   margin: 2rem 4rem;
 }
 
-.inputContainer {
-  width: 30rem;
-}
-
 .form {
   display: flex;
   gap: 2rem;
-  align-items: end;
-  justify-content: start;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .button {
@@ -23,9 +19,18 @@
   margin-left: 1rem;
 }
 
-@media (max-width: 1150px) {
+.inputContainer,
+.button {
+  flex: 1;
+}
+
+.select {
+  margin-bottom: 2.4rem;
+}
+
+@media (max-width: 850px) {
   .container {
-    margin: 2rem 2rem;
+    margin: 1rem 3rem;
   }
   .inputs,
   .form {
@@ -35,34 +40,11 @@
     margin-left: 1rem;
   }
   .inputContainer {
-    width: 100wv;
+    width: 100%;
   }
   .button {
     margin-top: 1rem;
-    width: 30rem;
-  }
-}
-@media (max-width: 700px) {
-  .inputContainer {
-    width: 100wv;
-  }
-  .button {
-    width: 30rem;
-    min-width: 30rem;
-  }
-}
-
-@media (max-width: 1150px) {
-  .container {
-    margin: 2rem 2rem;
-  }
-  .inputs {
-    flex-direction: column;
-  }
-  .inputContainer {
     width: 100%;
-  }
-  .button {
-    width: 100%;
+    flex: none;
   }
 }

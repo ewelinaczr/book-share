@@ -12,7 +12,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     <div className={styles.container}>
       <label className={styles.label}>{label} </label>
       <select ref={ref} {...props} className={styles.select}>
-        <option value="">Select...</option>
+        <option value="" className={styles.option}>
+          Select an option
+        </option>
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}

@@ -7,8 +7,14 @@ import { useSignupMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
+import { Pacifico } from "next/font/google";
+import { SlKey } from "react-icons/sl";
+import { FaRegUser } from "react-icons/fa6";
+import styles from "../login/LogInForm.module.css";
 
 import Input from "@/components/inputs/Input";
+import Image from "next/image";
+import Button, { ButtonType } from "@/components/buttons/Button";
 
 type SignupFormInputs = {
   name: string;
@@ -16,6 +22,11 @@ type SignupFormInputs = {
   password: string;
   passwordConfirm: string;
 };
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export function SignUpForm() {
   const {
@@ -41,53 +52,92 @@ export function SignUpForm() {
   const password = watch("password");
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          id="name"
-          label="Name"
-          type="text"
-          {...register("name", { required: "Name is required" })}
-          error={errors.name?.message}
+    <div className={styles.container}>
+      <div className={styles.imageContainer}>
+        <Image
+          src={"/reading2.jpg"}
+          alt={"reading graphic"}
+          width={410}
+          height={410}
         />
-        <Input
-          id="email"
-          label="Email"
-          type="email"
-          {...register("email", {
-            required: "Email is required",
-            validate: (value) => validateEmail(value) || "Invalid email format",
-          })}
-          error={errors.email?.message}
-        />
-        <Input
-          id="password"
-          label="Password"
-          type="password"
-          {...register("password", {
-            required: "Password is required",
-            validate: (value) =>
-              validatePassword(value) ||
-              "Password must be at least 8 characters long and contain letters and numbers",
-          })}
-          error={errors.password?.message}
-        />
-        <Input
-          id="passwordConfirm"
-          label="Confirm Password"
-          type="password"
-          {...register("passwordConfirm", {
-            required: "Please confirm your password",
-            validate: (value) =>
-              confirmPassword(password, value) || "Passwords do not match",
-          })}
-          error={errors.passwordConfirm?.message}
-        />
-        {formError && <div>{formError}</div>}
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Signing up..." : "Sign Up"}
-        </button>
-      </form>
+      </div>
+      <div className={styles.formContainer}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <p className={`${pacifico.className} ${styles.formTitle}`}>
+            Sign up with email
+          </p>
+          <Input
+            id="name"
+            label="Full Name"
+            type="text"
+            placeholder="Enter your name"
+            icon={<FaRegUser />}
+            {...register("name", { required: "Name is required" })}
+            error={errors.name?.message}
+          />
+          <Input
+            id="email"
+            label="Email"
+            type="email"
+            icon={<span>@</span>}
+            placeholder="Enter your e-mail"
+            {...register("email", {
+              required: "Email is required",
+              validate: (value) =>
+                validateEmail(value) || "Invalid email format",
+            })}
+            error={errors.email?.message}
+          />
+          <Input
+            id="password"
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            icon={<SlKey />}
+            {...register("password", {
+              required: "Password is required",
+              validate: (value) =>
+                validatePassword(value) ||
+                "Password must be at least 8 characters long and contain letters and numbers",
+            })}
+            error={errors.password?.message}
+          />
+          <Input
+            id="passwordConfirm"
+            label="Confirm Password"
+            type="password"
+            placeholder="Enter your password"
+            icon={<SlKey />}
+            {...register("passwordConfirm", {
+              required: "Please confirm your password",
+              validate: (value) =>
+                confirmPassword(password, value) || "Passwords do not match",
+            })}
+            error={errors.passwordConfirm?.message}
+          />
+          <div className={styles.error}>
+            {formError ? <p>{formError}</p> : null}
+          </div>
+          <div className={styles.buttonContainer}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              buttonType={ButtonType.PRIMARY}
+            >
+              {isSubmitting ? "Signing Up..." : "Sign Up"}
+            </Button>
+          </div>
+          <p className={styles.redirectText}>
+            Already have an account?
+            <span
+              className={styles.redirect}
+              onClick={() => router.push("/login")}
+            >
+              Log In
+            </span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
