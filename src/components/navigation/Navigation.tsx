@@ -3,28 +3,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetCurrentUserQuery, useLogoutMutation } from "@/api/userApi";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { IoIosMenu } from "react-icons/io";
-import { FiUser } from "react-icons/fi";
-import { BsEnvelope } from "react-icons/bs";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { useGetCurrentUserQuery, useLogoutMutation } from "@/api/userApi";
+import { abrilFatface, navIconLinks, navLinks } from "./navigationConfig";
+
 import styles from "./Navigation.module.css";
 import Button, { ButtonType } from "../buttons/Button";
-
-const navLinks = [
-  { name: "Home", path: "home" },
-  { name: "My Bookshelf", path: "bookshelf" },
-  { name: "Browse", path: "browse" },
-];
-const navIconLinks = [
-  {
-    name: "Notifications",
-    path: "notifications",
-    icon: <IoNotificationsOutline />,
-  },
-  { name: "Messages", path: "messages", icon: <BsEnvelope /> },
-  { name: "Profile", path: "profile", icon: <FiUser /> },
-];
 
 export default function Navigation() {
   const { data, refetch } = useGetCurrentUserQuery();
@@ -36,8 +21,10 @@ export default function Navigation() {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-      await refetch(); // Refetch user data after logout
-      router.push("/login");
+      await refetch();
+      setIsMenuOpen(false);
+      router.push("/");
+      setSelectedPage("Home");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -45,25 +32,51 @@ export default function Navigation() {
 
   const renderButton = () => {
     return data ? (
-      <li className={styles.navLink}>
+      <li key="logOutButton" className={styles.buttonLink}>
         <Button buttonType={ButtonType.PRIMARY} onClick={handleLogout}>
           Log out
         </Button>
       </li>
     ) : (
       <>
-        <li className={styles.navLink}>
-          <Link href="/login">Log in</Link>
+        <li key="signUpButton" className={styles.buttonLink}>
+          <Link href="/signup">
+            <Button
+              buttonType={ButtonType.SECONDARY}
+              customStyles={{ minWidth: "10rem" }}
+              onClick={() => setSelectedPage("SignUp")}
+            >
+              Sign up
+            </Button>
+          </Link>
         </li>
-        <li className={styles.navLink}>
-          <Link href="/signup">Sign up</Link>
+        <li key="logInButton" className={styles.buttonLink}>
+          <Link href="/login">
+            <Button
+              buttonType={ButtonType.PRIMARY}
+              customStyles={{ minWidth: "10rem" }}
+              onClick={() => setSelectedPage("LogIn")}
+            >
+              Log In
+            </Button>
+          </Link>
         </li>
       </>
     );
   };
 
-  return (
-    <nav className={styles.navigationBar}>
+  const renderAppName = () => {
+    return (
+      <Link href={"/"} onClick={() => setSelectedPage("Home")}>
+        <span className={`${abrilFatface.className} ${styles.title}`}>
+          BookShare
+        </span>
+      </Link>
+    );
+  };
+
+  const renderNavLinks = () => {
+    return (
       <ul className={styles.navLinks}>
         {navLinks.map((link) => (
           <li key={link.name}>
@@ -71,49 +84,94 @@ export default function Navigation() {
               href={`/${link.path}`}
               onClick={() => setSelectedPage(link.name)}
             >
-              <div
-                className={`${
-                  link.name === selectedPage ? styles.selected : ""
-                } ${styles.navLink}`}
-              >
-                {link.name}
+              <div className={styles.navLink}>
+                <p
+                  className={
+                    link.name === selectedPage
+                      ? styles.navLinkNameSelected
+                      : styles.navLinkName
+                  }
+                >
+                  {link.name}
+                </p>
               </div>
             </Link>
           </li>
         ))}
       </ul>
+    );
+  };
+
+  const renderIconNavLinks = () => {
+    return (
       <ul className={styles.navIconLinks}>
         {navIconLinks.map((link) => (
           <li key={link.name} className={styles.navIconLink}>
             <Link href={`/${link.path}`} className={styles.round}>
-              <div className={styles.notification}></div>
               <div>{link.icon}</div>
             </Link>
           </li>
         ))}
         {renderButton()}
       </ul>
+    );
+  };
+
+  const renderMobileNavCloseButton = () => {
+    return (
+      <li key={"closeButton"} className={styles.mobileCloseButtonWrapper}>
+        <button
+          className={styles.mobileCloseButton}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <IoCloseCircleSharp />
+        </button>
+      </li>
+    );
+  };
+
+  const renderMobileNavItems = () => {
+    return [...navLinks, ...navIconLinks].map((link) => {
+      return (
+        <li key={link.name} className={styles.mobileNavIconLink}>
+          <Link href={`/${link.path}`} className={styles.mobileLink}>
+            <div>{link.name}</div>
+          </Link>
+        </li>
+      );
+    });
+  };
+
+  const renderMobileNavigation = () => {
+    return (
       <div className={styles.hamburgerMenu}>
         <IoIosMenu
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={styles.hamburgerMenu}
         />
         {isMenuOpen ? (
-          <ul className={styles.mobileNavIconLinks}>
-            {navIconLinks.map((link) => {
-              return (
-                <li key={link.name} className={styles.mobileNavIconLink}>
-                  <Link href={`/${link.path}`} className={styles.mobileLink}>
-                    <div className={styles.mobileNotification}></div>
-                    <div>{link.icon}</div>
-                    <div>{link.name}</div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <div className={styles.mobileContainer}>
+            <div
+              className={styles.mobileContentBlur}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            ></div>
+            <ul className={styles.mobileNavIconLinks}>
+              {renderMobileNavCloseButton()}
+              {renderMobileNavItems()}
+              {renderButton()}
+            </ul>
+          </div>
         ) : null}
       </div>
+    );
+  };
+
+  return (
+    <nav className={styles.navigationBar}>
+      {renderAppName()}
+      {renderNavLinks()}
+      {renderIconNavLinks()}
+      {renderMobileNavigation()}
     </nav>
   );
 }

@@ -11,8 +11,8 @@ interface CustomButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  className?: string;
   buttonType?: ButtonType;
+  customStyles?: React.CSSProperties;
 }
 
 export default function Button({
@@ -20,8 +20,8 @@ export default function Button({
   onClick,
   type = "button",
   disabled = false,
-  className = "",
   buttonType,
+  customStyles,
 }: CustomButtonProps) {
   return (
     <button
@@ -30,7 +30,8 @@ export default function Button({
       disabled={disabled}
       className={`${
         buttonType === ButtonType.PRIMARY ? styles.primary : styles.secondary
-      } ${styles.button} ${className}`}
+      } ${styles.button}`}
+      style={customStyles}
     >
       {children}
     </button>
