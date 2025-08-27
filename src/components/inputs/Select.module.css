@@ -18,6 +18,11 @@
   color: var(--gray);
 }
 
+.select:focus {
+  outline: 1px solid var(--color-brand-primary);
+  border: 1px solid var(--color-brand-primary);
+}
+
 .label {
   margin-bottom: 0.6rem;
   font-weight: bold;

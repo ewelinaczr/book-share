@@ -10,11 +10,18 @@
 .grid {
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 14rem));
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   row-gap: 4rem;
-  margin-left: 4rem;
-  margin-right: 2rem;
   margin-top: 2rem;
+  width: 60vw;
+  max-width: 60vw;
+}
+
+.smallGrid {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
   width: 60vw;
   max-width: 60vw;
 }
@@ -23,30 +30,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 4rem;
   margin-top: 2rem;
-  width: calc(60vw - 8rem);
+  width: 60vw;
 }
 
 @media (max-width: 1150px) {
   .container {
     min-height: 0;
   }
-
   .grid {
     width: 100vw;
-    max-width: calc(100vw - 2 * 1rem);
-    margin-left: 1rem;
-    margin-right: 1rem;
+    max-width: calc(100vw - 2 * 2rem);
     margin-top: 0rem;
     row-gap: 3rem;
   }
-  .button {
-    width: 100%;
-  }
   .dots {
-    width: 100vw;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    width: calc(100vw - 2 * 2rem);
   }
 }

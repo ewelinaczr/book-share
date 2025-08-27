@@ -24,4 +24,6 @@ export interface AddMarketBook {
   status: MarketBookStatus;
   deadline: Date;
   isbn: string;
+  title: string;
+  author: string;
 }
