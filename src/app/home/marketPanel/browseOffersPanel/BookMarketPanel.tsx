@@ -51,7 +51,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
             placeholder="Type your message here..."
           />
         </div>
-        <Button className={styles.button} buttonType={ButtonType.PRIMARY}>
+        <Button buttonType={ButtonType.PRIMARY}>
           {`Message ${ownerName ?? "Owner"}`}
         </Button>
       </div>
@@ -73,11 +73,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         <div className={styles.info}>
           <p className={styles.infoLabel}>{text}</p>
         </div>
-        <Button
-          className={styles.button}
-          buttonType={ButtonType.PRIMARY}
-          onClick={() => exchangeBook()}
-        >
+        <Button buttonType={ButtonType.PRIMARY} onClick={() => exchangeBook()}>
           {`${offer} Book`}
         </Button>
       </div>
@@ -112,7 +108,9 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
     } = volumeInfo;
     return (
       <div className={styles.pageContainer}>
-        <Label label={status} />
+        <div className={styles.label}>
+          <Label label={status} />
+        </div>
         <div className={styles.info}>
           <p className={styles.title}>{title}</p>
           {authors?.map((a) => (
@@ -155,7 +153,9 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
     const { title, authors } = volumeInfo;
     return (
       <div className={styles.pageContainer}>
-        <Label label={status} />
+        <div className={styles.label}>
+          <Label label={status} />
+        </div>
         <div className={styles.info}>
           <p className={styles.title}>{title}</p>
           {authors?.map((a) => (
@@ -207,7 +207,6 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         {renderPageContent(volumeInfo)}
         <div className={styles.actionContainer}>
           <Button
-            className={styles.button}
             buttonType={ButtonType.PRIMARY}
             onClick={() =>
               setPage(

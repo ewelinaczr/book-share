@@ -1,0 +1,31 @@
+.marketPanelContainer {
+  margin: 2rem 4rem 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.gridPanelContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.emptyMarket {
+  color: #666;
+  width: 100%;
+  font-size: 1.5rem;
+  justify-content: center;
+  margin-top: 4rem;
+  display: flex;
+}
+
+@media (max-width: 1150px) {
+  .marketPanelContainer {
+    margin: 2rem 2rem 5rem 2rem;
+    flex-direction: column;
+  }
+  .gridPanelContainer {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+}

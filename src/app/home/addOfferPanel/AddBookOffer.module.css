@@ -4,13 +4,8 @@
 
 .form {
   display: flex;
-  gap: 2rem;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.button {
-  margin-bottom: 1.2rem;
+  width: max-content;
+  flex-direction: column;
 }
 
 .notification {
@@ -19,32 +14,48 @@
   margin-left: 1rem;
 }
 
-.inputContainer,
+.select,
 .button {
-  flex: 1;
+  margin-bottom: 1rem;
+  max-width: 30rem;
 }
 
-.select {
-  margin-bottom: 2.4rem;
+.tittleAuthor {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.author {
+  margin-top: 2.4rem;
 }
 
 @media (max-width: 850px) {
   .container {
-    margin: 1rem 3rem;
+    margin: 1rem 2rem;
+  }
+  .tittleAuthor {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
   }
   .inputs,
   .form {
     flex-direction: column;
     gap: 0.4rem;
     align-items: start;
-    margin-left: 1rem;
+    width: 100%;
   }
   .inputContainer {
     width: 100%;
   }
+  .author {
+    margin-top: 0;
+  }
+  .select,
+  .input,
   .button {
-    margin-top: 1rem;
-    width: 100%;
-    flex: none;
+    margin-bottom: 1rem;
+    max-width: none;
   }
 }

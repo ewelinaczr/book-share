@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
+import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
 import styles from "./AddBookOffer.module.css";
 
 import Select from "@/components/inputs/Select";
@@ -45,7 +46,9 @@ export default function AddBookOffer() {
   const onSubmit = async (data: AddMarketBook) => {
     setStatus(undefined);
     try {
-      const bookData = await fetchBookByIsbn(data.isbn);
+      const bookData = data.isbn
+        ? await fetchBookByIsbn(data.isbn)
+        : await fetchBookByTitleAndAuthor(data.title, data.author);
       if (bookData) {
         const marketBook = {
           status: data.status,
@@ -54,7 +57,7 @@ export default function AddBookOffer() {
         addBookToMarket(marketBook);
       } else {
         setStatus({
-          message: "Book not found by provided ISBN",
+          message: "Book not found by provided ISBN or title",
           status: "error",
         });
       }
@@ -72,7 +75,10 @@ export default function AddBookOffer() {
             <Select
               label="Offer type"
               options={[
-                { value: MarketBookStatus.BORROW, label: "Borrow book" },
+                {
+                  value: MarketBookStatus.BORROW,
+                  label: "Borrow book",
+                },
                 { value: MarketBookStatus.CLAIM, label: "Give book back" },
                 { value: MarketBookStatus.TRADE, label: "Trade" },
               ]}
@@ -80,26 +86,52 @@ export default function AddBookOffer() {
               error={errors.status?.message}
             />
           </div>
-          <div className={styles.inputContainer}>
-            <Input
-              id="isbn"
-              className={styles.input}
-              label="Find book by ISBN"
-              type="text"
-              {...register("isbn")}
-              error={errors.isbn?.message}
-            />
+          <div className={styles.tittleAuthor}>
+            <div className={styles.inputContainer}>
+              <Input
+                id="isbn"
+                className={styles.input}
+                label="Find book by ISBN"
+                type="text"
+                placeholder="ISBN 10 or 13"
+                {...register("isbn")}
+                error={errors.isbn?.message}
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <Input
+                id="title"
+                className={styles.input}
+                label="Find book by Title and Author name"
+                placeholder="Book title"
+                type="text"
+                {...register("title")}
+                error={errors.isbn?.message}
+              />
+            </div>
+            <div className={`${styles.inputContainer} ${styles.author}`}>
+              <Input
+                id="author"
+                className={styles.input}
+                placeholder="Author name"
+                type="text"
+                {...register("author")}
+                error={errors.isbn?.message}
+              />
+            </div>
           </div>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            buttonType={ButtonType.PRIMARY}
-            className={styles.button}
-          >
-            {isSubmitting || isLoading
-              ? "Adding book..."
-              : "Add book to Market"}
-          </Button>
+          <div className={styles.button}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              buttonType={ButtonType.PRIMARY}
+              customStyles={{ marginBottom: "1rem" }}
+            >
+              {isSubmitting || isLoading
+                ? "Adding book..."
+                : "Add book to Market"}
+            </Button>
+          </div>
         </form>
         <div className={styles.notification}>
           {status?.message ? (

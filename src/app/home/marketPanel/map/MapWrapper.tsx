@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import dynamic from "next/dynamic";
 import styles from "./MapWrapper.module.css";
-import { PickUpSpot } from "@/interfaces/PickUpSpot";
 
 export interface MapWrapperProps {
   selectItem: (item: PickUpSpot) => void;
