@@ -1,0 +1,20 @@
+.panelContainer {
+  margin: 2rem 4rem 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mapContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+@media (max-width: 1150px) {
+  .panelContainer {
+    margin: 2rem 2rem 5rem 2rem;
+  }
+  .mapContainer {
+    flex-direction: column;
+  }
+}
