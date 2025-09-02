@@ -5,13 +5,22 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
   error?: string;
   options: { value: string | number; label: string }[];
+  customStyles?: React.CSSProperties;
 }
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, options, ...props }, ref) => (
-    <div className={styles.container}>
-      <label className={styles.label}>{label} </label>
-      <select ref={ref} {...props} className={styles.select}>
+  ({ label, error, options, customStyles, ...props }, ref) => (
+    <div className={styles.container} style={customStyles}>
+      <label htmlFor={label} className={styles.label}>
+        {label}
+      </label>
+      <select
+        id={label}
+        ref={ref}
+        {...props}
+        className={styles.select}
+        style={customStyles}
+      >
         <option value="" className={styles.option}>
           Select an option
         </option>

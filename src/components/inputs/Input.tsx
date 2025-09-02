@@ -4,11 +4,25 @@ import styles from "./Input.module.css";
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  withoutError?: boolean;
   icon?: React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+  customStyles?: React.CSSProperties;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, icon, id, className, ...props }, ref) => (
+  (
+    {
+      label,
+      error,
+      withoutError = false,
+      icon,
+      id,
+      className,
+      customStyles,
+      ...props
+    },
+    ref
+  ) => (
     <div className={styles.container}>
       {label && (
         <label htmlFor={id} className={styles.label}>
@@ -24,12 +38,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           aria-describedby={error ? `${id}-error` : undefined}
           className={styles.input}
           {...props}
-          style={icon ? { paddingLeft: "36px" } : {}}
+          style={icon ? { paddingLeft: "36px", ...customStyles } : customStyles}
         />
       </div>
-      <span id={`${id}-error`} className={styles.error}>
-        {error}
-      </span>
+      {withoutError ? null : (
+        <span id={`${id}-error`} className={styles.error}>
+          {error}
+        </span>
+      )}
     </div>
   )
 );

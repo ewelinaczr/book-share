@@ -120,8 +120,6 @@ export default function AddToBookshelf() {
 
     const favorite = Object.entries(categoryCount).sort((a, b) => b[1] - a[1]);
 
-    console.log(favorite);
-
     return favorite ? (
       <div className={styles.statsContainer}>
         <FaMasksTheater className={styles.statsIconTrophy} />

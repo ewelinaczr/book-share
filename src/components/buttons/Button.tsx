@@ -20,8 +20,8 @@ export default function Button({
   onClick,
   type = "button",
   disabled = false,
-  buttonType,
   customStyles,
+  buttonType,
 }: CustomButtonProps) {
   return (
     <button
