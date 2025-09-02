@@ -30,34 +30,9 @@
   color: var(--color-notification-error);
 }
 
-.statsContainer {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-
-  margin-bottom: 2rem;
-}
-
-.stats {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  font-weight: bold;
-}
-
-.statsIconTrophy {
-  font-size: 4rem;
-  color: var(--color-brand-primary);
-  opacity: 0.3;
-}
-
-.statsCount {
-  font-size: 2rem;
-  color: var(--color-brand-primary);
-}
-
 @media (max-width: 1150px) {
   .formContainer {
     margin: 3rem 2rem;
+    width: 100%;
   }
 }

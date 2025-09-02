@@ -59,6 +59,10 @@ path.leaflet-interactive:focus {
   font-size: 1.2rem;
 }
 
+.recharts-wrapper * {
+  outline: none;
+}
+
 /* For Large Desktop View */
 @media (min-width: 1200px) {
 }
