@@ -44,7 +44,7 @@ function DotGraph({
           <XAxis
             type="category"
             dataKey="month"
-            name="Month"
+            name={labelX}
             label={{
               value: labelX,
               position: "insideBottom",
@@ -55,7 +55,7 @@ function DotGraph({
           <YAxis
             type="number"
             dataKey="count"
-            name="Books Read"
+            name={labelY}
             label={{
               value: labelY,
               angle: -90,
@@ -65,7 +65,7 @@ function DotGraph({
             }}
             allowDecimals={false}
           />
-          <Scatter name="Monthly Reads" data={data}>
+          <Scatter data={data}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}

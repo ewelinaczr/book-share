@@ -5,16 +5,11 @@ import styles from "./AddToBookshelf.module.css";
 import { useForm } from "react-hook-form";
 import { AddBookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
+import { pacifico } from "@/app/fonts";
 import {
   useAddBookToBookshelfMutation,
   useGetBookshelfQuery,
 } from "@/api/bookshelfApi";
-import { Pacifico } from "next/font/google";
-import { FaMasksTheater } from "react-icons/fa6";
-import { BsStars } from "react-icons/bs";
-import { FaPenNib } from "react-icons/fa6";
-import { GiOpenBook } from "react-icons/gi";
-import { PiBooksFill } from "react-icons/pi";
 
 import Input from "@/components/inputs/Input";
 import Select from "@/components/inputs/Select";
@@ -24,11 +19,6 @@ interface FetchStatus {
   success: boolean;
   message: string;
 }
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export default function AddToBookshelf() {
   const {

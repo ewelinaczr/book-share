@@ -1,11 +1,6 @@
 import React from "react";
-import { Pacifico } from "next/font/google";
 import styles from "./WelcomePanel.module.css";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { pacifico } from "@/app/fonts";
 
 function WelcomePanel() {
   return (

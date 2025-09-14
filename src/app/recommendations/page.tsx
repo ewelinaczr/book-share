@@ -1,5 +1,9 @@
-import EmptyPage from "@/components/emptyPage/EmptyPage";
+import PickUpPoints from "../home/marketPanel/pickUpPoints/PickUpPoints";
 
 export default async function Recommendations() {
-  return <EmptyPage />;
+  return (
+    <div>
+      <PickUpPoints />
+    </div>
+  );
 }

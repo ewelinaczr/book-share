@@ -7,9 +7,9 @@ import { useSignupMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
-import { Pacifico } from "next/font/google";
 import { SlKey } from "react-icons/sl";
 import { FaRegUser } from "react-icons/fa6";
+import { pacifico } from "../fonts";
 import styles from "../login/LogInForm.module.css";
 
 import Input from "@/components/inputs/Input";
@@ -22,11 +22,6 @@ type SignupFormInputs = {
   password: string;
   passwordConfirm: string;
 };
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export function SignUpForm() {
   const {

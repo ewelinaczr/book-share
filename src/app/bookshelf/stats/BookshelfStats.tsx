@@ -2,18 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
-import { Pacifico } from "next/font/google";
 import { BookStatus } from "@/interfaces/BookshelfBook";
 import DotGraph from "@/app/statsGraphs/DotGraph";
 import HorizontalBarGraph from "@/app/statsGraphs/HorizontalBarGraph";
 import PieChartGraph from "@/app/statsGraphs/PieChartGraph";
 import styles from "./BookshelfStats.module.css";
 import Header from "@/components/headers/Header";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 function BookshelfStats() {
   const { data } = useGetBookshelfQuery({ status: BookStatus.READ });
@@ -135,56 +129,50 @@ function BookshelfStats() {
   return (
     <div className={styles.statsContainer}>
       <Header label="Bookshelf Insights" />
-      <div className={styles.flex}>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>Read Books</p>
-          <p className={styles.flexRow}>{data?.length}</p>
-        </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>
-            Longest Book Read
-          </p>
-          <div className={styles.flexColumn}>
-            <p>{`${longestBook?.title}`}</p>
-            <p>{`${longestBook?.authors?.[0]}`}</p>
-            <p>{`${longestBook?.pageCount} pages`}</p>
+      <div className={styles.container}>
+        <div className={styles.smallInsights}>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Read Books</p>
+            <p className={styles.text}>{data?.length}</p>
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Longest Book Read</p>
+            <div className={styles.textBlock}>
+              <p>{`${longestBook?.title}`}</p>
+              <p>{`${longestBook?.authors?.[0]}`}</p>
+              <p>{`${longestBook?.pageCount} pages`}</p>
+            </div>
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Owned Books</p>
+            <p className={styles.text}>{ownedBooksCount}</p>
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Favorite Publisher</p>
+            <p className={styles.text}>{favoritePublisher}</p>
           </div>
         </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>Owned Books</p>
-          <p className={styles.flexRow}>{ownedBooksCount}</p>
-        </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>
-            Favorite Publisher
-          </p>
-          <p className={styles.flexRow}>{favoritePublisher}</p>
-        </div>
-      </div>
-      <div className={styles.grid}>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>Top Genres</p>
-          <PieChartGraph data={categoryCounts} />
-        </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>
-            Favorite Authors
-          </p>
-          <HorizontalBarGraph
-            data={authorBooksCounts}
-            labelX="Number of Books"
-            labelY="Author"
-          />
-        </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>Ratings</p>
-          <PieChartGraph data={ratingCounts} />
-        </div>
-        <div className={styles.container}>
-          <p className={`${pacifico.className} ${styles.title}`}>
-            Reading Activity
-          </p>
-          <DotGraph data={monthlyBooksCounts} />
+        <div className={styles.grid}>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Top Genres</p>
+            <PieChartGraph data={categoryCounts} />
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Favorite Authors</p>
+            <HorizontalBarGraph
+              data={authorBooksCounts}
+              labelX="Number of Books"
+              labelY="Author"
+            />
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Ratings</p>
+            <PieChartGraph data={ratingCounts} />
+          </div>
+          <div className={styles.statContainer}>
+            <p className={styles.title}>Reading Activity</p>
+            <DotGraph data={monthlyBooksCounts} />
+          </div>
         </div>
       </div>
     </div>

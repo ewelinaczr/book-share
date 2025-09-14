@@ -6,7 +6,7 @@ export default function BookshelfPage() {
   return (
     <div>
       <BookshelfStats />
-      <AddToBookshelf />
+      {/* <AddToBookshelf /> */}
       <Bookshelf />
     </div>
   );

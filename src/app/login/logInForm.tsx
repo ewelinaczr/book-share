@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useLoginMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
-import { Pacifico } from "next/font/google";
 import { SlKey } from "react-icons/sl";
+import { pacifico } from "../fonts";
 import styles from "./LogInForm.module.css";
 
 import Input from "@/components/inputs/Input";
@@ -18,11 +18,6 @@ type LoginFormInputs = {
   email: string;
   password: string;
 };
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export function LogInForm() {
   const {
