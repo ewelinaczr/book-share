@@ -2,13 +2,8 @@
 import React, { useState } from "react";
 import styles from "./PickUpSpotPanel.module.css";
 import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import { pacifico } from "@/app/fonts";
 import WelcomePanel from "../welcomePanel/WelcomePanel";
-import { Pacifico } from "next/font/google";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 enum Page {
   SPOT_DETAILS = "spotDetails",

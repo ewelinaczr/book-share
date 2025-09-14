@@ -1,11 +1,12 @@
 import AddToBookshelf from "./addToBookshelfPanel/AddToBookshelf";
 import Bookshelf from "./bookshelfPanel/Bookshelf";
-import styles from "./pageStyles.module.css";
+import BookshelfStats from "./stats/BookshelfStats";
 
 export default function BookshelfPage() {
   return (
     <div>
-      <AddToBookshelf />
+      <BookshelfStats />
+      {/* <AddToBookshelf /> */}
       <Bookshelf />
     </div>
   );

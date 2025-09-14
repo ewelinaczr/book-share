@@ -1,11 +1,13 @@
 .container {
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
-  border-left: 6px solid var(--color-brand-secondary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
   margin: 0rem 4rem 4rem 4rem;
   padding: 0 2rem;
   display: flex;
   flex-direction: column;
+  border-left: 6px solid var(--color-brand-secondary);
+  border-bottom-right-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
 }
 
 .header {
@@ -39,9 +41,9 @@
   font-weight: bold;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1150px) {
   .container {
-    margin: 0rem 3rem 3rem 3rem;
+    margin: 0rem 2rem 2rem 2rem;
     padding: 0px;
   }
   .header {

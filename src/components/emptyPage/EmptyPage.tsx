@@ -1,11 +1,6 @@
 import React from "react";
-import { Pacifico } from "next/font/google";
+import { pacifico } from "@/app/fonts";
 import styles from "./EmptyPage.module.css";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 function EmptyPage() {
   return (

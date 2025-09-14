@@ -11,6 +11,7 @@ export interface BookshelfBook {
   own: Boolean;
   rating: Number;
   book: Book; // Full Book object
+  createdAt: string;
 }
 
 export interface AddBookshelfBook {
