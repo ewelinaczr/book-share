@@ -34,6 +34,10 @@ function BookshelfStats() {
   >([]);
 
   useEffect(() => {
+    if (!data || data.length === 0) {
+      return;
+    }
+
     const categoryCount: Record<string, number> = {};
     const ratingCount: Record<string, number> = {};
     const authorCount: Record<string, number> = {};

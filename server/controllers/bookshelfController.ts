@@ -37,10 +37,14 @@ export const addBookToBookshelf = async (
 
     //2. Check if book already exists in user's bookshelf
     const user = await User.findById(userId).populate("bookshelf").lean();
-    if (!user) {
-      res.status(400).json({ status: "error", message: "User not found." });
+    if (!user || !("bookshelf" in user)) {
+      res.status(400).json({
+        status: "error",
+        message: "User not found or bookshelf missing.",
+      });
       return;
     }
+
     const bookExists =
       user.bookshelf &&
       Array.isArray(user.bookshelf) &&
@@ -108,6 +112,14 @@ export const getBooksFromBookshelf = async (
     }
 
     // 2. Filter bookshelf by status if provided
+    if (!user || !("bookshelf" in user)) {
+      res.status(400).json({
+        status: "error",
+        message: "User not found or bookshelf missing.",
+      });
+      return;
+    }
+
     let filteredBookshelf = user.bookshelf || [];
     if (status) {
       filteredBookshelf = filteredBookshelf.filter(
