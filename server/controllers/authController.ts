@@ -116,7 +116,11 @@ export const protect = async (
     const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
       id: string;
     };
-    const user = await User.findById(decoded.id);
+    let user = undefined;
+    user = await User.findOne({ googleId: decoded.id });
+    if (!user) {
+      user = await User.findById(decoded.id);
+    }
     if (!user || !user._id) {
       res.status(401).json({
         status: "error",

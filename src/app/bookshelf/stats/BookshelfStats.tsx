@@ -130,6 +130,14 @@ function BookshelfStats() {
     setOwnedBooksCount(ownedCount);
   }, [data]);
 
+  if (!data || !data.length) {
+    return (
+      <div className={styles.emptyStats}>
+        Add book to the Bookshelf to expore your reading stats
+      </div>
+    );
+  }
+
   return (
     <div className={styles.statsContainer}>
       <Header label="Bookshelf Insights" />
