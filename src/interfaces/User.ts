@@ -9,5 +9,10 @@ export interface User {
   location?: { lat: string; lng: string };
   bookshelf: string[];
   market: string[];
+  googleId?: string;
+  correctPassword?: (
+    candidatePassword: string,
+    userPassword: string
+  ) => Promise<boolean>;
   _id: string;
 }

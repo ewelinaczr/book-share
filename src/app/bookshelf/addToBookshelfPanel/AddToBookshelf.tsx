@@ -6,10 +6,7 @@ import { useForm } from "react-hook-form";
 import { AddBookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { pacifico } from "@/app/fonts";
-import {
-  useAddBookToBookshelfMutation,
-  useGetBookshelfQuery,
-} from "@/api/bookshelfApi";
+import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 
 import Input from "@/components/inputs/Input";
 import Select from "@/components/inputs/Select";
@@ -30,7 +27,6 @@ export default function AddToBookshelf() {
   const [fetchStatus, setFetchStatus] = useState<FetchStatus | undefined>(
     undefined
   );
-  const { data: readBook } = useGetBookshelfQuery({ status: BookStatus.READ });
 
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
     useAddBookToBookshelfMutation();

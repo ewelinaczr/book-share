@@ -1,9 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getSession } from "next-auth/react";
 import type { MarketBook, MarketBookStatus } from "../interfaces/MarketBook";
+
+// Custom baseQuery that injects JWT token into Authorization header
+const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
+  const session = await getSession();
+  const token = session?.token;
+
+  const modifiedArgs = {
+    ...args,
+    headers: {
+      ...(args.headers || {}),
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+
+  const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api/v1/market" });
+  return rawBaseQuery(modifiedArgs, api, extraOptions);
+};
 
 export const marketApi = createApi({
   reducerPath: "marketApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/market" }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ["Market"],
   endpoints: (builder) => ({
     // Get all books from the market (optionally filter by status)

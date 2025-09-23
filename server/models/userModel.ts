@@ -1,20 +1,22 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, models, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { validateEmail } from "../../shared/validators/emailValidator";
 import { validatePassword } from "../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../shared/validators/passwordConfirmValidator";
 
 export interface IUser extends Document {
+  id: string;
   name: string;
   email: string;
   photo?: string;
-  password: string;
-  passwordConfirm: string;
+  password?: string; // optional for Google users
+  passwordConfirm?: string; // optional for Google users
   rating?: number;
   experience?: number;
   location?: { lat: string; lng: string };
   bookshelf: mongoose.Types.ObjectId[];
   market: mongoose.Types.ObjectId[];
+  googleId?: string;
   correctPassword?: (
     candidatePassword: string,
     userPassword: string
@@ -33,32 +35,43 @@ const UserSchema = new Schema<IUser>({
   photo: String,
   password: {
     type: String,
-    required: [true, "Please provide a password"],
+    required: function () {
+      return !this.googleId;
+    },
     minlength: [8, "Password must be at least 8 characters"],
     validate: [
-      validatePassword,
-      "Password must be at least 8 characters and include letters and numbers",
+      {
+        validator: function (val: string) {
+          return this.googleId || validatePassword(val);
+        },
+        message:
+          "Password must be at least 8 characters and include letters and numbers",
+      },
     ],
   },
   passwordConfirm: {
     type: String,
-    required: [true, "Please confirm your password"],
-    select: false, // Do not store or return this field from DB
+    required: function () {
+      return !this.googleId;
+    },
+    select: false,
     validate: {
-      validator: function (this: IUser, val: string) {
-        return confirmPassword(this.password, val);
+      validator: function (this: IUser, val: string): boolean {
+        return this.googleId ? true : confirmPassword(this.password!, val);
       },
       message: "Passwords do not match!",
     },
   },
+  googleId: { type: String },
   rating: { type: Number, min: 0, max: 5, default: null },
   experience: { type: Number, min: 0, max: 100, default: 0 },
   location: {
     type: {
-      lat: { type: String, required: true },
-      lng: { type: String, required: true },
+      lat: { type: String, required: false },
+      lng: { type: String, required: false },
     },
     _id: false,
+    required: false,
   },
   bookshelf: [{ type: mongoose.Schema.Types.ObjectId, ref: "BookshelfBook" }],
   market: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarketBook" }],
@@ -72,11 +85,12 @@ UserSchema.methods.correctPassword = async function (
 };
 
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || !this.password) return next();
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = "";
   next();
 });
 
-const User = mongoose.model<IUser>("User", UserSchema);
+// Prevent OverwriteModelError by checking if model already exists
+const User = models.User || mongoose.model<IUser>("User", UserSchema);
 export default User;

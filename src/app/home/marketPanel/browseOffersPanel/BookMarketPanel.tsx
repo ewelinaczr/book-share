@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { CiStar } from "react-icons/ci";
-import { useGetCurrentUserQuery } from "@/api/userApi";
+import { useSession } from "next-auth/react";
 import { useExchangeMarketBookMutation } from "@/api/marketApi";
 import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
@@ -28,7 +28,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
   const status = book?.status;
   const [message, setMessage] = useState("");
   const [page, setPage] = useState<Page>(Page.BOOK_DETAILS);
-  const { data } = useGetCurrentUserQuery();
+  const { data: session } = useSession();
   const [exchangeMarketBook] = useExchangeMarketBookMutation();
 
   useEffect(() => {
@@ -81,11 +81,8 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
   };
 
   const exchangeBook = () => {
-    if (!data || !book?._id) {
+    if (!session || !book?._id) {
       return;
-    }
-    if (data._id === book.ownerId) {
-      // Can't exchange your own book
     }
     const currentDate = new Date();
     const oneMonthLater = new Date(currentDate);

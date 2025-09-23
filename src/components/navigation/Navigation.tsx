@@ -2,36 +2,30 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { IoIosMenu } from "react-icons/io";
 import { IoCloseCircleSharp } from "react-icons/io5";
-import { useGetCurrentUserQuery, useLogoutMutation } from "@/api/userApi";
 import { abrilFatface, navIconLinks, navLinks } from "./navigationConfig";
+import { signOut, useSession } from "next-auth/react";
 
 import styles from "./Navigation.module.css";
 import Button, { ButtonType } from "../buttons/Button";
 
 export default function Navigation() {
-  const { data, refetch } = useGetCurrentUserQuery();
-  const [logout] = useLogoutMutation();
-  const router = useRouter();
   const [selectedPage, setSelectedPage] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap();
-      await refetch();
+      signOut({ callbackUrl: "/" });
       setIsMenuOpen(false);
-      router.push("/");
       setSelectedPage("Home");
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
-
   const renderButton = () => {
-    return data ? (
+    return session ? (
       <li key="logOutButton" className={styles.buttonLink}>
         <Button buttonType={ButtonType.PRIMARY} onClick={handleLogout}>
           Log out

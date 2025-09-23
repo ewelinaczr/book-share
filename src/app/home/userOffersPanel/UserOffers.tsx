@@ -7,12 +7,19 @@ import {
 } from "@/api/marketApi";
 import { FaBookOpen } from "react-icons/fa6";
 import { MarketBook } from "@/interfaces/MarketBook";
+import { useSession } from "next-auth/react";
 import SmallLabel from "@/components/label/SmallLabel";
 import styles from "./UserOffers.module.css";
 
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
 
 export default function UserOffers() {
+  const { data: session } = useSession();
+  if (!session) {
+    return (
+      <p className={styles.emptyContainer}>Log in to add books to the Market</p>
+    );
+  }
   const {
     data: myBooks,
     isLoading: myBooksLoading,

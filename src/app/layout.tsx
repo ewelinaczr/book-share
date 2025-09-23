@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ReduxProvider from "../store/Provider";
+import { Providers } from "@/providers/Providers";
 import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
@@ -17,10 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ReduxProvider>
+        <Providers>
           <Navigation />
           {children}
-        </ReduxProvider>
+        </Providers>
       </body>
     </html>
   );

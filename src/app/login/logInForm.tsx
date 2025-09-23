@@ -1,13 +1,12 @@
 "use client";
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useLoginMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { SlKey } from "react-icons/sl";
 import { pacifico } from "../fonts";
+import { signIn } from "next-auth/react";
 import styles from "./LogInForm.module.css";
 
 import Input from "@/components/inputs/Input";
@@ -25,18 +24,45 @@ export function LogInForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormInputs>();
+
   const [formError, setFormError] = useState("");
-  const [login] = useLoginMutation();
   const router = useRouter();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    try {
-      await login(data).unwrap();
+    setFormError("");
+
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      setFormError("Invalid email or password");
+    } else {
       router.push("/");
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      setFormError(error?.data?.message || "Login failed. Please try again.");
     }
+  };
+
+  const renderGoogleLoginButton = () => {
+    return (
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        buttonType={ButtonType.SECONDARY}
+        onClick={() => {
+          signIn("google", {
+            callbackUrl: "/",
+            prompt: "select_account",
+          });
+        }}
+      >
+        <div className={styles.googleButton}>
+          <img className={styles.googleIcon} src="/google.png" />
+          Sign in with Google
+        </div>
+      </Button>
+    );
   };
 
   return (
@@ -103,6 +129,7 @@ export function LogInForm() {
             </span>
           </p>
         </form>
+        <div className={styles.googleLogIn}>{renderGoogleLoginButton()}</div>
       </div>
     </div>
   );

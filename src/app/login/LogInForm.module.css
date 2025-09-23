@@ -21,7 +21,7 @@
   margin-top: 0.4rem;
   margin-left: 0.2rem;
   color: var(--color-notification-error);
-  height: 3rem;
+  height: 2rem;
 }
 
 .form {
@@ -30,8 +30,15 @@
   max-width: 40rem;
 }
 
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .redirectText {
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-size: 1.4rem;
   display: flex;
   justify-content: center;
@@ -43,6 +50,22 @@
   padding-bottom: 0.2rem;
   border-bottom: 1px solid black;
   cursor: pointer;
+}
+
+.googleLogIn {
+  margin-top: 2rem;
+}
+
+.googleButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
 }
 
 @media (max-width: 1150px) {

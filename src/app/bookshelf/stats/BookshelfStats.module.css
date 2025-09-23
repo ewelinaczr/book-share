@@ -57,6 +57,14 @@
   font-weight: bold;
 }
 
+.emptyStats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem 0rem;
+  text-align: center;
+}
+
 @media (max-width: 1150px) {
   .statsContainer {
     margin: 2rem 2rem 2rem 2rem;
