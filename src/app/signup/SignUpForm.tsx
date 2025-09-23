@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSignupMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
@@ -32,14 +31,12 @@ export function SignUpForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>();
   const [formError, setFormError] = useState("");
-  const [signup] = useSignupMutation();
   const router = useRouter();
 
   const onSubmit = async (data: SignupFormInputs) => {
     setFormError("");
 
     try {
-      await signup(data).unwrap();
       const loginRes = await signIn("credentials", {
         email: data.email,
         password: data.password,
