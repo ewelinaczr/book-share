@@ -15,11 +15,6 @@ import BookListPanel from "@/components/bookListPanel/BookListPanel";
 
 export default function UserOffers() {
   const { data: session } = useSession();
-  if (!session) {
-    return (
-      <p className={styles.emptyContainer}>Log in to add books to the Market</p>
-    );
-  }
   const {
     data: myBooks,
     isLoading: myBooksLoading,
@@ -102,6 +97,12 @@ export default function UserOffers() {
       </div>
     );
   };
+
+  if (!session) {
+    return (
+      <p className={styles.emptyContainer}>Log in to add books to the Market</p>
+    );
+  }
 
   return (
     <div className={styles.container}>

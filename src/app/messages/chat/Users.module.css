@@ -1,0 +1,28 @@
+.container {
+  min-width: 20rem;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.item {
+  padding: 1rem 1rem;
+  margin-bottom: 0.4rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: var(--color-brand-secondary);
+  padding: 1rem 1rem;
+  margin-bottom: 0.4rem;
+  border-radius: 0.4rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    max-width: calc(100vw - 6rem);
+  }
+}

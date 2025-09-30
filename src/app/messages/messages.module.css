@@ -1,0 +1,15 @@
+.container {
+  margin: 2rem 4rem 2rem 4rem;
+  display: flex;
+  gap: 8rem;
+  justify-content: center;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem;
+    max-width: calc(100vw - 4rem);
+    flex-direction: column;
+    gap: 4rem;
+  }
+}
