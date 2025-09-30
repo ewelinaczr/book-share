@@ -139,6 +139,10 @@
   font-size: 3rem;
 }
 
+.navIconLinkNameSelected {
+  background-color: rgba(255, 229, 180, 0.5);
+}
+
 @media (max-width: 1150px) {
   .navigationBar {
     margin: 0;

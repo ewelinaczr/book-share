@@ -100,8 +100,19 @@ export default function Navigation() {
     return (
       <ul className={styles.navIconLinks}>
         {navIconLinks.map((link) => (
-          <li key={link.name} className={styles.navIconLink}>
-            <Link href={`/${link.path}`} className={styles.round}>
+          <li
+            key={link.name}
+            className={`${styles.navIconLink} ${
+              link.name === selectedPage
+                ? styles.navIconLinkNameSelected
+                : styles.navLinkName
+            }`}
+          >
+            <Link
+              href={`/${link.path}`}
+              className={styles.round}
+              onClick={() => setSelectedPage(link.name)}
+            >
               <div>{link.icon}</div>
             </Link>
           </li>

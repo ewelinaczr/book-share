@@ -1,10 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CiStar } from "react-icons/ci";
 import { useSession } from "next-auth/react";
 import { useExchangeMarketBookMutation } from "@/api/marketApi";
 import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
+import { io, Socket } from "socket.io-client";
+import { useDispatch } from "react-redux";
+import { PrivateMessage } from "@/app/messages/page";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import TextArea from "@/components/textArea/TextArea";
 import Label from "@/components/label/Label";
@@ -28,8 +31,11 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
   const status = book?.status;
   const [message, setMessage] = useState("");
   const [page, setPage] = useState<Page>(Page.BOOK_DETAILS);
-  const { data: session } = useSession();
   const [exchangeMarketBook] = useExchangeMarketBookMutation();
+  const socketRef = useRef<Socket | null>(null);
+  const { data: session } = useSession();
+  const currentUserId = session?.user.id;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (book) {
@@ -37,6 +43,32 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
       setMessage("");
     }
   }, [book]);
+
+  // Initialize socket connection
+  useEffect(() => {
+    socketRef.current = io("http://localhost:4000", {
+      auth: {
+        accessToken: session?.token,
+      },
+    });
+    return () => {
+      socketRef.current?.disconnect();
+    };
+  }, [session]);
+
+  const sendMessage = () => {
+    if (message.trim() && book?.ownerId.toString() && currentUserId) {
+      const newMessage: PrivateMessage = {
+        from: currentUserId,
+        to: book.ownerId.toString(),
+        message: message,
+        timestamp: new Date().toISOString(),
+      };
+
+      socketRef.current?.emit("private message", newMessage);
+      setMessage("");
+    }
+  };
 
   const renderMessageOwnerSection = () => {
     return (
@@ -51,7 +83,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
             placeholder="Type your message here..."
           />
         </div>
-        <Button buttonType={ButtonType.PRIMARY}>
+        <Button buttonType={ButtonType.PRIMARY} onClick={sendMessage}>
           {`Message ${ownerName ?? "Owner"}`}
         </Button>
       </div>
