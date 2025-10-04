@@ -1,5 +1,31 @@
 .container {
-  margin: 2rem 4rem;
+  position: fixed;
+  z-index: 2000;
+  backdrop-filter: blur(0.8rem);
+  background: #e9eaf2cc;
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.containerVisible {
+  visibility: visible;
+}
+
+.containerHidden {
+  visibility: hidden;
+}
+
+.popup {
+  background-color: white;
+  width: fit-content;
+  padding: 6rem;
+  padding-bottom: 4rem;
+  border-radius: 0.4rem;
+  height: fit-content;
+  margin-top: 2rem;
 }
 
 .form {
@@ -16,23 +42,66 @@
 
 .select,
 .button {
-  margin-bottom: 1rem;
   max-width: 30rem;
+  margin-top: 1rem;
 }
 
 .tittleAuthor {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .author {
   margin-top: 2.4rem;
 }
 
+.addOfferButton {
+  width: 6rem;
+  height: 6rem;
+  background-color: var(--color-brand-secondary);
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 3000;
+  border-radius: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: fixed;
+}
+
+.addOfferIcon {
+  color: var(--color-brand-primary);
+  font-size: 3.2rem;
+  margin-top: 0.4rem;
+  font-weight: normal;
+}
+
+.addOfferHover {
+  display: none;
+  position: absolute;
+  right: 110%;
+  background-color: var(--color-brand-secondary);
+  border-radius: 0.4rem;
+  padding: 10px;
+  z-index: 1;
+  width: min-content;
+  white-space: nowrap;
+}
+
+.addOfferButton:hover .addOfferHover {
+  display: block;
+}
+
 @media (max-width: 850px) {
   .container {
-    margin: 1rem 2rem;
+    padding: 1rem;
+  }
+  .popup {
+    padding: 4rem;
+    padding-bottom: 1rem;
   }
   .tittleAuthor {
     flex-direction: column;
@@ -57,5 +126,6 @@
   .button {
     margin-bottom: 1rem;
     max-width: none;
+    width: 100%;
   }
 }

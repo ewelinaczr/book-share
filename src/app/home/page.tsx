@@ -7,10 +7,10 @@ import MarketStats from "./stats/MarketStats";
 export default async function Home() {
   return (
     <>
+      <AddBookOffer />
       <MarketStats />
       <Market />
-      {/* <AddBookOffer />
-      <PickUpPoints /> */}
+      {/*   <PickUpPoints /> */}
       <UserOffers />
     </>
   );
