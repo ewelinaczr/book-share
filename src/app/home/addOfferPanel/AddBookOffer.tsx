@@ -6,15 +6,12 @@ import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
 import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
 import styles from "./AddBookOffer.module.css";
-import { IoAddSharp } from "react-icons/io5";
-
-import { IoCloseOutline } from "react-icons/io5";
 
 import Select from "@/components/inputs/Select";
 import Input from "@/components/inputs/Input";
 import Button, { ButtonType } from "@/components/buttons/Button";
-import Header from "@/components/headers/Header";
 import Notification from "@/components/notification/Notification";
+import Popup from "@/components/popup/Popup";
 
 interface Status {
   status: "success" | "error";
@@ -68,102 +65,77 @@ export default function AddBookOffer() {
       setStatus(err.message);
     }
   };
-  const [popupOpened, setPopupOpened] = useState<boolean>(false);
 
   return (
-    <>
-      <div
-        className={styles.addOfferButton}
-        onClick={() => setPopupOpened((prev) => !prev)}
-      >
-        <span className={styles.addOfferIcon}>
-          {popupOpened ? <IoCloseOutline /> : <IoAddSharp />}
-        </span>
-        <div className={styles.addOfferHover}>
-          {popupOpened ? "Close" : "Add Book Offer to the Market"}
+    <Popup title="Add Book Offer to the Market">
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <div className={`${styles.inputContainer} ${styles.select}`}>
+          <Select
+            label="Offer type"
+            options={[
+              {
+                value: MarketBookStatus.BORROW,
+                label: "Borrow book",
+              },
+              { value: MarketBookStatus.CLAIM, label: "Give book back" },
+              { value: MarketBookStatus.TRADE, label: "Trade" },
+            ]}
+            {...register("status")}
+            error={errors.status?.message}
+          />
         </div>
-      </div>
-
-      <div
-        className={`${
-          popupOpened ? styles.containerVisible : styles.containerHidden
-        } ${styles.container}`}
-        onClick={() => {
-          if (popupOpened) setPopupOpened(false);
-        }}
-      >
-        <div className={styles.popup}>
-          <Header label={"Add Book Offer to the Market"} />
-          <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-            <div className={`${styles.inputContainer} ${styles.select}`}>
-              <Select
-                label="Offer type"
-                options={[
-                  {
-                    value: MarketBookStatus.BORROW,
-                    label: "Borrow book",
-                  },
-                  { value: MarketBookStatus.CLAIM, label: "Give book back" },
-                  { value: MarketBookStatus.TRADE, label: "Trade" },
-                ]}
-                {...register("status")}
-                error={errors.status?.message}
-              />
-            </div>
-            <div className={styles.tittleAuthor}>
-              <div className={styles.inputContainer}>
-                <Input
-                  id="isbn"
-                  className={styles.input}
-                  label="Find book by ISBN"
-                  type="text"
-                  placeholder="ISBN 10 or 13"
-                  {...register("isbn")}
-                  error={errors.isbn?.message}
-                />
-              </div>
-              <div className={styles.inputContainer}>
-                <Input
-                  id="title"
-                  className={styles.input}
-                  label="Find book by Title and Author name"
-                  placeholder="Book title"
-                  type="text"
-                  {...register("title")}
-                  error={errors.isbn?.message}
-                />
-              </div>
-              <div className={`${styles.inputContainer} ${styles.author}`}>
-                <Input
-                  id="author"
-                  className={styles.input}
-                  placeholder="Author name"
-                  type="text"
-                  {...register("author")}
-                  error={errors.isbn?.message}
-                />
-              </div>
-            </div>
-            <div className={styles.button}>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                buttonType={ButtonType.PRIMARY}
-                customStyles={{ marginBottom: "1rem" }}
-              >
-                {isSubmitting || isLoading
-                  ? "Adding book..."
-                  : "Add book to Market"}
-              </Button>
-            </div>
-          </form>
-          <div className={styles.notification}>
-            {status?.message ? (
-              <Notification message={status?.message} status={status?.status} />
-            ) : null}
+        <div className={styles.tittleAuthor}>
+          <div className={styles.inputContainer}>
+            <Input
+              id="isbn"
+              className={styles.input}
+              label="Find book by ISBN"
+              type="text"
+              placeholder="ISBN 10 or 13"
+              {...register("isbn")}
+              error={errors.isbn?.message}
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <Input
+              id="title"
+              className={styles.input}
+              label="Find book by Title and Author name"
+              placeholder="Book title"
+              type="text"
+              {...register("title")}
+              error={errors.isbn?.message}
+            />
+          </div>
+          <div className={`${styles.inputContainer} ${styles.author}`}>
+            <Input
+              id="author"
+              className={styles.input}
+              placeholder="Author name"
+              type="text"
+              {...register("author")}
+              error={errors.isbn?.message}
+            />
           </div>
         </div>
+        <div className={styles.button}>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            buttonType={ButtonType.PRIMARY}
+            customStyles={{ marginBottom: "1rem" }}
+          >
+            {isSubmitting || isLoading
+              ? "Adding book..."
+              : "Add book to Market"}
+          </Button>
+        </div>
+      </form>
+      <div className={styles.notification}>
+        {status?.message ? (
+          <Notification message={status?.message} status={status?.status} />
+        ) : null}
       </div>
-    </>
+    </Popup>
   );
 }

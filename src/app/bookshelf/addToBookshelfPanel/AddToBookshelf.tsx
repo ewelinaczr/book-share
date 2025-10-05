@@ -5,12 +5,12 @@ import styles from "./AddToBookshelf.module.css";
 import { useForm } from "react-hook-form";
 import { AddBookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
-import { pacifico } from "@/app/fonts";
 import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 
 import Input from "@/components/inputs/Input";
 import Select from "@/components/inputs/Select";
 import Button, { ButtonType } from "@/components/buttons/Button";
+import Popup from "@/components/popup/Popup";
 
 interface FetchStatus {
   success: boolean;
@@ -27,7 +27,6 @@ export default function AddToBookshelf() {
   const [fetchStatus, setFetchStatus] = useState<FetchStatus | undefined>(
     undefined
   );
-
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
     useAddBookToBookshelfMutation();
 
@@ -70,12 +69,9 @@ export default function AddToBookshelf() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.formContainer}>
-        <p className={`${pacifico.className} ${styles.formTitle}`}>
-          Add Book to the Bookshelf
-        </p>
-        <form onSubmit={handleSubmit(onSubmit)}>
+    <Popup title="Add Book to your Bookshelf">
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <div>
           <Select
             label="Status"
             options={[
@@ -95,6 +91,8 @@ export default function AddToBookshelf() {
             {...register("own")}
             error={errors.own?.message}
           />
+        </div>
+        <div>
           <Select
             label="Rating"
             options={[
@@ -125,16 +123,16 @@ export default function AddToBookshelf() {
               ? "Adding book..."
               : "Add book to Your Bookshelf"}
           </Button>
-        </form>
-        <div
-          className={`${styles.message} ${
-            !fetchStatus?.success || formError ? styles.error : styles.success
-          }`}
-        >
-          {formError ? formError : ""}
-          {fetchStatus ? fetchStatus.message : ""}
         </div>
+      </form>
+      <div
+        className={`${styles.message} ${
+          !fetchStatus?.success || formError ? styles.error : styles.success
+        }`}
+      >
+        {formError ? formError : ""}
+        {fetchStatus ? fetchStatus.message : ""}
       </div>
-    </div>
+    </Popup>
   );
 }

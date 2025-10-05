@@ -15,8 +15,8 @@ export default function BookshelfPage() {
   }
   return (
     <div>
+      <AddToBookshelf />
       <BookshelfStats />
-      {/* <AddToBookshelf /> */}
       <Bookshelf />
     </div>
   );
