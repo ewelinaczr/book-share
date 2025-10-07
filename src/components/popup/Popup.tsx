@@ -16,9 +16,12 @@ export default function Popup({
 }) {
   const [popupOpened, setPopupOpened] = useState<boolean>(false);
 
-  return (
-    <>
+  const renderOpenCloseButton = () => {
+    return (
       <button
+        type="button"
+        aria-label={popupOpened ? "Close popup" : "Open popup"}
+        aria-expanded={popupOpened}
         className={styles.openButton}
         onClick={() => setPopupOpened((prev) => !prev)}
       >
@@ -26,19 +29,32 @@ export default function Popup({
           {popupOpened ? <IoCloseOutline /> : <IoAddSharp />}
         </span>
         <div className={styles.buttonText}>
-          {popupOpened ? "Close" : "Add Book Offer to the Market"}
+          {popupOpened ? "Close" : `${title}`}
         </div>
       </button>
-      <div
+    );
+  };
+
+  return (
+    <>
+      {renderOpenCloseButton()}
+      <article
         className={`${
           popupOpened ? styles.containerVisible : styles.containerHidden
         } ${styles.container}`}
       >
-        <div className={styles.popup}>
-          <Header label={title} />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={`popup-title-${title.replace(/\s+/g, "-")}`}
+          className={styles.popup}
+        >
+          <div id={`popup-title-${title.replace(/\s+/g, "-")}`}>
+            <Header label={title} />
+          </div>
           {children}
         </div>
-      </div>
+      </article>
     </>
   );
 }

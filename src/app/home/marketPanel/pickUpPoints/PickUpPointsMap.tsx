@@ -5,10 +5,10 @@ import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import { MapWrapper } from "../map/MapWrapper";
 import { PickUpSpotPanel } from "../pickUpSpotPanel/PickUpSpotPanel";
 import { pickUpSpots } from "../map/PickUpSpotsMock";
-import styles from "./PickUpPoints.module.css";
+import styles from "./PickUpPointsMap.module.css";
 import Header from "@/components/headers/Header";
 
-function PickUpPoints() {
+function PickUpPointsMap() {
   const [displayedPickUpSpot, setDisplayedPickUpSpot] =
     useState<PickUpSpot | null>(null);
 
@@ -29,4 +29,4 @@ function PickUpPoints() {
   );
 }
 
-export default PickUpPoints;
+export default PickUpPointsMap;

@@ -5,6 +5,7 @@
   outline: 6px solid var(--white);
   height: 15rem;
   position: relative;
+  border: none;
 }
 
 .selected {
@@ -23,7 +24,13 @@
   justify-content: center;
 }
 
+.imageWrapper {
+  position: relative;
+  width: 10rem; /* 160px */
+  height: 15rem; /* maintain 2:3 ratio */
+}
+
 .placeholderText {
   font-weight: bold;
-  color: #ff7575;
+  color: #184e7e;
 }

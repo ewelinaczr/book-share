@@ -82,6 +82,8 @@
 .hamburgerMenu {
   font-size: 3rem;
   display: none;
+  background-color: transparent;
+  border: none;
 }
 
 .mobileContainer {

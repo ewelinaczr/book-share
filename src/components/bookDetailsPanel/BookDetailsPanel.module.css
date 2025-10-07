@@ -8,11 +8,15 @@
   display: flex;
   flex-direction: row;
   gap: 10rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .titleAuthor {
   display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  white-space: nowrap;
 }
 
 .hidden {
@@ -56,18 +60,23 @@
   gap: 0.2rem;
 }
 
-.ownContainer {
+.buttonContainer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   justify-content: center;
+  align-self: flex-end;
+  margin-top: 1rem;
+  margin-right: 2rem;
 }
 
 .myBookInfo {
   display: flex;
-  align-items: center;
   gap: 2rem;
+  width: 100%;
+  justify-content: flex-end;
+  margin-right: 2rem;
 }
 
 .titleContainer {
@@ -130,5 +139,8 @@
   }
   .titleAuthor {
     flex-direction: column;
+  }
+  .separator {
+    display: none;
   }
 }

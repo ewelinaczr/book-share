@@ -102,6 +102,8 @@
 
 .button {
   width: fit-content;
+  align-self: flex-end;
+  margin-top: 1rem;
 }
 
 .notRated {

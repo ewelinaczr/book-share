@@ -66,18 +66,19 @@ export default function MarketGrid({
             return null;
           }
           return (
-            <ListItem<MarketBook>
-              key={i.book._id}
-              item={i}
-              selectItem={selectItem}
-              selected={selectedItemId === i.book._id}
-              getTitle={(i) => i.book.volumeInfo.title}
-              getImageSrc={(i) =>
-                i.book.volumeInfo.imageLinks?.smallThumbnail ??
-                i.book.volumeInfo.imageLinks?.thumbnail ??
-                null
-              }
-            />
+            <li key={i.book._id}>
+              <ListItem<MarketBook>
+                item={i}
+                selectItem={selectItem}
+                selected={selectedItemId === i.book._id}
+                getTitle={(i) => i.book.volumeInfo.title}
+                getImageSrc={(i) =>
+                  i.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  i.book.volumeInfo.imageLinks?.thumbnail ??
+                  null
+                }
+              />
+            </li>
           );
         })}
       </ul>

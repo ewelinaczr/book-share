@@ -96,6 +96,7 @@ export default function Chat({
         <div className={styles.buttons}>
           <Button
             type="submit"
+            ariaLabel="Attach file to message"
             buttonType={ButtonType.SECONDARY}
             onClick={sendMessage}
             customStyles={{ width: "15rem" }}
@@ -109,6 +110,7 @@ export default function Chat({
           </Button>
           <Button
             type="submit"
+            ariaLabel="Send message"
             buttonType={ButtonType.PRIMARY}
             onClick={sendMessage}
             customStyles={{ width: "15rem" }}

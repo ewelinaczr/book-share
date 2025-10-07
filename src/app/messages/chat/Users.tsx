@@ -13,26 +13,29 @@ function Users({
   setSelectedChatUserId,
 }: UsersProps) {
   if (!chatUsers) {
-    return <div>No conversations available</div>;
+    return <div aria-live="polite">No conversations available</div>;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.title}>Messages</div>
-      {chatUsers.map((user) => (
-        <div
-          key={user._id}
-          className={
-            user.googleId === selectedChatUserId ||
-            user._id === selectedChatUserId
-              ? styles.selected
-              : styles.item
-          }
-          onClick={() => setSelectedChatUserId(user.googleId ?? user._id)}
-        >
-          {user.name}
-        </div>
-      ))}
+      {chatUsers.map((user) => {
+        const isSelected =
+          user.googleId === selectedChatUserId ||
+          user._id === selectedChatUserId;
+        return (
+          <button
+            key={user._id}
+            type="button"
+            className={isSelected ? styles.selected : styles.item}
+            onClick={() => setSelectedChatUserId(user.googleId ?? user._id)}
+            aria-pressed={isSelected}
+            aria-label={`Open conversation with ${user.name}`}
+          >
+            {user.name}
+          </button>
+        );
+      })}
     </div>
   );
 }

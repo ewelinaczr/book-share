@@ -12,6 +12,7 @@ import styles from "./LogInForm.module.css";
 import Input from "@/components/inputs/Input";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Image from "next/image";
+import ButtonPlain from "@/components/buttons/ButtonPlain";
 
 type LoginFormInputs = {
   email: string;
@@ -48,6 +49,7 @@ export function LogInForm() {
     return (
       <Button
         type="submit"
+        ariaLabel="Sign in with Google"
         disabled={isSubmitting}
         buttonType={ButtonType.SECONDARY}
         onClick={() => {
@@ -58,7 +60,11 @@ export function LogInForm() {
         }}
       >
         <div className={styles.googleButton}>
-          <img className={styles.googleIcon} src="/google.png" />
+          <img
+            className={styles.googleIcon}
+            src="/google.png"
+            alt="Google logo"
+          />
           Sign in with Google
         </div>
       </Button>
@@ -70,7 +76,7 @@ export function LogInForm() {
       <div className={styles.imageContainer}>
         <Image
           src={"/reading1.jpg"}
-          alt={"reading graphic"}
+          alt={"Illustration of people reading books"}
           width={410}
           height={410}
         />
@@ -113,6 +119,7 @@ export function LogInForm() {
           <div className={styles.buttonContainer}>
             <Button
               type="submit"
+              ariaLabel="Sign in"
               disabled={isSubmitting}
               buttonType={ButtonType.PRIMARY}
             >
@@ -121,12 +128,11 @@ export function LogInForm() {
           </div>
           <p className={styles.redirectText}>
             Don't have an account?
-            <span
-              className={styles.redirect}
+            <ButtonPlain
+              text="Sign Up"
+              ariaLabel="Sign up"
               onClick={() => router.push("/signup")}
-            >
-              Sign Up
-            </span>
+            />
           </p>
         </form>
         <div className={styles.googleLogIn}>{renderGoogleLoginButton()}</div>

@@ -116,6 +116,7 @@ export default function AddToBookshelf() {
 
           <Button
             type="submit"
+            ariaLabel="Add book to Your Bookshelf"
             disabled={isSubmitting}
             buttonType={ButtonType.PRIMARY}
           >

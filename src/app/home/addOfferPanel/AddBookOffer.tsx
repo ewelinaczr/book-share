@@ -121,6 +121,7 @@ export default function AddBookOffer() {
         <div className={styles.button}>
           <Button
             type="submit"
+            ariaLabel="Add book to Market"
             disabled={isSubmitting}
             buttonType={ButtonType.PRIMARY}
             customStyles={{ marginBottom: "1rem" }}

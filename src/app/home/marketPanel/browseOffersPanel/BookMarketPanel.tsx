@@ -8,11 +8,14 @@ import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
 import { io, Socket } from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { PrivateMessage } from "@/app/messages/page";
+import { CgDetailsMore } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import TextArea from "@/components/textArea/TextArea";
 import Label from "@/components/label/Label";
 import WelcomePanel from "../welcomePanel/WelcomePanel";
 import styles from "./BookMarketPanel.module.css";
+import SmallButton from "@/components/buttons/SmallButton";
 
 export interface BookMarketPanelProps {
   book: MarketBook | null;
@@ -83,7 +86,12 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
             placeholder="Type your message here..."
           />
         </div>
-        <Button buttonType={ButtonType.PRIMARY} onClick={sendMessage}>
+        <Button
+          type="submit"
+          ariaLabel="Send message to book owner"
+          buttonType={ButtonType.PRIMARY}
+          onClick={sendMessage}
+        >
           {`Message ${ownerName ?? "Owner"}`}
         </Button>
       </div>
@@ -105,7 +113,12 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         <div className={styles.info}>
           <p className={styles.infoLabel}>{text}</p>
         </div>
-        <Button buttonType={ButtonType.PRIMARY} onClick={() => exchangeBook()}>
+        <Button
+          type="submit"
+          ariaLabel="Exchange book"
+          buttonType={ButtonType.PRIMARY}
+          onClick={() => exchangeBook()}
+        >
           {`${offer} Book`}
         </Button>
       </div>
@@ -136,7 +149,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
       categories,
     } = volumeInfo;
     return (
-      <div className={styles.pageContainer}>
+      <section className={styles.pageContainer}>
         <div className={styles.label}>
           <Label label={status} />
         </div>
@@ -167,21 +180,24 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         <div className={styles.info}>
           <p className={styles.infoLabel}>description</p>
           <p className={styles.description}>{description}</p>
-          <span
-            className={styles.showMore}
-            onClick={() => setPage(Page.DESCRIPTION)}
-          >
-            Show more
-          </span>
+          <div className={styles.button}>
+            <SmallButton
+              text="Show more"
+              icon={<CgDetailsMore />}
+              ariaLabel="Show more description"
+              onClick={() => setPage(Page.DESCRIPTION)}
+              customStyles={{ width: "11rem" }}
+            />
+          </div>
         </div>
-      </div>
+      </section>
     );
   };
 
   const renderActionPage = (volumeInfo: GoogleBooksVolumeInfo) => {
     const { title, authors } = volumeInfo;
     return (
-      <div className={styles.pageContainer}>
+      <section className={styles.pageContainer}>
         <div className={styles.label}>
           <Label label={status} />
         </div>
@@ -193,14 +209,14 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         </div>
         {renderOfferActionSection()}
         {renderMessageOwnerSection()}
-      </div>
+      </section>
     );
   };
 
   const renderDescriptionPage = (volumeInfo: GoogleBooksVolumeInfo) => {
     const { description } = volumeInfo;
     return (
-      <div className={styles.pageContainer}>
+      <section className={styles.pageContainer}>
         <div className={styles.info}>
           <div className={styles.infoLabel}>description</div>
           <p
@@ -208,14 +224,17 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
           >
             {description}
           </p>
-          <span
-            className={styles.showMore}
-            onClick={() => setPage(Page.BOOK_DETAILS)}
-          >
-            Go back
-          </span>
+          <div className={styles.button}>
+            <SmallButton
+              text="Go back"
+              icon={<IoIosArrowBack />}
+              ariaLabel="Go back to book details"
+              onClick={() => setPage(Page.BOOK_DETAILS)}
+              customStyles={{ width: "11rem" }}
+            />
+          </div>
         </div>
-      </div>
+      </section>
     );
   };
 
@@ -236,6 +255,8 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         {renderPageContent(volumeInfo)}
         <div className={styles.actionContainer}>
           <Button
+            type="submit"
+            ariaLabel="Switch between Book Details and Exchange Book"
             buttonType={ButtonType.PRIMARY}
             onClick={() =>
               setPage(

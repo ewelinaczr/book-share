@@ -1,0 +1,19 @@
+.button {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-brand-secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  width: fit-content;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+}

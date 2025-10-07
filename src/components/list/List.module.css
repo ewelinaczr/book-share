@@ -13,7 +13,9 @@
   scroll-behavior: smooth;
   padding: 15px;
   scrollbar-width: none;
-  width: 100%;
+  width: calc(100% - 15px);
+  max-width: calc(100% - 15px);
+  overflow: hidden;
 }
 
 .listContainer::-webkit-scrollbar {
@@ -25,10 +27,23 @@
   border: none;
   font-size: 20px;
   z-index: 1;
-  color: var(--gray);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 2rem;
+  min-width: 2.6rem;
+  min-height: 2.6rem;
+  border-radius: 1.3rem;
+  background-color: var(--color-brand-secondary);
+  margin: 0.4rem;
+}
+
+.arrowRight {
+  margin-left: 15px;
+}
+
+.arrowPlaceholder {
+  min-width: 2.6rem;
+  min-height: 2.6rem;
+  background-color: transparent;
 }

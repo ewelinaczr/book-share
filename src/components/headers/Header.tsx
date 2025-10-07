@@ -6,7 +6,7 @@ interface HeaderProps {
 }
 
 function Header({ label }: HeaderProps) {
-  return <p className={styles.title}>{label}</p>;
+  return <h2 className={styles.title}>{label}</h2>;
 }
 
 export default Header;

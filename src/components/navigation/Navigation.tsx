@@ -27,7 +27,12 @@ export default function Navigation() {
   const renderButton = () => {
     return session ? (
       <li key="logOutButton" className={styles.buttonLink}>
-        <Button buttonType={ButtonType.PRIMARY} onClick={handleLogout}>
+        <Button
+          type="button"
+          ariaLabel="Log out"
+          buttonType={ButtonType.PRIMARY}
+          onClick={handleLogout}
+        >
           Log out
         </Button>
       </li>
@@ -36,6 +41,8 @@ export default function Navigation() {
         <li key="signUpButton" className={styles.buttonLink}>
           <Link href="/signup">
             <Button
+              type="button"
+              ariaLabel="Sign up"
               buttonType={ButtonType.SECONDARY}
               customStyles={{ minWidth: "10rem" }}
               onClick={() => setSelectedPage("SignUp")}
@@ -47,6 +54,8 @@ export default function Navigation() {
         <li key="logInButton" className={styles.buttonLink}>
           <Link href="/login">
             <Button
+              type="button"
+              ariaLabel="Log in"
               buttonType={ButtonType.PRIMARY}
               customStyles={{ minWidth: "10rem" }}
               onClick={() => setSelectedPage("LogIn")}
@@ -126,6 +135,8 @@ export default function Navigation() {
     return (
       <li key={"closeButton"} className={styles.mobileCloseButtonWrapper}>
         <button
+          type="button"
+          aria-label="Close navigation menu"
           className={styles.mobileCloseButton}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -150,10 +161,14 @@ export default function Navigation() {
   const renderMobileNavigation = () => {
     return (
       <div className={styles.hamburgerMenu}>
-        <IoIosMenu
+        <button
+          type="button"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={styles.hamburgerMenu}
-        />
+        >
+          <IoIosMenu />
+        </button>
         {isMenuOpen ? (
           <div className={styles.mobileContainer}>
             <div

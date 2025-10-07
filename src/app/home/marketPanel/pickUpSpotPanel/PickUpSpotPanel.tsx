@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import styles from "./PickUpSpotPanel.module.css";
 import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import { pacifico } from "@/app/fonts";
+import { CgDetailsMore } from "react-icons/cg";
+import { IoIosArrowBack } from "react-icons/io";
 import WelcomePanel from "../welcomePanel/WelcomePanel";
+import SmallButton from "@/components/buttons/SmallButton";
 
 enum Page {
   SPOT_DETAILS = "spotDetails",
@@ -46,12 +49,16 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
             ))}
           </div>
         </div>
-        <span
-          className={styles.showMore}
-          onClick={() => setPage(Page.DESCRIPTION)}
-        >
-          Show more
-        </span>
+        <div className={styles.button}>
+          <SmallButton
+            text="Show more"
+            ariaLabel="Show more details"
+            icon={<CgDetailsMore />}
+            aria-expanded={page === Page.DESCRIPTION}
+            onClick={() => setPage(Page.DESCRIPTION)}
+            customStyles={{ width: "11rem" }}
+          />
+        </div>
       </div>
     );
   };
@@ -76,12 +83,16 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
               </div>
             ))}
           </div>
-          <span
-            className={styles.showMore}
-            onClick={() => setPage(Page.SPOT_DETAILS)}
-          >
-            Go back
-          </span>
+          <div className={styles.button}>
+            <SmallButton
+              text="Go back"
+              ariaLabel="Go back to spot details"
+              icon={<IoIosArrowBack />}
+              aria-expanded={page === Page.SPOT_DETAILS}
+              onClick={() => setPage(Page.SPOT_DETAILS)}
+              customStyles={{ width: "11rem" }}
+            />
+          </div>
         </div>
       </div>
     );

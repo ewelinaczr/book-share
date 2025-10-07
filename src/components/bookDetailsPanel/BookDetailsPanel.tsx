@@ -2,11 +2,11 @@
 
 import { ReactNode, useState } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
-import { IoIosArrowDown } from "react-icons/io";
 import { CiStar } from "react-icons/ci";
 import styles from "./BookDetailsPanel.module.css";
 
 import { BookMetaData } from "../bookListPanel/BookListPanel";
+import SmallButton from "../buttons/SmallButton";
 
 type BookDetailsProps<T> = {
   selectedItem: T;
@@ -22,26 +22,10 @@ export default function BookDetails<T>({
   const [showMore, setShowMore] = useState(false);
   const data = getBookData(selectedItem);
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.titleContainer}>
-        <div className={styles.titleAuthor}>
-          <p className={styles.title}>{data.title}</p>
-          {data.authors?.length ? `${data.authors[0]}` : null}
-        </div>
-        <div className={styles.myBookInfo}>
-          {children}
-          <div className={styles.ownContainer}>
-            <div
-              onClick={() => setShowMore(!showMore)}
-              className={styles.ownContainer}
-            >
-              <FaCircleInfo /> Show details <IoIosArrowDown />
-            </div>
-          </div>
-        </div>
-      </div>
+  const renderBookDetails = () => {
+    return (
       <div
+        id="book-details"
         className={`${styles.detailsContainer} ${
           showMore ? styles.visible : styles.hidden
         }`}
@@ -112,6 +96,29 @@ export default function BookDetails<T>({
             {data.description}
           </p>
         </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.titleContainer}>
+        <div className={styles.titleAuthor}>
+          <p className={styles.title}>{data.title}</p>
+          <p className={styles.separator}>-</p>
+          {data.authors?.length ? `${data.authors[0]}` : null}
+        </div>
+        <div className={styles.myBookInfo}>{children}</div>
+      </div>
+      {renderBookDetails()}
+      <div className={styles.buttonContainer}>
+        <SmallButton
+          ariaLabel={showMore ? "Hide details" : "Show details"}
+          text={showMore ? "Hide details" : "Show details"}
+          icon={<FaCircleInfo />}
+          onClick={() => setShowMore(!showMore)}
+          customStyles={{ width: "12rem" }}
+        />
       </div>
     </div>
   );

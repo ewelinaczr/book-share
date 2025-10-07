@@ -12,6 +12,7 @@
   margin-bottom: 0.4rem;
   border-radius: 0.4rem;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .selected {
@@ -19,6 +20,7 @@
   padding: 1rem 1rem;
   margin-bottom: 0.4rem;
   border-radius: 0.4rem;
+  border: none;
 }
 
 @media (max-width: 1150px) {

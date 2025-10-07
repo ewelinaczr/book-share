@@ -78,7 +78,7 @@ export function Market() {
   };
 
   return (
-    <div className={styles.marketPanelContainer}>
+    <section className={styles.marketPanelContainer}>
       <Header label={"Explore books in the Market"} />
       <Search
         books={data}
@@ -96,6 +96,6 @@ export function Market() {
         />
         {displayedBook ? <BookMarketPanel book={displayedBook} /> : null}
       </div>
-    </div>
+    </section>
   );
 }

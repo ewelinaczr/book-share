@@ -15,6 +15,7 @@ import styles from "../login/LogInForm.module.css";
 import Input from "@/components/inputs/Input";
 import Image from "next/image";
 import Button, { ButtonType } from "@/components/buttons/Button";
+import ButtonPlain from "@/components/buttons/ButtonPlain";
 
 type SignupFormInputs = {
   name: string;
@@ -60,12 +61,17 @@ export function SignUpForm() {
     return (
       <Button
         type="submit"
+        ariaLabel="Sign in with Google"
         disabled={isSubmitting}
         buttonType={ButtonType.SECONDARY}
         onClick={() => signIn("google")}
       >
         <div className={styles.googleButton}>
-          <img className={styles.googleIcon} src="/google.png"></img>
+          <img
+            className={styles.googleIcon}
+            src="/google.png"
+            alt="Google logo"
+          />
           Sign in with Google
         </div>
       </Button>
@@ -77,7 +83,7 @@ export function SignUpForm() {
       <div className={styles.imageContainer}>
         <Image
           src={"/reading2.jpg"}
-          alt={"reading graphic"}
+          alt={"Illustration of people reading books"}
           width={410}
           height={410}
         />
@@ -142,6 +148,7 @@ export function SignUpForm() {
           <div className={styles.buttonContainer}>
             <Button
               type="submit"
+              ariaLabel="Sign up"
               disabled={isSubmitting}
               buttonType={ButtonType.PRIMARY}
             >
@@ -150,12 +157,11 @@ export function SignUpForm() {
           </div>
           <p className={styles.redirectText}>
             Already have an account?
-            <span
-              className={styles.redirect}
+            <ButtonPlain
+              text="Log In"
+              ariaLabel="Log In"
               onClick={() => router.push("/login")}
-            >
-              Log In
-            </span>
+            />
           </p>
         </form>
         <div className={styles.googleLogIn}> {renderGoogleLoginButton()}</div>

@@ -25,7 +25,7 @@ interface MapProps {
 // });
 
 function Map({ userPosition, selectItem, zoom = 14 }: MapProps) {
-  const FitBoundsToMarkers = ({ positions }) => {
+  const FitBoundsToMarkers = ({ positions }: { positions: LatLngTuple[] }) => {
     const map = useMap();
 
     useEffect(() => {
@@ -55,7 +55,19 @@ function Map({ userPosition, selectItem, zoom = 14 }: MapProps) {
       </Marker> */}
 
       {pickUpSpots.map((spot: PickUpSpot, index) => (
-        <div onClick={() => selectItem(spot)} key={index}>
+        <button
+          key={index}
+          type="button"
+          onClick={() => selectItem(spot)}
+          aria-label={`Select pickup spot ${spot.name}`}
+          style={{
+            background: "transparent",
+            border: "none",
+            padding: 0,
+            margin: 0,
+            display: "contents",
+          }}
+        >
           <CustomMarker
             key={index}
             icon={spot.icon}
@@ -63,7 +75,7 @@ function Map({ userPosition, selectItem, zoom = 14 }: MapProps) {
             name={spot.name}
             color={spot.color}
           />
-        </div>
+        </button>
       ))}
       <FitBoundsToMarkers
         positions={pickUpSpots.map((spot) => spot.location)}

@@ -108,6 +108,12 @@
   margin-bottom: 2rem;
 }
 
+.button {
+  width: fit-content;
+  align-self: flex-end;
+  margin-top: 1rem;
+}
+
 @media (max-width: 1150px) {
   .container {
     margin: 0;
