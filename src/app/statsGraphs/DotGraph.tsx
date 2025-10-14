@@ -49,7 +49,7 @@ function DotGraph({
               value: labelX,
               position: "insideBottom",
               offset: -15,
-              style: { fill: "#000000" },
+              style: { fill: "var(--text-color)" },
             }}
           />
           <YAxis
@@ -61,7 +61,7 @@ function DotGraph({
               angle: -90,
               position: "insideLeft",
               offset: 15,
-              style: { fill: "#000000", textAnchor: "middle" },
+              style: { fill: "var(--text-color)", textAnchor: "middle" },
             }}
             allowDecimals={false}
           />

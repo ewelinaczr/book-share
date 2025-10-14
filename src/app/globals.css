@@ -2,19 +2,87 @@
   --font-geist-sans: "Geist", sans-serif;
   --font-geist-mono: "Geist Mono", monospace;
   --white: #ffffff;
+  --white-90: #ffffffd0;
   --black: #171717;
   --gray: #3d3d3d;
   --light-gray: #c4c3c3;
   /* Main colors */
   --color-brand-primary: #feba45;
   --color-brand-secondary: #ffe5b4;
-  --color-brand-purple: #885df5;
+  --color-brand-purple: #a145c9;
   --color-brand-green: #45cb85;
-
+  --color-brand-dark: #080a1a;
+  /* Background colors */
+  --bg-color: var(--white);
+  --bg-color-1: #ffe5b480;
+  --bg-color-2: var(--white);
+  --bg-color-accent: var(--color-brand-secondary);
+  --bg-color-chat: var(--color-brand-primary);
+  --bg-color-chat-1: var(--color-brand-primary);
+  --bg-color-nav: var(--white);
+  --bg-color-footer: var(--color-brand-secondary);
+  --bg-chat-gradient: var(--color-brand-secondary);
+  --bg-scrollbar: var(--color-brand-dark);
+  /* Text colors */
+  --text-color: var(--black);
+  --text-color-1: var(--white);
+  /* UI specific variables */
+  --popup-backdrop: #e9eaf2cc;
+  --popup-bg: var(--white);
+  --button-bg: var(--black);
+  --button-text: var(--white);
+  --placeholder-bg: var(--white);
+  --accent-blue: #184e7e;
+  /* Chart palette variables */
+  --chart-1: #feba45;
+  --chart-2: #b55e06ff;
+  --chart-3: #fbcadfff;
+  --chart-4: #005248;
+  --chart-5: #d272fc;
+  --chart-6: #541b05ff;
+  --chart-7: #184e7e;
+  --chart-8: #bd96c1ff;
+  --chart-9: #00afb9;
+  --chart-10: #ff6f61;
+  --chart-11: #6b5b95;
+  --chart-12: #d65076;
+  --fallback-color: #cccccc;
   /* Notification */
   --color-notification-success: #56ca5a;
   --color-notification-error: #ff4419;
   --color-notification-alert: #ff4419;
+  /* Buttons */
+  --color-button-primary: var(--black);
+  --color-button-primary-hover: var(--color-brand-secondary);
+  --color-button-secondary: var(--white);
+  --color-button-secondary-hover: var(--color-brand-secondary);
+}
+
+:root[data-theme="dark"] {
+  --gray: #b4b2b2;
+  --text-color: var(--white-90);
+  --text-color-1: var(--black);
+  --bg-color: #202233;
+  --bg-color-1: #ffffff21;
+  --bg-color-2: #ffffff21;
+  --bg-color-nav: var(--color-brand-dark);
+  --bg-color-footer: var(--color-brand-dark);
+  --popup-backdrop: #171a30cc;
+  --bg-scrollbar: var(--color-brand-dark);
+  --popup-bg: var(--color-brand-dark);
+  --bg-color-chat: var(--color-brand-purple);
+  --bg-color-chat-1: var(--color-brand-dark);
+  --bg-color-accent: var(--color-brand-purple);
+  --bg-chat-gradient: linear-gradient(
+    135deg,
+    #ffffff21 0%,
+    var(--color-brand-dark) 100%
+  );
+
+  --color-button-primary: var(--color-brand-secondary);
+  --color-button-primary-hover: var(--color-brand-dark);
+  --color-button-secondary: var(--color-brand-dark);
+  --color-button-secondary-hover: var(--color-brand-secondary);
 }
 
 html {
@@ -27,8 +95,8 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-size: 1.6rem;
-  color: var(--black);
-  background: var(--white);
+  color: var(--text-color);
+  background: var(--bg-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: flex;

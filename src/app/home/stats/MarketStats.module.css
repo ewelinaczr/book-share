@@ -7,8 +7,8 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   flex: 1;
-  background-color: #ffe5b480;
-  border-left: 6px solid var(--color-brand-secondary);
+  background-color: var(--bg-color-1);
+  border-left: 6px solid var(--bg-color-accent);
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
   padding: 1rem;
@@ -43,7 +43,7 @@
   align-items: center;
   border-radius: 1rem;
   flex-direction: column;
-  background-color: rgb(255, 255, 255, 0.4);
+  /* background-color: rgb(255, 255, 255, 0.4); */
 }
 
 .title {

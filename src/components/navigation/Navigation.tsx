@@ -6,6 +6,9 @@ import { IoIosMenu } from "react-icons/io";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { abrilFatface, navIconLinks, navLinks } from "./navigationConfig";
 import { signOut, useSession } from "next-auth/react";
+import { MdOutlineLightMode } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { useTheme } from "@/providers/ThemeProvider";
 
 import styles from "./Navigation.module.css";
 import Button, { ButtonType } from "../buttons/Button";
@@ -14,6 +17,7 @@ export default function Navigation() {
   const [selectedPage, setSelectedPage] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -30,7 +34,7 @@ export default function Navigation() {
         <Button
           type="button"
           ariaLabel="Log out"
-          buttonType={ButtonType.PRIMARY}
+          buttonType={ButtonType.SECONDARY}
           onClick={handleLogout}
         >
           Log out
@@ -126,6 +130,11 @@ export default function Navigation() {
             </Link>
           </li>
         ))}
+        <li key="theme" className={`${styles.navIconLink}`}>
+          <button onClick={() => toggleTheme()}>
+            {theme === "dark" ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}
+          </button>
+        </li>
         {renderButton()}
       </ul>
     );

@@ -28,14 +28,14 @@
 
 .own {
   text-align: right;
-  background-color: var(--color-brand-primary);
+  background-color: var(--bg-color-chat);
   margin-left: auto;
   margin-right: 0;
 }
 
 .received {
   text-align: left;
-  background-color: #ececec;
+  background-color: var(--bg-color-chat-1);
   margin-left: 0;
   margin-right: auto;
   margin-bottom: 1rem;
@@ -70,6 +70,24 @@
   display: flex;
   height: 1.6rem;
   width: 1.6rem;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: var(--bg-scrollbar);
+  border-radius: 6px;
+}
+
+/* Scrollbar track background */
+::-webkit-scrollbar-track {
+  /* background-color: #f1f1f1; */
+  border: 2px solid #ffffff21;
+  border-radius: 2rem;
 }
 
 @media (max-width: 1150px) {

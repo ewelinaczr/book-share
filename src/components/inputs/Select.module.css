@@ -15,7 +15,8 @@
   border-radius: 4px;
   -webkit-appearance: none;
   -moz-appearance: none;
-  color: var(--gray);
+  background-color: var(--bg-color-1);
+  color: var(--text-color);
 }
 
 .select:focus {

@@ -31,7 +31,7 @@ function HorizontalBarGraph({ data, labelX, labelY }: HorizontalBarGraphProps) {
       y={y}
       dy={4}
       textAnchor="end"
-      fill="black"
+      fill="var(--text-color)"
       style={{
         whiteSpace: "nowrap",
         overflow: "hidden",
@@ -72,7 +72,7 @@ function HorizontalBarGraph({ data, labelX, labelY }: HorizontalBarGraphProps) {
               value: labelX,
               position: "insideBottom",
               offset: -10,
-              style: { fill: "#000000", textAnchor: "middle" },
+              style: { fill: "var(--text-color)", textAnchor: "middle" },
             }}
           />
           <YAxis
@@ -84,7 +84,7 @@ function HorizontalBarGraph({ data, labelX, labelY }: HorizontalBarGraphProps) {
               angle: -90,
               position: "insideLeft",
               offset: -90,
-              style: { fill: "#000000", textAnchor: "middle" },
+              style: { fill: "var(--text-color)", textAnchor: "middle" },
             }}
           />
           <Bar dataKey="value" barSize={20}>

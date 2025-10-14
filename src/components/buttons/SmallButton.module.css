@@ -5,7 +5,8 @@
   gap: 0.6rem;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-brand-secondary);
+  background-color: var(--color-button-secondary);
+  color: var(--white);
   padding: 0.2rem 0.6rem;
   border-radius: 0.4rem;
   width: fit-content;

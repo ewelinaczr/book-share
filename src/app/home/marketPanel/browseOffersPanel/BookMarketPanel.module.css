@@ -1,5 +1,5 @@
 .container {
-  background-color: var(--white);
+  background-color: var(--bg-color-2);
   max-height: 53rem;
   margin-top: 2rem;
   z-index: 1000;
@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: end;
-  border-right: 6px solid var(--color-brand-secondary);
+  border-right: 6px solid var(--bg-color-accent);
 }
 
 .pageContainer {
@@ -75,7 +75,7 @@
 }
 
 .scrollableElement::-webkit-scrollbar-track {
-  background: #fafafa;
+  background: var(--placeholder-bg);
   border-radius: 4px;
 }
 

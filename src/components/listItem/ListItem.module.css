@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  outline: 6px solid var(--white);
+  outline: 2px solid var(--white);
   height: 15rem;
   position: relative;
   border: none;
 }
 
 .selected {
-  outline: 6px solid #ffe5b4;
+  outline: 6px solid var(--color-brand-secondary);
   height: 15rem;
   transform: scale(1.1);
   transition: transform 0.2s linear;
@@ -18,7 +18,7 @@
 .placeholder {
   width: 10rem;
   height: 15rem;
-  background-color: #fafafa;
+  background-color: var(--placeholder-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,5 +32,5 @@
 
 .placeholderText {
   font-weight: bold;
-  color: #184e7e;
+  color: var(--accent-blue);
 }

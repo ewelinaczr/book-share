@@ -103,7 +103,7 @@
 }
 
 .scrollableElement::-webkit-scrollbar-track {
-  background: #fafafa;
+  background: var(--placeholder-bg);
   border-radius: 4px;
 }
 

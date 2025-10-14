@@ -1,14 +1,15 @@
 .container {
-  margin: 2rem 4rem 2rem 4rem;
+  padding: 2rem 4rem 2rem 4rem;
   display: flex;
   gap: 8rem;
   justify-content: center;
+  background: var(--bg-chat-gradient);
 }
 
 @media (max-width: 1150px) {
   .container {
-    margin: 2rem 2rem;
-    max-width: calc(100vw - 4rem);
+    padding: 2rem 2rem;
+    max-width: 100vw;
     flex-direction: column;
     gap: 4rem;
   }

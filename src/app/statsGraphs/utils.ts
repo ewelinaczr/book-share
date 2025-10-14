@@ -1,15 +1,15 @@
 export const rankedColors = [
-  "#feba45",
-  "#B55E06ff",
-  "#FBCADFff",
-  "#005248",
-  "#d272fc",
-  "#541B05ff",
-  "#184E7E",
-  "#BD96C1ff",
-  "#00afb9",
-  "#FF6F61",
-  "#6B5B95",
-  "#D65076",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
+  "var(--chart-7)",
+  "var(--chart-8)",
+  "var(--chart-9)",
+  "var(--chart-10)",
+  "var(--chart-11)",
+  "var(--chart-12)",
 ];
-export const fallbackColor = "#CCCCCC";
+export const fallbackColor = "var(--fallback-color)";

@@ -20,8 +20,9 @@
   border-radius: 4px;
   -webkit-appearance: none;
   -moz-appearance: none;
-  color: var(--gray);
   padding-left: 3.2rem;
+  color: var(----text-color);
+  background-color: var(--bg-color-1);
 }
 
 .icon {
