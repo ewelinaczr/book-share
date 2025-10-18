@@ -23,10 +23,11 @@ const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
   return (
     <div className={styles.pagination}>
       <button
+        type="button"
+        aria-label="Previous page"
         className={styles.button}
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
-        aria-label="Previous page"
       >
         <IoIosArrowBack />
       </button>
@@ -43,10 +44,11 @@ const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
       ))}
 
       <button
+        type="button"
+        aria-label="Next page"
         className={styles.button}
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        aria-label="Next page"
       >
         <IoIosArrowForward />
       </button>

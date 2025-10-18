@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   gap: 4rem;
+  height: calc(100vh - 6rem);
 }
 
 .formContainer {
@@ -42,6 +43,7 @@
   font-size: 1.4rem;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .redirect {

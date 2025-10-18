@@ -55,7 +55,7 @@ export const PieChartGraphCustomLabel = (props: any) => {
       <text
         x={textX}
         y={textY}
-        fill="#000000"
+        fill="var(--text-color)"
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="1.2rem"

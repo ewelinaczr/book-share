@@ -6,14 +6,19 @@ import { IoIosMenu } from "react-icons/io";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { abrilFatface, navIconLinks, navLinks } from "./navigationConfig";
 import { signOut, useSession } from "next-auth/react";
+import { MdOutlineLightMode } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { useTheme } from "@/providers/ThemeProvider";
 
 import styles from "./Navigation.module.css";
 import Button, { ButtonType } from "../buttons/Button";
+import ThemeButton from "../themeButton/ThemeButton";
 
 export default function Navigation() {
   const [selectedPage, setSelectedPage] = useState("Home");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -27,7 +32,12 @@ export default function Navigation() {
   const renderButton = () => {
     return session ? (
       <li key="logOutButton" className={styles.buttonLink}>
-        <Button buttonType={ButtonType.PRIMARY} onClick={handleLogout}>
+        <Button
+          type="button"
+          ariaLabel="Log out"
+          buttonType={ButtonType.SECONDARY}
+          onClick={handleLogout}
+        >
           Log out
         </Button>
       </li>
@@ -36,6 +46,8 @@ export default function Navigation() {
         <li key="signUpButton" className={styles.buttonLink}>
           <Link href="/signup">
             <Button
+              type="button"
+              ariaLabel="Sign up"
               buttonType={ButtonType.SECONDARY}
               customStyles={{ minWidth: "10rem" }}
               onClick={() => setSelectedPage("SignUp")}
@@ -47,6 +59,8 @@ export default function Navigation() {
         <li key="logInButton" className={styles.buttonLink}>
           <Link href="/login">
             <Button
+              type="button"
+              ariaLabel="Log in"
               buttonType={ButtonType.PRIMARY}
               customStyles={{ minWidth: "10rem" }}
               onClick={() => setSelectedPage("LogIn")}
@@ -100,12 +114,26 @@ export default function Navigation() {
     return (
       <ul className={styles.navIconLinks}>
         {navIconLinks.map((link) => (
-          <li key={link.name} className={styles.navIconLink}>
-            <Link href={`/${link.path}`} className={styles.round}>
+          <li
+            key={link.name}
+            className={`${styles.navIconLink} ${
+              link.name === selectedPage
+                ? styles.navIconLinkNameSelected
+                : styles.navLinkName
+            }`}
+          >
+            <Link
+              href={`/${link.path}`}
+              className={styles.round}
+              onClick={() => setSelectedPage(link.name)}
+            >
               <div>{link.icon}</div>
             </Link>
           </li>
         ))}
+        <li key="theme" className={`${styles.navIconLink}`}>
+          <ThemeButton theme={theme} toggleTheme={toggleTheme} />
+        </li>
         {renderButton()}
       </ul>
     );
@@ -115,6 +143,8 @@ export default function Navigation() {
     return (
       <li key={"closeButton"} className={styles.mobileCloseButtonWrapper}>
         <button
+          type="button"
+          aria-label="Close navigation menu"
           className={styles.mobileCloseButton}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -139,10 +169,14 @@ export default function Navigation() {
   const renderMobileNavigation = () => {
     return (
       <div className={styles.hamburgerMenu}>
-        <IoIosMenu
+        <button
+          type="button"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={styles.hamburgerMenu}
-        />
+        >
+          <IoIosMenu />
+        </button>
         {isMenuOpen ? (
           <div className={styles.mobileContainer}>
             <div
@@ -152,6 +186,9 @@ export default function Navigation() {
             <ul className={styles.mobileNavIconLinks}>
               {renderMobileNavCloseButton()}
               {renderMobileNavItems()}
+              <li key="theme" className={`${styles.navIconLink}`}>
+                <ThemeButton theme={theme} toggleTheme={toggleTheme} />
+              </li>
               {renderButton()}
             </ul>
           </div>

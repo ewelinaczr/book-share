@@ -15,11 +15,6 @@ import BookListPanel from "@/components/bookListPanel/BookListPanel";
 
 export default function UserOffers() {
   const { data: session } = useSession();
-  if (!session) {
-    return (
-      <p className={styles.emptyContainer}>Log in to add books to the Market</p>
-    );
-  }
   const {
     data: myBooks,
     isLoading: myBooksLoading,
@@ -103,56 +98,68 @@ export default function UserOffers() {
     );
   };
 
+  if (!session) {
+    return (
+      <p className={styles.emptyContainer}>Log in to add books to the Market</p>
+    );
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles.listContainer}>
+    <section className={styles.container}>
+      <ul className={styles.listContainer}>
         {myBooks ? (
-          <BookListPanel<MarketBook>
-            title="My Market Offers"
-            books={myBooks}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-            renderLabel={(i: MarketBook) => renderStatusLabel(i)}
-            renderFooter={(i: MarketBook) => renderOfferTypeFooter(i)}
-          />
+          <li>
+            <BookListPanel<MarketBook>
+              title="My Market Offers"
+              books={myBooks}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+              renderLabel={(i: MarketBook) => renderStatusLabel(i)}
+              renderFooter={(i: MarketBook) => renderOfferTypeFooter(i)}
+            />
+          </li>
         ) : null}
         {borrowedBooks ? (
-          <BookListPanel<MarketBook>
-            title="Borrowed Books"
-            books={borrowedBooks}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-            renderLabel={(i: MarketBook) => renderProgressLabel(i)}
-            renderFooter={(i: MarketBook) => renderMessageOwnerFooter(i)}
-          />
+          <li>
+            <BookListPanel<MarketBook>
+              title="Borrowed Books"
+              books={borrowedBooks}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+              renderLabel={(i: MarketBook) => renderProgressLabel(i)}
+              renderFooter={(i: MarketBook) => renderMessageOwnerFooter(i)}
+            />
+          </li>
         ) : null}
         {borrowedFromMeBooks ? (
-          <BookListPanel<MarketBook>
-            title="Books borowed from Me"
-            books={borrowedFromMeBooks}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-          />
+          <li>
+            <BookListPanel<MarketBook>
+              title="Books borowed from Me"
+              books={borrowedFromMeBooks}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+            />
+          </li>
         ) : null}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }

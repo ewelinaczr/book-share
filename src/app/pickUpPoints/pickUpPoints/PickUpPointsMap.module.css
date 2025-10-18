@@ -12,7 +12,7 @@
 
 @media (max-width: 1150px) {
   .panelContainer {
-    margin: 2rem 2rem 5rem 2rem;
+    margin: 0;
   }
   .mapContainer {
     flex-direction: column;

@@ -1,0 +1,14 @@
+.container {
+  background-color: var(--bg-color-footer);
+  min-height: 6rem;
+  display: flex;
+  align-items: center;
+  position: static;
+}
+
+.name {
+  margin-left: 4rem;
+  font-family: Abril Fatface, Abril Fatface Fallback;
+  font-style: normal;
+  font-weight: 400;
+}

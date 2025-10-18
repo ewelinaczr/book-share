@@ -8,7 +8,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: end;
-  border-right: 6px solid var(--color-brand-secondary);
+  border-right: 6px solid var(--bg-color-accent);
 }
 
 .pageContainer {
@@ -65,7 +65,7 @@
 }
 
 .scrollableElement::-webkit-scrollbar-track {
-  background: #fafafa;
+  background: var(--placeholder-bg);
   border-radius: 4px;
 }
 
@@ -108,10 +108,16 @@
   margin-bottom: 2rem;
 }
 
+.button {
+  width: fit-content;
+  align-self: flex-end;
+  margin-top: 1rem;
+}
+
 @media (max-width: 1150px) {
   .container {
     margin: 0;
-    padding: 2rem 2rem;
+    padding: 2rem;
     height: 50rem;
   }
   .description {

@@ -42,52 +42,58 @@ export default function Bookshelf() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.listContainer}>
+    <section className={styles.container}>
+      <ul className={styles.listContainer}>
         {readingBooks ? (
-          <BookListPanel<BookshelfBook>
-            title="Currently reading"
-            books={readingBooks}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-          />
+          <li>
+            <BookListPanel<BookshelfBook>
+              title="Currently reading"
+              books={readingBooks}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+            />
+          </li>
         ) : null}
         {wantToReadBooks ? (
-          <BookListPanel<BookshelfBook>
-            title="Want to read"
-            books={wantToReadBooks}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-          />
+          <li>
+            <BookListPanel<BookshelfBook>
+              title="Want to read"
+              books={wantToReadBooks}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+            />
+          </li>
         ) : null}
         {readBook ? (
-          <BookListPanel<BookshelfBook>
-            title="Read"
-            books={readBook}
-            getData={(item) => ({
-              ...item.book.volumeInfo,
-              id: item.book._id ?? "",
-              imageSrc:
-                item.book.volumeInfo.imageLinks?.smallThumbnail ??
-                item.book.volumeInfo.imageLinks?.thumbnail ??
-                null,
-            })}
-            renderFooter={(i: BookshelfBook) => renderRatingFooter(i)}
-          />
+          <li>
+            <BookListPanel<BookshelfBook>
+              title="Read"
+              books={readBook}
+              getData={(item) => ({
+                ...item.book.volumeInfo,
+                id: item.book._id ?? "",
+                imageSrc:
+                  item.book.volumeInfo.imageLinks?.smallThumbnail ??
+                  item.book.volumeInfo.imageLinks?.thumbnail ??
+                  null,
+              })}
+              renderFooter={(i: BookshelfBook) => renderRatingFooter(i)}
+            />
+          </li>
         ) : null}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }

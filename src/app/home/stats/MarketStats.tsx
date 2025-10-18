@@ -36,19 +36,19 @@ function MarketStats() {
   }, [data]);
 
   return (
-    <div className={styles.statsContainer}>
+    <section className={styles.statsContainer}>
       <Header label="Market Insights" />
       <div className={styles.grid}>
-        <div className={styles.container}>
-          <p className={styles.title}>Top Offers Genres</p>
-          <PieChartGraph data={categoryCounts} outerRadius={80} height={300} />
-        </div>
-        <div className={styles.container}>
-          <p className={styles.title}>Offers Status</p>
+        <article className={styles.container}>
+          <h2 className={styles.title}>Top Offers Genres</h2>
+          <PieChartGraph data={categoryCounts} outerRadius={80} />
+        </article>
+        <article className={styles.container}>
+          <h2 className={styles.title}>Offers Status</h2>
           <PieChartGraph data={statusCounts} />
-        </div>
+        </article>
       </div>
-    </div>
+    </section>
   );
 }
 

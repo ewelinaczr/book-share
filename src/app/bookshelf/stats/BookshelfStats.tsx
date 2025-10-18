@@ -139,55 +139,55 @@ function BookshelfStats() {
   }
 
   return (
-    <div className={styles.statsContainer}>
+    <section className={styles.statsContainer}>
       <Header label="Bookshelf Insights" />
       <div className={styles.container}>
         <div className={styles.smallInsights}>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Read Books</p>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Read Books</h2>
             <p className={styles.text}>{data?.length}</p>
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Longest Book Read</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Longest Book Read</h2>
             <div className={styles.textBlock}>
               <p>{`${longestBook?.title}`}</p>
               <p>{`${longestBook?.authors?.[0]}`}</p>
               <p>{`${longestBook?.pageCount} pages`}</p>
             </div>
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Owned Books</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Owned Books</h2>
             <p className={styles.text}>{ownedBooksCount}</p>
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Favorite Publisher</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Favorite Publisher</h2>
             <p className={styles.text}>{favoritePublisher}</p>
-          </div>
+          </article>
         </div>
         <div className={styles.grid}>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Top Genres</p>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Top Genres</h2>
             <PieChartGraph data={categoryCounts} />
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Favorite Authors</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Favorite Authors</h2>
             <HorizontalBarGraph
               data={authorBooksCounts}
               labelX="Number of Books"
               labelY="Author"
             />
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Ratings</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Ratings</h2>
             <PieChartGraph data={ratingCounts} />
-          </div>
-          <div className={styles.statContainer}>
-            <p className={styles.title}>Reading Activity</p>
+          </article>
+          <article className={styles.statContainer}>
+            <h2 className={styles.title}>Reading Activity</h2>
             <DotGraph data={monthlyBooksCounts} />
-          </div>
+          </article>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

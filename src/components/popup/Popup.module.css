@@ -1,0 +1,86 @@
+.container {
+  position: fixed;
+  top: 6rem;
+  z-index: 2000;
+  backdrop-filter: blur(0.8rem);
+  background: var(--popup-backdrop);
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.containerVisible {
+  visibility: visible;
+}
+
+.containerHidden {
+  visibility: hidden;
+}
+
+.popup {
+  background-color: var(--popup-bg);
+  width: fit-content;
+  padding: 6rem;
+  padding-bottom: 4rem;
+  border-radius: 0.4rem;
+  height: fit-content;
+  margin-top: 2rem;
+}
+
+.openButton {
+  width: 6rem;
+  height: 6rem;
+  background-color: var(--color-button-primary);
+  color: var(--black);
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 3000;
+  border-radius: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.buttonIcon {
+  color: var(--text-color-1);
+  font-size: 3.2rem;
+  margin-top: 0.4rem;
+  font-weight: normal;
+}
+
+.buttonText {
+  display: none;
+  position: absolute;
+  right: 110%;
+  background-color: var(--color-brand-secondary);
+  border-radius: 0.4rem;
+  padding: 10px;
+  z-index: 1;
+  width: min-content;
+  white-space: nowrap;
+}
+
+.openButton:hover .buttonText {
+  display: block;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    padding: 1rem;
+  }
+  .popup {
+    padding: 4rem;
+    padding-bottom: 1rem;
+  }
+  .form {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: start;
+    width: 100%;
+  }
+}

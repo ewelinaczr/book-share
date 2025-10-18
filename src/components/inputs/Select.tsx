@@ -2,7 +2,7 @@ import React, { forwardRef, SelectHTMLAttributes } from "react";
 import styles from "./Select.module.css";
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label: string;
+  label?: string;
   error?: string;
   options: { value: string | number; label: string }[];
   customStyles?: React.CSSProperties;

@@ -7,7 +7,7 @@ export const navLinks = [
   { name: "Home", path: "home" },
   { name: "My Bookshelf", path: "bookshelf" },
   { name: "Browse", path: "browse" },
-  { name: "Recommendations", path: "recommendations" },
+  { name: "Pick Up Points", path: "pickUpPoints" },
 ];
 export const navIconLinks = [
   {

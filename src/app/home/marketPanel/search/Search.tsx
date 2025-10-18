@@ -2,6 +2,7 @@ import { CiSearch } from "react-icons/ci";
 import { popularBookGenres } from "./searchConfig";
 import { MarketBook } from "@/interfaces/MarketBook";
 import Button, { ButtonType } from "@/components/buttons/Button";
+import { SlArrowDown } from "react-icons/sl";
 import Input from "@/components/inputs/Input";
 import styles from "./Search.module.css";
 
@@ -23,6 +24,8 @@ function Search({
   const renderClearButton = () => {
     return (
       <Button
+        type="button"
+        ariaLabel="Search clear button"
         buttonType={ButtonType.SECONDARY}
         customStyles={{ maxWidth: "10rem" }}
         onClick={() => {
@@ -47,27 +50,28 @@ function Search({
       />
     );
   };
-
   const renderGenres = () => {
     return (
-      <div className={styles.genresContainer}>
-        {popularBookGenres.map((genre, index) => {
-          const booksByGenreCount = books?.filter((b) =>
-            b.book?.volumeInfo.categories?.includes(genre)
-          ).length;
-          return (
-            <button
-              key={genre}
-              onClick={() => setSearchCategory(genre)}
-              className={`${styles.genre} ${
-                searchCategory === genre && styles.selected
-              }`}
-            >
-              {genre}
-              {index ? ` (${booksByGenreCount})` : ` (${books?.length})`}
-            </button>
-          );
-        })}
+      <div className={styles.selectContainer}>
+        <SlArrowDown className={styles.icon} />
+        <select
+          aria-label="Select book genre"
+          value={searchCategory}
+          className={styles.select}
+          onChange={(e) => setSearchCategory(e.target.value)}
+        >
+          {popularBookGenres.map((genre, index) => {
+            const booksByGenreCount = books?.filter((b) =>
+              b.book?.volumeInfo.categories?.includes(genre)
+            ).length;
+            return (
+              <option value={genre} key={genre}>
+                {genre}
+                {index ? ` (${booksByGenreCount})` : ` (${books?.length})`}
+              </option>
+            );
+          })}
+        </select>
       </div>
     );
   };
@@ -76,9 +80,9 @@ function Search({
     <>
       <div className={styles.inputContainer}>
         {renderSearchInput()}
+        {renderGenres()}
         {renderClearButton()}
       </div>
-      {renderGenres()}
     </>
   );
 }

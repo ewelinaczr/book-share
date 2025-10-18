@@ -9,7 +9,7 @@ interface ListProps<T> {
 
 function List<T>({ items, renderItem }: ListProps<T>) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const [showArrows, setShowArrows] = useState<boolean>(false);
   const [listWidth, setListWidth] = useState<number>(0);
 
@@ -38,27 +38,35 @@ function List<T>({ items, renderItem }: ListProps<T>) {
   return (
     <div className={styles.scrollWrapper} ref={scrollRef}>
       {showArrows ? (
-        <button onClick={scrollLeft} className={styles.arrow}>
+        <button
+          type="button"
+          aria-label="Show previous page"
+          onClick={scrollLeft}
+          className={styles.arrow}
+        >
           <IoIosArrowBack />
         </button>
       ) : (
-        <div className={styles.arrow} />
+        <div className={styles.arrowPlaceholder} />
       )}
-      <div
-        className={styles.listContainer}
-        ref={listRef}
-        style={{ width: `${listWidth}px` }}
-      >
+      <ul className={styles.listContainer} ref={listRef} role="list">
         {items.map((item, index) => (
-          <div key={index}>{renderItem(item)}</div>
+          <li key={index} role="listitem">
+            {renderItem(item)}
+          </li>
         ))}
-      </div>
+      </ul>
       {showArrows ? (
-        <button onClick={scrollRight} className={styles.arrow}>
+        <button
+          type="button"
+          aria-label="Show next page"
+          onClick={scrollRight}
+          className={`${styles.arrow} ${styles.arrowRight}`}
+        >
           <IoIosArrowForward />
         </button>
       ) : (
-        <div className={styles.arrow} />
+        <div className={`${styles.arrowPlaceholder} ${styles.arrowRight}`} />
       )}
     </div>
   );

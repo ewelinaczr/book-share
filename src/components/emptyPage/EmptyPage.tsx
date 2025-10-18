@@ -4,9 +4,9 @@ import styles from "./EmptyPage.module.css";
 
 function EmptyPage() {
   return (
-    <p className={`${pacifico.className} ${styles.formTitle}`}>
+    <h2 className={`${pacifico.className} ${styles.formTitle}`}>
       Oops! This chapter is still being written...
-    </p>
+    </h2>
   );
 }
 

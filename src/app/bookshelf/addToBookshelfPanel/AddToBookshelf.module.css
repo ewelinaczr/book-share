@@ -1,20 +1,3 @@
-.container {
-  display: flex;
-  justify-content: space-around;
-  margin: 3rem 4rem;
-}
-
-.formContainer {
-  background-color: white;
-}
-
-.formTitle {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .message {
   height: 2rem;
   margin-top: 1rem;
@@ -31,8 +14,15 @@
 }
 
 @media (max-width: 1150px) {
-  .formContainer {
-    margin: 3rem 2rem;
+  .tittleAuthor {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  .inputs {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: start;
     width: 100%;
   }
 }

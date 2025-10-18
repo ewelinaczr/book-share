@@ -24,7 +24,11 @@ const Notification: React.FC<NotificationProps> = ({ message, status }) => {
       ? styles.notificationSuccess
       : styles.notificationError;
 
-  return <div className={notificationClass}>{message}</div>;
+  return (
+    <div className={notificationClass} role="status" aria-live="polite">
+      {message}
+    </div>
+  );
 };
 
 export default Notification;

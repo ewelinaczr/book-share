@@ -14,10 +14,10 @@ export default function BookshelfPage() {
     );
   }
   return (
-    <div>
+    <main>
+      <AddToBookshelf />
       <BookshelfStats />
-      {/* <AddToBookshelf /> */}
       <Bookshelf />
-    </div>
+    </main>
   );
 }

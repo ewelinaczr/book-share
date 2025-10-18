@@ -8,8 +8,9 @@ export enum ButtonType {
 
 interface CustomButtonProps {
   children: React.ReactNode;
+  ariaLabel: string;
+  type: "button" | "submit" | "reset";
   onClick?: () => void;
-  type?: "button" | "submit" | "reset";
   disabled?: boolean;
   buttonType?: ButtonType;
   customStyles?: React.CSSProperties;
@@ -22,10 +23,12 @@ export default function Button({
   disabled = false,
   customStyles,
   buttonType,
+  ariaLabel,
 }: CustomButtonProps) {
   return (
     <button
       type={type}
+      aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
       className={`${
