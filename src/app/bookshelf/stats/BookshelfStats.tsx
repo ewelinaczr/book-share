@@ -34,6 +34,10 @@ function BookshelfStats() {
   >([]);
 
   useEffect(() => {
+    if (!data || data.length === 0) {
+      return;
+    }
+
     const categoryCount: Record<string, number> = {};
     const ratingCount: Record<string, number> = {};
     const authorCount: Record<string, number> = {};
@@ -125,6 +129,14 @@ function BookshelfStats() {
     setFavoritePublisher(favPublisher);
     setOwnedBooksCount(ownedCount);
   }, [data]);
+
+  if (!data || !data.length) {
+    return (
+      <div className={styles.emptyStats}>
+        Add book to the Bookshelf to expore your reading stats
+      </div>
+    );
+  }
 
   return (
     <div className={styles.statsContainer}>

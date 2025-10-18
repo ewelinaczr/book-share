@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useSignupMutation } from "@/api/userApi";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
 import { SlKey } from "react-icons/sl";
 import { FaRegUser } from "react-icons/fa6";
 import { pacifico } from "../fonts";
+import { signIn } from "next-auth/react";
 import styles from "../login/LogInForm.module.css";
 
 import Input from "@/components/inputs/Input";
@@ -31,20 +31,46 @@ export function SignUpForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>();
   const [formError, setFormError] = useState("");
-  const [signup] = useSignupMutation();
   const router = useRouter();
 
   const onSubmit = async (data: SignupFormInputs) => {
+    setFormError("");
+
     try {
-      await signup(data).unwrap();
-      router.push("/");
-    } catch (error: any) {
-      console.error("Signup failed:", error);
-      setFormError(error?.data?.message || "Signup failed. Please try again.");
+      const loginRes = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (loginRes?.error) {
+        setFormError("Account created, but login failed. Try manually.");
+      } else {
+        router.push("/");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+      setFormError("Something went wrong. Please try again.");
     }
   };
 
   const password = watch("password");
+
+  const renderGoogleLoginButton = () => {
+    return (
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        buttonType={ButtonType.SECONDARY}
+        onClick={() => signIn("google")}
+      >
+        <div className={styles.googleButton}>
+          <img className={styles.googleIcon} src="/google.png"></img>
+          Sign in with Google
+        </div>
+      </Button>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -132,6 +158,7 @@ export function SignUpForm() {
             </span>
           </p>
         </form>
+        <div className={styles.googleLogIn}> {renderGoogleLoginButton()}</div>
       </div>
     </div>
   );

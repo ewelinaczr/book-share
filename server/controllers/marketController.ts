@@ -40,6 +40,13 @@ export const addBookToMarket = async (
       res.status(400).json({ status: "error", message: "User not found." });
       return;
     }
+    if (!user || !("market" in user)) {
+      res.status(400).json({
+        status: "error",
+        message: "User not found or market missing.",
+      });
+      return;
+    }
     const bookExists =
       user.market &&
       Array.isArray(user.market) &&
@@ -102,6 +109,14 @@ export const getUserBooksFromMarket = async (
       res.status(404).json({
         status: "error",
         message: "User not found",
+      });
+      return;
+    }
+
+    if (!user || !("market" in user)) {
+      res.status(400).json({
+        status: "error",
+        message: "User not found or market missing.",
       });
       return;
     }

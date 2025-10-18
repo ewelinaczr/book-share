@@ -104,33 +104,31 @@ export const protect = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    let token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res.status(401).json({
         status: "error",
-        message: "You are not logged in! Please log in to get access.",
+        message: "No token provided. Please log in.",
       });
       return;
     }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
       id: string;
     };
-    const user = await User.findById(decoded.id);
+    let user = undefined;
+    user = await User.findOne({ googleId: decoded.id });
+    if (!user) {
+      user = await User.findById(decoded.id);
+    }
     if (!user || !user._id) {
       res.status(401).json({
         status: "error",
-        message: "The user belonging to this token no longer exists.",
+        message: "User not found or no longer exists.",
       });
       return;
     }
+    // Attach user ID to request
     req.user = { _id: user._id.toString() };
     res.locals.user = user;
     next();
@@ -151,7 +149,8 @@ export const isLoggedIn = async (
     if (req.cookies.jwt) {
       // Verify the JWT from cookies
       const token = req.cookies.jwt;
-      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
+        accessToken: string;
         id: string;
       };
       // Check if the user still exists
