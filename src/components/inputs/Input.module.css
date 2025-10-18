@@ -15,7 +15,7 @@
   border: 1px solid var(--black);
   border-radius: 4px;
   color: var(----text-color);
-  background-color: var(--bg-color-1);
+  background-color: var(--bg-input);
 }
 
 .input:focus {

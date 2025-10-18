@@ -33,7 +33,7 @@
   color: var(--light-gray);
   cursor: pointer;
   transition: background-color 0.3s;
-  background-color: var(--light-gray);
+  background-color: var(--color-brand-secondary);
 }
 
 .dot.active {

@@ -12,12 +12,7 @@
 
 .primary {
   background-color: var(--color-button-primary);
-  color: var(--black);
-}
-
-.secondary {
-  background-color: var(--color-button-secondary);
-  color: var(--white);
+  color: var(--text-color-1);
 }
 
 .primary:hover:not(:disabled) {
@@ -26,9 +21,14 @@
   border: none;
 }
 
+.secondary {
+  background-color: var(--color-button-secondary);
+  color: var(--black);
+}
+
 .secondary:hover:not(:disabled) {
   background-color: var(--color-button-secondary-hover);
-  color: var(--black);
+  color: var(--white);
   border: none;
 }
 

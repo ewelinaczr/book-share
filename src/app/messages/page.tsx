@@ -4,6 +4,7 @@ import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
 import styles from "./messages.module.css";
+import Button, { ButtonType } from "@/components/buttons/Button";
 
 export interface PrivateMessage {
   from: string;
@@ -44,16 +45,36 @@ function Messages() {
 
   return (
     <div className={styles.container}>
-      <Users
-        chatUsers={partners}
-        selectedChatUserId={selectedChatUserId}
-        setSelectedChatUserId={(id: string) => setSelectedChatUserId(id)}
-      />
-      <Chat
-        messages={chatMessages}
-        selectedChatUserId={selectedChatUserId}
-        setChatMessages={setChatMessages}
-      />
+      {!selectedChatUserId ? (
+        <Users
+          chatUsers={partners}
+          selectedChatUserId={selectedChatUserId}
+          setSelectedChatUserId={(id: string) => setSelectedChatUserId(id)}
+        />
+      ) : null}
+      {selectedChatUserId ? (
+        <div>
+          <div className={styles.buttonWrapper}>
+            <Button
+              type="submit"
+              ariaLabel="Attach file to message"
+              buttonType={ButtonType.SECONDARY}
+              onClick={() => setSelectedChatUserId("")}
+              customStyles={{
+                width: "15rem",
+                marginBottom: "2rem",
+              }}
+            >
+              Close
+            </Button>
+          </div>
+          <Chat
+            messages={chatMessages}
+            selectedChatUserId={selectedChatUserId}
+            setChatMessages={setChatMessages}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

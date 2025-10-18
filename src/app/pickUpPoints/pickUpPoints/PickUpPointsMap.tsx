@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { PickUpSpot } from "@/interfaces/PickUpSpot";
-import { MapWrapper } from "../map/MapWrapper";
+import { MapWrapper } from "../../home/marketPanel/map/MapWrapper";
 import { PickUpSpotPanel } from "../pickUpSpotPanel/PickUpSpotPanel";
-import { pickUpSpots } from "../map/PickUpSpotsMock";
+import { pickUpSpots } from "../../home/marketPanel/map/PickUpSpotsMock";
 import styles from "./PickUpPointsMap.module.css";
 import Header from "@/components/headers/Header";
 

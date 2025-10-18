@@ -12,6 +12,7 @@ import { useTheme } from "@/providers/ThemeProvider";
 
 import styles from "./Navigation.module.css";
 import Button, { ButtonType } from "../buttons/Button";
+import ThemeButton from "../themeButton/ThemeButton";
 
 export default function Navigation() {
   const [selectedPage, setSelectedPage] = useState("Home");
@@ -131,9 +132,7 @@ export default function Navigation() {
           </li>
         ))}
         <li key="theme" className={`${styles.navIconLink}`}>
-          <button onClick={() => toggleTheme()}>
-            {theme === "dark" ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}
-          </button>
+          <ThemeButton theme={theme} toggleTheme={toggleTheme} />
         </li>
         {renderButton()}
       </ul>
@@ -187,6 +186,9 @@ export default function Navigation() {
             <ul className={styles.mobileNavIconLinks}>
               {renderMobileNavCloseButton()}
               {renderMobileNavItems()}
+              <li key="theme" className={`${styles.navIconLink}`}>
+                <ThemeButton theme={theme} toggleTheme={toggleTheme} />
+              </li>
               {renderButton()}
             </ul>
           </div>

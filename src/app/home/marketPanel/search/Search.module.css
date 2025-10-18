@@ -22,7 +22,7 @@
   -moz-appearance: none;
   padding-left: 3.2rem;
   color: var(----text-color);
-  background-color: var(--bg-color-1);
+  background-color: var(--bg-input);
 }
 
 .icon {

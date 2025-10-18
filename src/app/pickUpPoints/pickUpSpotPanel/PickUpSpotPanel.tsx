@@ -5,7 +5,7 @@ import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import { pacifico } from "@/app/fonts";
 import { CgDetailsMore } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
-import WelcomePanel from "../welcomePanel/WelcomePanel";
+import WelcomePanel from "../../home/marketPanel/welcomePanel/WelcomePanel";
 import SmallButton from "@/components/buttons/SmallButton";
 
 enum Page {
