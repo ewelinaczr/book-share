@@ -6,6 +6,7 @@ import { pacifico } from "@/app/fonts";
 import { CgDetailsMore } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import WelcomePanel from "../../home/marketPanel/welcomePanel/WelcomePanel";
+import { useTranslations } from "next-intl";
 import SmallButton from "@/components/buttons/SmallButton";
 
 enum Page {
@@ -18,6 +19,7 @@ export interface PickUpSpotPanelProps {
 }
 export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
   const [page, setPage] = useState<Page>(Page.SPOT_DETAILS);
+  const t = useTranslations();
   const renderSpotDetails = () => {
     if (!spot) {
       return null;
@@ -27,19 +29,19 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
       <div className={styles.pageContainer}>
         <span className={styles.title}>{name}</span>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>adress</p>
+          <p className={styles.infoLabel}>{t("pickUp_address")}</p>
           <p>{adress}</p>
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>opening hours</p>
+          <p className={styles.infoLabel}>{t("pickUp_openingHours")}</p>
           <p>{openingHours}</p>
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>description</p>
+          <p className={styles.infoLabel}>{t("pickUp_description")}</p>
           <div className={styles.description}>
             <p className={styles.descriptionGeneral}>{description}</p>
             <p className={`${pacifico.className} ${styles.featuresTitle}`}>
-              What You'll Find Here
+              {t("pickUp_whatYoullFind")}
             </p>
             {features.map((f) => (
               <div className={styles.feature} key={f.name}>
@@ -51,8 +53,8 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
         </div>
         <div className={styles.button}>
           <SmallButton
-            text="Show more"
-            ariaLabel="Show more details"
+            text={t("list_showNext")}
+            ariaLabel={t("list_showNext")}
             icon={<CgDetailsMore />}
             aria-expanded={page === Page.DESCRIPTION}
             onClick={() => setPage(Page.DESCRIPTION)}
@@ -85,8 +87,8 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
           </div>
           <div className={styles.button}>
             <SmallButton
-              text="Go back"
-              ariaLabel="Go back to spot details"
+              text={t("buttons_goBack")}
+              ariaLabel={t("buttons_goBackToDetails")}
               icon={<IoIosArrowBack />}
               aria-expanded={page === Page.SPOT_DETAILS}
               onClick={() => setPage(Page.SPOT_DETAILS)}

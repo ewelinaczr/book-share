@@ -3,6 +3,7 @@
 import { ReactNode, useState } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
+import { useTranslations } from "next-intl";
 import styles from "./BookDetailsPanel.module.css";
 
 import { BookMetaData } from "../bookListPanel/BookListPanel";
@@ -21,6 +22,7 @@ export default function BookDetails<T>({
 }: BookDetailsProps<T>) {
   const [showMore, setShowMore] = useState(false);
   const data = getBookData(selectedItem);
+  const t = useTranslations();
 
   const renderBookDetails = () => {
     return (
@@ -32,13 +34,13 @@ export default function BookDetails<T>({
       >
         <div className={styles.majorInfo}>
           <div className={styles.info}>
-            <p className={styles.infoLabel}>authors</p>
+            <p className={styles.infoLabel}>{t("bookDetails_authors")}</p>
             {data.authors?.map((a) => (
               <p key={a}>{a}</p>
             ))}
           </div>
           <div className={styles.info}>
-            <p className={styles.infoLabel}>genres</p>
+            <p className={styles.infoLabel}>{t("bookDetails_genres")}</p>
             {data.categories?.map((c) => (
               <p className={styles.text} key={c}>
                 {c}
@@ -47,7 +49,7 @@ export default function BookDetails<T>({
           </div>
           {data.averageRating && (
             <div className={styles.info}>
-              <p className={styles.infoLabel}>rating</p>
+              <p className={styles.infoLabel}>{t("bookDetails_rating")}</p>
               <div className={styles.ratingContainer}>
                 <CiStar />
                 <p>{data.averageRating}</p>
@@ -59,21 +61,21 @@ export default function BookDetails<T>({
         <div className={styles.majorInfo}>
           {data.publisher && (
             <div className={styles.info}>
-              <p className={styles.infoLabel}>publisher</p>
+              <p className={styles.infoLabel}>{t("bookDetails_publisher")}</p>
               <p>{data.publisher}</p>
             </div>
           )}
           <div className={styles.info}>
-            <p className={styles.infoLabel}>published date</p>
+            <p className={styles.infoLabel}>{t("bookDetails_publishedDate")}</p>
             <p>{data.publishedDate}</p>
           </div>
           <div className={styles.info}>
-            <p className={styles.infoLabel}>language</p>
+            <p className={styles.infoLabel}>{t("bookDetails_language")}</p>
             <p>{data.language}</p>
           </div>
           {data.pageCount && (
             <div className={styles.info}>
-              <p className={styles.infoLabel}>page count</p>
+              <p className={styles.infoLabel}>{t("bookDetails_pageCount")}</p>
               <p>{data.pageCount}</p>
             </div>
           )}
@@ -89,7 +91,7 @@ export default function BookDetails<T>({
           </div>
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>description</p>
+          <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
           <p
             className={`${styles.fullDescription} ${styles.scrollableElement}`}
           >
@@ -105,7 +107,7 @@ export default function BookDetails<T>({
       <div className={styles.titleContainer}>
         <div className={styles.titleAuthor}>
           <p className={styles.title}>{data.title}</p>
-          <p className={styles.separator}>-</p>
+          <p className={styles.separator}>{t("bookDetails_separator")}</p>
           {data.authors?.length ? `${data.authors[0]}` : null}
         </div>
         <div className={styles.myBookInfo}>{children}</div>
@@ -113,8 +115,16 @@ export default function BookDetails<T>({
       {renderBookDetails()}
       <div className={styles.buttonContainer}>
         <SmallButton
-          ariaLabel={showMore ? "Hide details" : "Show details"}
-          text={showMore ? "Hide details" : "Show details"}
+          ariaLabel={
+            showMore
+              ? t("bookDetails_hideDetails")
+              : t("bookDetails_showDetails")
+          }
+          text={
+            showMore
+              ? t("bookDetails_hideDetails")
+              : t("bookDetails_showDetails")
+          }
           icon={<FaCircleInfo />}
           onClick={() => setShowMore(!showMore)}
           customStyles={{ width: "12rem" }}

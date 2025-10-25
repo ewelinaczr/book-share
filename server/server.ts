@@ -8,7 +8,8 @@ import User from "./models/userModel";
 import { Server } from "socket.io";
 dotenv.config({ path: "./config.env" });
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
+const MONGODB_URI = process.env.MONGODB_URI!;
+const AUTH_SECRET = process.env.AUTH_SECRET!;
 const PORT = process.env.APP_PORT || 4000;
 
 let cached = (global as any).mongoose;
@@ -46,10 +47,7 @@ connectToDatabase()
           console.log("Missing token in socket handshake auth");
           return next(new Error("Authentication error"));
         }
-        const decoded = jwt.verify(
-          tokenValue,
-          process.env.NEXTAUTH_SECRET!
-        ) as {
+        const decoded = jwt.verify(tokenValue, AUTH_SECRET) as {
           id: string;
         };
         let user = undefined;

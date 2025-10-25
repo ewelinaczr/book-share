@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { IoAddSharp } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
+import { useTranslations } from "next-intl";
 import styles from "./Popup.module.css";
 
 import Header from "@/components/headers/Header";
@@ -15,12 +16,13 @@ export default function Popup({
   title: string;
 }) {
   const [popupOpened, setPopupOpened] = useState<boolean>(false);
+  const t = useTranslations();
 
   const renderOpenCloseButton = () => {
     return (
       <button
         type="button"
-        aria-label={popupOpened ? "Close popup" : "Open popup"}
+        aria-label={popupOpened ? t("popup_close") : t("popup_open")}
         aria-expanded={popupOpened}
         className={styles.openButton}
         onClick={() => setPopupOpened((prev) => !prev)}
@@ -29,7 +31,7 @@ export default function Popup({
           {popupOpened ? <IoCloseOutline /> : <IoAddSharp />}
         </span>
         <div className={styles.buttonText}>
-          {popupOpened ? "Close" : `${title}`}
+          {popupOpened ? t("popup_close") : `${title}`}
         </div>
       </button>
     );

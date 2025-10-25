@@ -1,12 +1,10 @@
-import express, { Request } from "express";
+import express from "express";
 import PrivateMessage from "../models/messageModel";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import mongoose from "mongoose";
 
-interface AuthRequest extends Request {
-  user?: { email?: string } | any;
-}
+const AUTH_SECRET = process.env.AUTH_SECRET!;
 
 const chatRouter = express.Router();
 
@@ -20,7 +18,7 @@ chatRouter.get("/history/:userId", (async (req, res) => {
     return;
   }
   const token = authHeader.split(" ")[1];
-  const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
+  const decoded = jwt.verify(token, AUTH_SECRET) as {
     id: string;
     googleId?: string;
   };
@@ -62,7 +60,7 @@ chatRouter.get("/partners", (async (req, res) => {
     return;
   }
   const token = authHeader.split(" ")[1];
-  const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
+  const decoded = jwt.verify(token, AUTH_SECRET) as {
     id: string;
   };
   let user = undefined;

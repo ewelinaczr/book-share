@@ -2,12 +2,16 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import User from "../models/userModel";
 
+const AUTH_SECRET = process.env.AUTH_SECRET!;
+const JWT_COOKIE_EXPIRES_IN = process.env.JWT_COOKIE_EXPIRES_IN!;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN!;
+const NODE_ENV = process.env.NODE_ENV;
+
 const signToken = (id: string) => {
-  return jwt.sign(
-    { id },
-    process.env.JWT_SECRET as string,
-    { expiresIn: process.env.JWT_EXPIRES_IN as string } as jwt.SignOptions
-  );
+  // Use the same secret as NextAuth and the socket/server verification
+  return jwt.sign({ id }, AUTH_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+  } as jwt.SignOptions);
 };
 
 const createSendToken = (user: any, statusCode: number, res: Response) => {
@@ -15,28 +19,17 @@ const createSendToken = (user: any, statusCode: number, res: Response) => {
 
   res.cookie("jwt", token, {
     expires: new Date(
-      Date.now() +
-        parseInt(process.env.JWT_COOKIE_EXPIRES_IN as string) *
-          24 *
-          60 *
-          60 *
-          1000
+      Date.now() + parseInt(JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
-    secure: process.env.NODE_ENV !== "development",
+    sameSite: NODE_ENV !== "development" ? "none" : "lax",
+    secure: NODE_ENV !== "development",
   });
 
   (user as any).password = undefined;
   (user as any).passwordConfirm = undefined;
 
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
-    },
-  });
+  res.status(statusCode).json(user);
 };
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
@@ -105,6 +98,7 @@ export const protect = async (
 ): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
+
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res.status(401).json({
         status: "error",
@@ -113,7 +107,7 @@ export const protect = async (
       return;
     }
     const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
+    const decoded = jwt.verify(token, AUTH_SECRET) as {
       id: string;
     };
     let user = undefined;
@@ -149,7 +143,7 @@ export const isLoggedIn = async (
     if (req.cookies.jwt) {
       // Verify the JWT from cookies
       const token = req.cookies.jwt;
-      const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET!) as {
+      const decoded = jwt.verify(token, AUTH_SECRET) as {
         accessToken: string;
         id: string;
       };
@@ -176,8 +170,8 @@ export const logout = (req: Request, res: Response) => {
   res.cookie("jwt", "", {
     expires: new Date(0),
     httpOnly: true,
-    sameSite: process.env.NODE_ENV !== "development" ? "none" : "lax",
-    secure: process.env.NODE_ENV !== "development",
+    sameSite: NODE_ENV !== "development" ? "none" : "lax",
+    secure: NODE_ENV !== "development",
   });
   res.status(200).json({
     status: "success",

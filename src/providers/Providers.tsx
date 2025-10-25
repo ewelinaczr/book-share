@@ -1,15 +1,15 @@
 "use client";
 
-import ReduxProvider from "@/store/Provider";
+import React from "react";
+import { ReduxProvider } from "./ReduxProvider";
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "./ThemeProvider";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+type ProvidersProps = { children: React.ReactNode };
+
+export function Providers({ children }: ProvidersProps) {
   return (
     <ReduxProvider>
-      <SessionProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </SessionProvider>
+      <SessionProvider>{children}</SessionProvider>
     </ReduxProvider>
   );
 }
