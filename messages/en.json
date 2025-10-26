@@ -71,6 +71,7 @@
   "market_myOffers": "My offers",
 
   "bookshelf_addBookTitle": "Add book to the Bookshelf",
+  "bookshelf_addBookError": "Failed do add book",
   "bookshelf_status": "Category",
   "bookshelf_own": "Printed books",
   "bookshelf_rating": "Rating",
@@ -121,7 +122,7 @@
   "signup_passwordRequired": "Password is required",
   "signup_passwordMin": "Password must be at least 8 characters long and contain letters and numbers",
   "signup_passwordsDoNotMatch": "Passwords do not match",
-  "signup_accountCreatedLoginFailed": "Account created, but login failed. Try manually.",
+  "signup_accountCreatedLoginFailed": "Account created, but login failed. Try agian.",
   "signup_somethingWentWrong": "Something went wrong. Please try again.",
   "signup_signingUp": "Signing Up...",
   "signup_pleaseConfirmPassword": "Please confirm your password",

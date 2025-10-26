@@ -7,15 +7,9 @@ export const getAllUsers = async (
 ): Promise<void> => {
   try {
     const users = await User.find();
-    res.status(200).json({
-      status: "success",
-      data: { users },
-    });
+    res.status(200).json(users);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
@@ -26,21 +20,12 @@ export const getUserById = async (
   try {
     const user = await User.findById({ _id: req.params.id });
     if (!user) {
-      res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
+      res.status(404).json("User not found");
       return;
     }
-    res.status(200).json({
-      status: "success",
-      data: { user },
-    });
+    res.status(200).json(user);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
@@ -52,10 +37,7 @@ export const updateUserLocation = async (
     const { lat, lng } = req.body;
 
     if (!lat || !lng) {
-      res.status(400).json({
-        status: "error",
-        message: "Missing latitude or longitude",
-      });
+      res.status(400).json("Missing latitude or longitude");
       return;
     }
 
@@ -66,21 +48,12 @@ export const updateUserLocation = async (
     );
 
     if (!updatedUser) {
-      res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
+      res.status(404).json("User not found");
       return;
     }
 
-    res.status(200).json({
-      status: "success",
-      data: { user: updatedUser },
-    });
+    res.status(200).json(updatedUser);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };

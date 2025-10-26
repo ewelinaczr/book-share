@@ -5,7 +5,7 @@ import { validatePassword } from "../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../shared/validators/passwordConfirmValidator";
 
 export interface IUser extends Document {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   photo?: string;

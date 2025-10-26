@@ -8,139 +8,98 @@ interface UserRequest extends Request {
 }
 
 export const addBookToMarket = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const { book, status, deadline } = req.body;
-    const userId = req.user?._id;
+    const userReq = req as UserRequest;
+    const { book, status, deadline } = userReq.body;
+    const userId = userReq.user?._id;
     if (!userId) {
-      res
-        .status(400)
-        .json({ status: "error", message: "User not found in request." });
+      res.status(400).json("User not found in request.");
       return;
     }
 
-    // 1. Check if the book exists in books collection by id
+    // Check if the book exists in books collection
     let bookToSave = await Book.findOne({ id: book.id });
-    if (!bookToSave) {
-      bookToSave = await Book.create(book);
-    }
-    const bookBook = await Book.findById(bookToSave._id);
-    if (!bookBook || !bookBook._id) {
-      res
-        .status(400)
-        .json({ status: "error", message: "Book not found after creation." });
+    if (!bookToSave) bookToSave = await Book.create(book);
+
+    const savedBook = await Book.findById(bookToSave._id);
+    if (!savedBook || !savedBook._id) {
+      res.status(400).json("Book not found after creation.");
       return;
     }
-    const bookIdStr = bookBook._id.toString();
-    //2. Check if book already exists in user's market collection
+    const bookId = savedBook._id.toString();
+
+    //Check if book already exists in user's market collection
     const user = await User.findById(userId).populate("market").lean();
-    if (!user) {
-      res.status(400).json({ status: "error", message: "User not found." });
-      return;
-    }
     if (!user || !("market" in user)) {
-      res.status(400).json({
-        status: "error",
-        message: "User not found or market missing.",
-      });
+      res.status(400).json("User not found or market missing.");
       return;
     }
+
     const bookExists =
-      user.market &&
       Array.isArray(user.market) &&
       user.market.some(
-        (marketBook: any) =>
-          marketBook.book && marketBook.book.toString() === bookIdStr
+        (marketBook: any) => marketBook.book?.toString() === bookId
       );
+
     if (bookExists) {
-      res.status(400).json({
-        status: "error",
-        message: "Book already exists in your market.",
-      });
+      res.status(400).json("Book already exists in your market.");
       return;
     }
 
-    // 3. Create MarketBook with book
     const marketBook = await MarketBook.create({
-      book: bookBook._id,
-      status: status,
-      deadline: deadline,
+      book: savedBook._id,
+      status,
+      deadline,
       ownerId: userId,
     });
 
-    // 4. Save market book in user's market
-    await User.findByIdAndUpdate(
-      userId,
-      { $push: { market: marketBook._id } },
-      { new: true }
-    );
+    // Save market book in user's market
+    await User.findByIdAndUpdate(userId, {
+      $push: { market: marketBook._id },
+    });
 
-    res.status(201).json({
-      status: "success",
-      data: { marketBook: marketBook },
-    });
+    res.status(201).json({ marketBook });
   } catch (err: any) {
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(400).json(err.message);
   }
 };
 
 export const getUserBooksFromMarket = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const userId = req.user?._id;
-    const { status } = req.query;
+    const userReq = req as UserRequest;
+    const userId = userReq.user?._id;
+    const { status } = userReq.query;
 
-    // 1. Get user and populate market and book
     const user = await User.findById(userId)
-      .populate({
-        path: "market",
-        populate: { path: "book" },
-      })
+      .populate({ path: "market", populate: { path: "book" } })
       .lean();
 
-    if (!user) {
-      res.status(404).json({
-        status: "error",
-        message: "User not found",
-      });
-      return;
-    }
-
     if (!user || !("market" in user)) {
-      res.status(400).json({
-        status: "error",
-        message: "User not found or market missing.",
-      });
+      res.status(400).json("User not found or market missing.");
       return;
     }
 
-    // 2. Filter market books: exclude borrowed books
+    // Filter market books: exclude borrowed books
     let filteredMarket = (user.market || []).filter(
-      (entry: any) => !entry.exchangedWith || !entry.exchangedWith.userId
+      (entry: any) => !entry.exchangedWith?.userId
     );
 
-    // 3. Filter market by status if provided
     if (status) {
+      const statusStr = (status as string).toLowerCase();
       filteredMarket = filteredMarket.filter(
-        (entry: any) =>
-          entry.status &&
-          entry.status.toLowerCase() === (status as string).toLowerCase()
+        (entry: any) => entry.status?.toLowerCase() === statusStr
       );
     }
 
     res.status(200).json(filteredMarket);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
@@ -149,16 +108,12 @@ export const getMarketBooksByUserId = async (
   res: Response
 ): Promise<void> => {
   try {
-    let query = { ownerId: req.params.id };
-
-    const marketBooks = await MarketBook.find(query).populate("book");
-
+    const marketBooks = await MarketBook.find({
+      ownerId: req.params.id,
+    }).populate("book");
     res.status(200).json(marketBooks);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
@@ -179,53 +134,43 @@ export const getAllBooksFromMarket = async (
       .populate("ownerId", "name location")
       .lean();
 
-    const booksWithOwner = marketBooks.map((entry: any) => {
-      const { ownerId, ...rest } = entry;
-      return {
-        ...rest,
-        ownerId: ownerId?._id,
-        ownerName: ownerId?.name,
-        ownerLocation: ownerId?.location,
-      };
-    });
+    const booksWithOwner = marketBooks.map((entry: any) => ({
+      ...entry,
+      ownerId: entry.ownerId?._id,
+      ownerName: entry.ownerId?.name,
+      ownerLocation: entry.ownerId?.location,
+    }));
 
-    // Filter by status if provided
     let filteredMarket = booksWithOwner;
     if (status) {
+      const statusStr = (status as string).toLowerCase();
       filteredMarket = filteredMarket.filter(
-        (entry: any) =>
-          entry.status &&
-          entry.status.toLowerCase() === (status as string).toLowerCase()
+        (entry: any) => entry.status?.toLowerCase() === statusStr
       );
     }
 
     res.status(200).json(filteredMarket);
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
 export const exchangeMarketBook = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const userId = req.user?._id;
-    const marketBookId = req.params.id;
-    const { status, date } = req.body;
+    const userReq = req as UserRequest;
+    const userId = userReq.user?._id;
+    const marketBookId = userReq.params.id;
+    const { status, date } = userReq.body;
 
     if (!status) {
-      res
-        .status(400)
-        .json({ message: "Status is required to make an exchange" });
+      res.status(400).json("Status is required to make an exchange.");
       return;
     }
 
     if (status === "borrow") {
-      // Keep in the Market, but disactivate the offer
       const updated = await MarketBook.findByIdAndUpdate(
         marketBookId,
         {
@@ -241,20 +186,19 @@ export const exchangeMarketBook = async (
       );
 
       if (!updated) {
-        res.status(404).json({ message: "MarketBook not found." });
+        res.status(404).json("MarketBook not found.");
         return;
       }
+
       res.status(200).json(updated);
     } else {
       // Remove from the Market
       const removed = await MarketBook.findByIdAndDelete(marketBookId);
-
       if (!removed) {
-        res
-          .status(404)
-          .json({ message: "MarketBook not found or already removed." });
+        res.status(404).json("MarketBook not found or already removed.");
         return;
       }
+
       // Remove the reference from the owner's market array
       await User.findByIdAndUpdate(removed.ownerId, {
         $pull: { market: marketBookId },
@@ -263,18 +207,16 @@ export const exchangeMarketBook = async (
       res.status(200).json(removed);
     }
   } catch (err: any) {
-    res.status(500).json({
-      status: "error",
-      message: err.message,
-    });
+    res.status(500).json(err.message);
   }
 };
 
 export const getBorrowedBooks = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
-  const userId = req.user?._id;
+  const userReq = req as UserRequest;
+  const userId = userReq.user?._id;
 
   try {
     const borrowedBooks = await MarketBook.find({
@@ -286,36 +228,28 @@ export const getBorrowedBooks = async (
 
     res.status(200).json(borrowedBooks);
   } catch (error: any) {
-    res.status(500).json({
-      message: "Failed to fetch borrowed books.",
-      error: error.message,
-    });
+    res.status(500).json("Failed to fetch borrowed books.");
   }
 };
 
 export const getBorrowedFromMe = async (
-  req: UserRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
-  const userId = req.user?._id;
+  const userReq = req as UserRequest;
+  const userId = userReq.user?._id;
 
   try {
     const booksBorrowedFromMe = await MarketBook.find({
       ownerId: userId,
       "exchangedWith.status": "borrow",
-      "exchangedWith.userId": {
-        $exists: true,
-        $ne: userId,
-      },
+      "exchangedWith.userId": { $exists: true, $ne: userId },
     })
       .populate("book")
       .populate("exchangedWith.userId", "name email");
 
     res.status(200).json(booksBorrowedFromMe);
   } catch (error: any) {
-    res.status(500).json({
-      message: "Failed to fetch books borrowed from you.",
-      error: error.message,
-    });
+    res.status(500).json("Failed to fetch books borrowed from you.");
   }
 };
