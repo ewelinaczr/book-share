@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { UserRequest } from "./authController";
+import { getUserOrFail } from "../utils/auth";
 import mongoose from "mongoose";
 import User from "../models/userModel";
 import PrivateMessage from "../models/messageModel";
@@ -8,15 +9,11 @@ export const getMessageHistory = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const userReq = req as UserRequest;
+  const user = getUserOrFail(req as UserRequest, res);
+  if (!user) return;
 
-  if (!userReq) {
-    res.status(401).json("User not found or no longer exists.");
-    return;
-  }
-
-  const otherUser = userReq.params.userId;
-  const currentUser = userReq.user?._id;
+  const currentUser = user._id;
+  const otherUser = req.params.userId;
 
   try {
     const messages = await PrivateMessage.find({
@@ -26,9 +23,9 @@ export const getMessageHistory = async (
       ],
     }).sort({ timestamp: 1 });
 
-    res.json(messages);
-  } catch {
-    res.status(500).json("Failed to fetch messages.");
+    res.status(200).json(messages);
+  } catch (err: any) {
+    res.status(500).json(err.message);
   }
 };
 
@@ -36,23 +33,18 @@ export const getChatPartners = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const userReq = req as UserRequest;
-  if (!userReq) {
-    res.status(401).json("User not found or no longer exists.");
-    return;
-  }
-
-  const currentUserId = userReq.user?._id;
+  const user = getUserOrFail(req, res);
+  if (!user) return;
 
   try {
     const messages = await PrivateMessage.find({
-      $or: [{ from: currentUserId }, { to: currentUserId }],
+      $or: [{ from: user._id }, { to: user._id }],
     });
 
     const otherUserIds = Array.from(
       new Set(
         messages.map((msg) =>
-          msg.from === currentUserId ? msg.to.toString() : msg.from.toString()
+          msg.from === user._id ? msg.to.toString() : msg.from.toString()
         )
       )
     );
@@ -81,5 +73,26 @@ export const getChatPartners = async (
     res.json(users);
   } catch {
     res.status(500).json("Failed to fetch messages.");
+  }
+};
+
+export const deleteChatHistory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const result = await PrivateMessage.deleteMany({
+      $or: [
+        { senderId: user._id, receiverId: req.params.userId },
+        { senderId: req.params.userId, receiverId: user._id },
+      ],
+    });
+
+    res.status(200).json({ deletedCount: result.deletedCount });
+  } catch (err: any) {
+    res.status(500).json(err.message);
   }
 };

@@ -85,3 +85,15 @@ export const logout = (req: Request, res: Response): void => {
     .status(200)
     .json({ status: "success", message: "Logged out successfully." });
 };
+
+export const getUserIdOrFail = (req: Request, res: Response): string | null => {
+  const userReq = req as UserRequest;
+  const userId = userReq.user?._id;
+
+  if (!userId) {
+    res.status(401).json("User not found or no longer exists.");
+    return null;
+  }
+
+  return userId;
+};

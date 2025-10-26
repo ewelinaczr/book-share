@@ -1,12 +1,13 @@
 import { Router } from "express";
-import * as chatController from "../controllers/chatController";
 import * as authController from "../controllers/authController";
+import * as chatController from "../controllers/chatController";
 
 const router = Router();
 
 router
   .route("/history/:userId")
-  .get(authController.protect, chatController.getMessageHistory);
+  .get(authController.protect, chatController.getMessageHistory)
+  .delete(authController.protect, chatController.deleteChatHistory);
 
 router
   .route("/partners")

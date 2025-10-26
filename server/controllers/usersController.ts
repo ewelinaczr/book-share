@@ -57,3 +57,38 @@ export const updateUserLocation = async (
     res.status(500).json(err.message);
   }
 };
+
+export const updateUserProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedUser) {
+      res.status(404).json("User not found");
+      return;
+    }
+    res.status(200).json(updatedUser);
+  } catch (err: any) {
+    res.status(400).json(err.message);
+  }
+};
+
+export const deleteUserAccount = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      res.status(404).json("User not found");
+      return;
+    }
+    res.status(200).json(null);
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
