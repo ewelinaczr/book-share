@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
+import { useTranslations } from "next-intl";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
 import styles from "./Chat.module.css";
 import Button, { ButtonType } from "@/components/buttons/Button";
+import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 
 export interface PrivateMessage {
   from: string;
@@ -16,6 +18,7 @@ export interface PrivateMessage {
 function Messages() {
   const [selectedChatUserId, setSelectedChatUserId] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<PrivateMessage[]>([]);
+  const t = useTranslations();
 
   const {
     data: messages,
@@ -31,6 +34,9 @@ function Messages() {
     error: chatPartnersError,
   } = useGetChatPartnersQuery();
 
+  const isLoading = isMessagesLoading || isChatPartnersLoading;
+  const isError = messagesError || chatPartnersError;
+
   useEffect(() => {
     // Clear messages when selected user changes
     setChatMessages([]);
@@ -42,6 +48,22 @@ function Messages() {
       setChatMessages(messages);
     }
   }, [messages]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.loaderContainer}>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className={styles.errorContainer}>
+        <div>{t("chat_error")}</div>
+      </section>
+    );
+  }
 
   return (
     <div className={styles.container}>

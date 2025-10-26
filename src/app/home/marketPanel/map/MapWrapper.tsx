@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import dynamic from "next/dynamic";
+import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./MapWrapper.module.css";
 
 export interface MapWrapperProps {
@@ -14,7 +15,7 @@ export function MapWrapper({ selectItem }: MapWrapperProps) {
     () =>
       // Load the Map component only in the browser (not during server-side rendering)
       dynamic(() => import("@/app/home/marketPanel/map/Map"), {
-        loading: () => <p>A map is loading</p>,
+        loading: () => <LoadingSpinner />,
         ssr: false,
       }),
     []

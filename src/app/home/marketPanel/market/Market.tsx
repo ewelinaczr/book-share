@@ -9,6 +9,7 @@ import { BookMarketPanel } from "../browseOffersPanel/BookMarketPanel";
 import Header from "@/components/headers/Header";
 import Search from "../search/Search";
 import MarketGrid from "../grid/MarketGrid";
+import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./Market.module.css";
 
 export default function Market() {
@@ -30,16 +31,42 @@ export default function Market() {
     }
   }, [marketBooks, displayedBook]);
 
-  if (isLoading) return <div>{t("market_loading")}</div>;
+  const renderErrorMesage = () => {
+    if (isError) return <div>{t("market_loadingError")}</div>;
+  };
 
-  if (isError)
-    return (
-      <div>
-        {t("market_loadingError")}
-        <br />
-        {JSON.stringify(error)}
-      </div>
-    );
+  const renderLoadingSpinner = () => {
+    if (isLoading) {
+      return (
+        <div className={styles.loaderContainer}>
+          <LoadingSpinner />
+        </div>
+      );
+    }
+  };
+
+  const renderEmptyMarketMessage = () => {
+    if (!marketBooks.length) {
+      return (
+        <div className={styles.emptyMarket}>{t("market_noBooksFound")}</div>
+      );
+    }
+  };
+
+  const renderMarketGrid = () => {
+    if (marketBooks.length) {
+      return (
+        <div className={styles.gridPanelContainer}>
+          <MarketGrid
+            books={marketBooks}
+            selectItem={setDisplayedBook}
+            selectedItemId={displayedBook?.book._id}
+          />
+          {displayedBook && <BookMarketPanel book={displayedBook} />}
+        </div>
+      );
+    }
+  };
 
   return (
     <section className={styles.marketPanelContainer}>
@@ -51,17 +78,10 @@ export default function Market() {
         searchCategory={searchCategory}
         setSearchCategory={setSearchCategory}
       />
-      {marketBooks.length === 0 && (
-        <div className={styles.emptyMarket}>{t("market_noBooksFound")}</div>
-      )}
-      <div className={styles.gridPanelContainer}>
-        <MarketGrid
-          books={marketBooks}
-          selectItem={setDisplayedBook}
-          selectedItemId={displayedBook?.book._id}
-        />
-        {displayedBook && <BookMarketPanel book={displayedBook} />}
-      </div>
+      {renderLoadingSpinner()}
+      {renderErrorMesage()}
+      {renderEmptyMarketMessage()}
+      {renderMarketGrid()}
     </section>
   );
 }
