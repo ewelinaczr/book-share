@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response } from "express";
 import { IUser } from "../models/userModel";
+import { UserRequest } from "../controllers/authController";
 
 const {
   AUTH_SECRET = "",
@@ -38,4 +39,18 @@ export const setTokenCookie = (res: Response, token: string): void => {
     sameSite: isProd ? "none" : "lax",
     secure: isProd,
   });
+};
+
+export const getUserOrFail = (
+  req: UserRequest,
+  res: Response
+): { _id: string } | null => {
+  const user = req.user;
+
+  if (!user || typeof user._id !== "string") {
+    res.status(401).json("User not found or no longer exists.");
+    return null;
+  }
+
+  return { _id: user._id };
 };

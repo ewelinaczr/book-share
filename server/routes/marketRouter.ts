@@ -13,7 +13,11 @@ router
   .route("/mine")
   .get(authController.protect, marketController.getUserBooksFromMarket);
 
-router.route("/:id").get(marketController.getMarketBooksByUserId);
+router
+  .route("/:id")
+  .get(marketController.getMarketBooksByUserId)
+  .put(authController.protect, marketController.updateMarketBook)
+  .delete(authController.protect, marketController.removeMarketBook);
 
 router
   .route("/exchange/:id")

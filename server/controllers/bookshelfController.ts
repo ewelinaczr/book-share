@@ -2,17 +2,18 @@ import { Request, Response } from "express";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
 import BookshelfBook from "../models/bookshelfBookModel";
-import { UserRequest } from "./authController";
+import { getUserOrFail } from "../utils/auth";
 
 export const addBookToBookshelf = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
+
   try {
-    const userReq = req as UserRequest;
-    const { book, status, own, rating } = userReq.body;
-    const userId = userReq.user?._id;
-    console.log("addBookToBookshelf", userReq.user);
+    const userId = authUser._id;
+    const { book, status, own, rating } = req.body;
     if (!userId) {
       res.status(400).json("User not found in request.");
       return;
@@ -68,9 +69,11 @@ export const getBooksFromBookshelf = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userReq = req as UserRequest;
-    const userId = userReq.user?._id;
-    const { status } = userReq.query;
+    const authUser = getUserOrFail(req, res);
+    if (!authUser) return;
+
+    const userId = authUser._id;
+    const { status } = req.query;
 
     const user = await User.findById(userId)
       .populate({ path: "bookshelf", populate: { path: "book" } })
@@ -96,6 +99,51 @@ export const getBooksFromBookshelf = async (
     }
 
     res.status(200).json(filteredBookshelf);
+  } catch (err: any) {
+    res.status(500).json(err.message);
+  }
+};
+
+export const updateBookshelfBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
+
+  try {
+    const updatedEntry = await BookshelfBook.findOneAndUpdate(
+      { userId: authUser._id, bookId: req.params.bookId },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!updatedEntry) {
+      res.status(404).json("Book not found in bookshelf");
+      return;
+    }
+    res.status(200).json(updatedEntry);
+  } catch (err: any) {
+    res.status(400).json(err.message);
+  }
+};
+
+export const removeBookshelfBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
+
+  try {
+    const removed = await BookshelfBook.findOneAndDelete({
+      userId: authUser._id,
+      bookId: req.params.bookId,
+    });
+    if (!removed) {
+      res.status(404).json("Book not found in bookshelf");
+      return;
+    }
+    res.status(200).json(null);
   } catch (err: any) {
     res.status(500).json(err.message);
   }

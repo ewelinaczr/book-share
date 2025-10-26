@@ -2,24 +2,18 @@ import { Request, Response } from "express";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
 import MarketBook from "../models/marketBookModel";
-
-interface UserRequest extends Request {
-  user?: { _id: string };
-}
+import { getUserOrFail } from "../utils/auth";
 
 export const addBookToMarket = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const userReq = req as UserRequest;
-    const { book, status, deadline } = userReq.body;
-    const userId = userReq.user?._id;
-    if (!userId) {
-      res.status(400).json("User not found in request.");
-      return;
-    }
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
 
+  try {
+    const { book, status, deadline } = req.body;
+    const userId = authUser._id;
     // Check if the book exists in books collection
     let bookToSave = await Book.findOne({ id: book.id });
     if (!bookToSave) bookToSave = await Book.create(book);
@@ -71,10 +65,12 @@ export const getUserBooksFromMarket = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
+
   try {
-    const userReq = req as UserRequest;
-    const userId = userReq.user?._id;
-    const { status } = userReq.query;
+    const userId = authUser._id;
+    const { status } = req.query;
 
     const user = await User.findById(userId)
       .populate({ path: "market", populate: { path: "book" } })
@@ -107,6 +103,9 @@ export const getMarketBooksByUserId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
+
   try {
     const marketBooks = await MarketBook.find({
       ownerId: req.params.id,
@@ -160,10 +159,12 @@ export const exchangeMarketBook = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userReq = req as UserRequest;
-    const userId = userReq.user?._id;
-    const marketBookId = userReq.params.id;
-    const { status, date } = userReq.body;
+    const user = getUserOrFail(req, res);
+    if (!user) return;
+
+    const userId = user._id;
+    const marketBookId = req.params.id;
+    const { status, date } = req.body;
 
     if (!status) {
       res.status(400).json("Status is required to make an exchange.");
@@ -215,12 +216,12 @@ export const getBorrowedBooks = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const userReq = req as UserRequest;
-  const userId = userReq.user?._id;
+  const user = getUserOrFail(req, res);
+  if (!user) return;
 
   try {
     const borrowedBooks = await MarketBook.find({
-      "exchangedWith.userId": userId,
+      "exchangedWith.userId": user._id,
       "exchangedWith.status": "borrow",
     })
       .populate("book")
@@ -236,14 +237,14 @@ export const getBorrowedFromMe = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const userReq = req as UserRequest;
-  const userId = userReq.user?._id;
+  const user = getUserOrFail(req, res);
+  if (!user) return;
 
   try {
     const booksBorrowedFromMe = await MarketBook.find({
-      ownerId: userId,
+      ownerId: user._id,
       "exchangedWith.status": "borrow",
-      "exchangedWith.userId": { $exists: true, $ne: userId },
+      "exchangedWith.userId": { $exists: true, $ne: user._id },
     })
       .populate("book")
       .populate("exchangedWith.userId", "name email");
@@ -251,5 +252,54 @@ export const getBorrowedFromMe = async (
     res.status(200).json(booksBorrowedFromMe);
   } catch (error: any) {
     res.status(500).json("Failed to fetch books borrowed from you.");
+  }
+};
+
+export const updateMarketBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const updated = await MarketBook.findOneAndUpdate(
+      { _id: req.params.id, ownerId: user._id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) {
+      res.status(404).json("Market book not found or unauthorized");
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err: any) {
+    res.status(400).json(err.message);
+  }
+};
+
+export const removeMarketBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const removed = await MarketBook.findOneAndDelete({
+      _id: req.params.id,
+      ownerId: user._id,
+    });
+
+    if (!removed) {
+      res.status(404).json("Market book not found or unauthorized");
+      return;
+    }
+
+    res.status(200).json(null);
+  } catch (err: any) {
+    res.status(500).json(err.message);
   }
 };
