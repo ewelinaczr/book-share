@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
@@ -11,19 +12,21 @@ export const metadata: Metadata = {
     "BookShare helps you discover, borrow, and exchange books with people in your community",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html>
       <body>
-        <Providers>
-          <Navigation />
-          {children}
-          <Footer />
-        </Providers>
+        <NextIntlClientProvider>
+          <Providers>
+            <div className={"page-wrapper"}>
+              <Navigation />
+              <main>{children}</main>
+              <Footer />
+            </div>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

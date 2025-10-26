@@ -1,7 +1,5 @@
 .container {
   padding: 8rem 4rem 0rem 4rem;
-  display: flex;
-  gap: 8rem;
   background: var(--bg-chat-gradient);
   height: calc(100vh - 6rem);
 }

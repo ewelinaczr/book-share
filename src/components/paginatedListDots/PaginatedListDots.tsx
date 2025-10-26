@@ -1,7 +1,6 @@
-import React from "react";
+import { useTranslations } from "next-intl";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styles from "./PaginatedListDots.module.css";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
 
 interface PaginatedListDotsProps {
   totalPages: number;
@@ -9,11 +8,15 @@ interface PaginatedListDotsProps {
   onPageChange: (page: number) => void;
 }
 
-const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
+export default function PaginatedListDots({
   totalPages,
   currentPage,
   onPageChange,
-}) => {
+}: PaginatedListDotsProps) {
+  const t = useTranslations();
+
+  if (totalPages < 1) return null;
+
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       onPageChange(page);
@@ -24,7 +27,7 @@ const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
     <div className={styles.pagination}>
       <button
         type="button"
-        aria-label="Previous page"
+        aria-label={t("buttons_previousPage")}
         className={styles.button}
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
@@ -32,20 +35,24 @@ const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
         <IoIosArrowBack />
       </button>
 
-      {[...Array(totalPages)].map((_, i) => (
-        <span
-          key={i}
-          onClick={() => goToPage(i + 1)}
-          className={`${styles.dot} ${
-            currentPage === i + 1 ? styles.active : ""
-          }`}
-          aria-label={`Page ${i + 1}`}
-        />
-      ))}
+      {Array.from({ length: totalPages }, (_, i) => {
+        const page = i + 1;
+        return (
+          <button
+            key={page}
+            type="button"
+            onClick={() => goToPage(page)}
+            className={`${styles.dot} ${
+              currentPage === page ? styles.active : ""
+            }`}
+            aria-label={`Page ${page}`}
+          />
+        );
+      })}
 
       <button
         type="button"
-        aria-label="Next page"
+        aria-label={t("buttons_nextPage")}
         className={styles.button}
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
@@ -54,6 +61,4 @@ const PaginatedListDots: React.FC<PaginatedListDotsProps> = ({
       </button>
     </div>
   );
-};
-
-export default PaginatedListDots;
+}

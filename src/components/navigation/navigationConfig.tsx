@@ -1,26 +1,37 @@
-import { IoNotificationsOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
 import { BsEnvelope } from "react-icons/bs";
-import { Abril_Fatface } from "next/font/google";
+import { IoSettingsOutline } from "react-icons/io5";
 
 export const navLinks = [
-  { name: "Home", path: "home" },
-  { name: "My Bookshelf", path: "bookshelf" },
-  { name: "Browse", path: "browse" },
-  { name: "Pick Up Points", path: "pickUpPoints" },
+  { id: "home", name: "Home", path: "/home" },
+  {
+    id: "myBookshelf",
+    name: "My Bookshelf",
+    path: "/bookshelf",
+  },
+  {
+    id: "pickUpPoints",
+    name: "Pick Up Points",
+    path: "/pickUpPoints",
+  },
 ];
 export const navIconLinks = [
   {
-    name: "Notifications",
-    path: "notifications",
-    icon: <IoNotificationsOutline />,
+    id: "chat",
+    name: "Chat",
+    path: "/chat",
+    icon: <BsEnvelope />,
   },
-  { name: "Messages", path: "messages", icon: <BsEnvelope /> },
-  { name: "Profile", path: "profile", icon: <FiUser /> },
+  {
+    id: "profile",
+    name: "Profile",
+    path: "/profile",
+    icon: <FiUser />,
+  },
+  {
+    id: "settings",
+    name: "Settings",
+    path: "/settings",
+    icon: <IoSettingsOutline />,
+  },
 ];
-
-export const abrilFatface = Abril_Fatface({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});

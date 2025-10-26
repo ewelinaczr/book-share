@@ -7,8 +7,15 @@ import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
 import { io, Socket } from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { PrivateMessage } from "@/app/messages/page";
+// Local type for private messages (avoids dependency on external file)
+type PrivateMessage = {
+  from: string;
+  to: string;
+  message: string;
+  timestamp: string;
+};
 import { CgDetailsMore } from "react-icons/cg";
+import { useTranslations } from "next-intl";
 import { IoIosArrowBack } from "react-icons/io";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import TextArea from "@/components/textArea/TextArea";
@@ -28,6 +35,7 @@ enum Page {
 }
 
 export function BookMarketPanel({ book }: BookMarketPanelProps) {
+  const t = useTranslations();
   const marketBook = book?.book;
   const volumeInfo = marketBook?.volumeInfo;
   const ownerName = book?.ownerName;
@@ -77,22 +85,20 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
     return (
       <div className={styles.section}>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>
-            Contact the owner to arrange the exchange details
-          </p>
+          <p className={styles.infoLabel}>{t("market_contactOwner")}</p>
           <TextArea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message here..."
+            placeholder={t("market_typeYourMessage")}
           />
         </div>
         <Button
           type="submit"
-          ariaLabel="Send message to book owner"
+          ariaLabel={t("chat_sendToOwnerAria")}
           buttonType={ButtonType.PRIMARY}
           onClick={sendMessage}
         >
-          {`Message ${ownerName ?? "Owner"}`}
+          {ownerName ? t("market_messageOwner", { owner: ownerName }) : ""}
         </Button>
       </div>
     );
@@ -101,12 +107,17 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
   const renderOfferActionSection = () => {
     if (!status) return null;
     const offer = status.charAt(0).toUpperCase() + status.slice(1);
-    let text = `${offer} Book`;
+    let text = t("market_offerBook", { offer });
     if (status === MarketBookStatus.BORROW) {
       const currentDate = new Date();
       const oneMonthLater = new Date(currentDate);
       oneMonthLater.setMonth(currentDate.getMonth() + 1);
-      text = `${offer} Book for 1 month, till ${oneMonthLater.toLocaleDateString()}`;
+
+      const text = t("market_offerBookForDuration", {
+        offer,
+        duration: "1 month",
+        endDate: oneMonthLater.toLocaleDateString() ?? "",
+      });
     }
     return (
       <div className={styles.section}>
@@ -115,11 +126,11 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         </div>
         <Button
           type="submit"
-          ariaLabel="Exchange book"
+          ariaLabel={t("buttons_addBookToMarket")}
           buttonType={ButtonType.PRIMARY}
           onClick={() => exchangeBook()}
         >
-          {`${offer} Book`}
+          {offer}
         </Button>
       </div>
     );
@@ -160,33 +171,34 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
           ))}
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>genres</p>
+          <p className={styles.infoLabel}>{t("bookDetails_genres")}</p>
           {categories?.map((c) => (
             <p key={c}>{c}</p>
           ))}
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>rating</p>
+          <p className={styles.infoLabel}>{t("bookDetails_rating")}</p>
           <div className={styles.ratingContainer}>
             <CiStar />
             <p>
               {averageRating ?? (
-                <span className={styles.notRated}>Not rated yet</span>
+                <span className={styles.notRated}>
+                  {t("bookDetails_notRated")}
+                </span>
               )}
             </p>
             {ratingsCount ? <p>{`(${ratingsCount})`}</p> : null}
           </div>
         </div>
         <div className={styles.info}>
-          <p className={styles.infoLabel}>description</p>
+          <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
           <p className={styles.description}>{description}</p>
           <div className={styles.button}>
             <SmallButton
-              text="Show more"
+              text={t("market_showMore")}
               icon={<CgDetailsMore />}
-              ariaLabel="Show more description"
+              ariaLabel={t("market_showMoreAria")}
               onClick={() => setPage(Page.DESCRIPTION)}
-              customStyles={{ width: "11rem" }}
             />
           </div>
         </div>
@@ -218,7 +230,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
     return (
       <section className={styles.pageContainer}>
         <div className={styles.info}>
-          <div className={styles.infoLabel}>description</div>
+          <div className={styles.infoLabel}>{t("bookDetails_description")}</div>
           <p
             className={`${styles.fullDescription} ${styles.scrollableElement}`}
           >
@@ -226,11 +238,10 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
           </p>
           <div className={styles.button}>
             <SmallButton
-              text="Go back"
+              text={t("buttons_goBack")}
               icon={<IoIosArrowBack />}
-              ariaLabel="Go back to book details"
+              ariaLabel={t("buttons_goBackToDetails")}
               onClick={() => setPage(Page.BOOK_DETAILS)}
-              customStyles={{ width: "11rem" }}
             />
           </div>
         </div>
@@ -256,7 +267,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         <div className={styles.actionContainer}>
           <Button
             type="submit"
-            ariaLabel="Switch between Book Details and Exchange Book"
+            ariaLabel={t("buttons_toggleTheme")}
             buttonType={ButtonType.PRIMARY}
             onClick={() =>
               setPage(
@@ -265,8 +276,8 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
             }
           >
             {page === Page.BOOK_DETAILS
-              ? "Exchange Book"
-              : "Back to Book Details"}
+              ? t("market_offerAction")
+              : t("market_backToDetails")}
           </Button>
         </div>
       </div>

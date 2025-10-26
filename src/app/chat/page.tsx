@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
-import styles from "./messages.module.css";
+import styles from "./Chat.module.css";
 import Button, { ButtonType } from "@/components/buttons/Button";
 
 export interface PrivateMessage {

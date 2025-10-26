@@ -3,7 +3,8 @@
   align-items: center;
   justify-content: center;
   gap: 4rem;
-  height: calc(100vh - 6rem);
+  height: calc(100vh);
+  margin-top: 8rem;
 }
 
 .formContainer {
@@ -68,6 +69,13 @@
   width: 20px;
   height: 20px;
   margin-right: 8px;
+}
+
+.plainButton {
+  background-color: transparent;
+  border: none;
+  margin-left: 0.6rem;
+  font-weight: bold;
 }
 
 @media (max-width: 1150px) {

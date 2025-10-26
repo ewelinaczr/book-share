@@ -6,7 +6,7 @@ export const PieChartGraphCustomLabel = (props: any) => {
     outerRadius,
     name,
     index,
-    fill, // slice color
+    fill,
   }: {
     cx: number;
     cy: number;
@@ -21,19 +21,15 @@ export const PieChartGraphCustomLabel = (props: any) => {
 
   const RADIAN = Math.PI / 180;
 
-  // Offset distances
   const lineLength = Number(outerRadius) + 30;
   const textOffset = Number(outerRadius) + 45;
 
-  // Line end coordinates
   const lineX = cx + lineLength * Math.cos(-midAngle * RADIAN);
   const lineY = cy + lineLength * Math.sin(-midAngle * RADIAN);
 
-  // Text coordinates
   const textX = cx + textOffset * Math.cos(-midAngle * RADIAN);
   const textY = cy + textOffset * Math.sin(-midAngle * RADIAN);
 
-  // Clean and split name
   const rawName = name.includes("&") ? name.split("&")[0].trim() : name.trim();
 
   const lines = rawName.includes("-")

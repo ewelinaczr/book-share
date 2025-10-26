@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import styles from "./BookListPanel.module.css";
 
 import List from "@/components/list/List";
@@ -39,6 +40,7 @@ export default function BookListPanel<T>({
   getData,
 }: BookListPanelProps<T>) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
+  const t = useTranslations();
 
   const renderEmptyList = () => {
     return (
@@ -46,7 +48,7 @@ export default function BookListPanel<T>({
         <div className={styles.header}>
           <span className={styles.title}>{title}</span>
         </div>
-        <div className={styles.emptyList}>List is empty</div>
+        <div className={styles.emptyList}>{t("market_emptyList")}</div>
       </>
     );
   };
@@ -88,7 +90,7 @@ export default function BookListPanel<T>({
             </BookDetails>
           ) : (
             <div className={styles.noSelectedItem}>
-              Choose a book to explore its details
+              {t("market_chooseBook")}
             </div>
           )}
         </>

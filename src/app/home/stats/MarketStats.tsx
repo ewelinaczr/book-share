@@ -1,55 +1,27 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useGetAllMarketBooksQuery } from "@/api/marketApi";
-import PieChartGraph from "@/app/statsGraphs/PieChartGraph";
+import { getTranslations } from "next-intl/server";
+import { getMarketStats } from "./getMarketStats";
 import Header from "@/components/headers/Header";
+import GenreChart from "./GenreChart";
+import StatusChart from "./StatusChart";
 import styles from "./MarketStats.module.css";
 
-function MarketStats() {
-  const { data } = useGetAllMarketBooksQuery({});
-  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>(
-    {}
-  );
-  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({});
-
-  useEffect(() => {
-    const categoryCount: Record<string, number> = {};
-    const statusCount: Record<string, number> = {};
-
-    data?.forEach((item) => {
-      if (!item.book?.volumeInfo) return;
-      // Categories
-      item.book?.volumeInfo.categories?.forEach((category) => {
-        categoryCount[category] = (categoryCount[category] || 0) + 1;
-      });
-
-      // Status
-      const status = item.status;
-      const key = `${
-        String(status).charAt(0).toUpperCase() + String(status).slice(1)
-      }`;
-      statusCount[key] = (statusCount[key] || 0) + 1;
-    });
-
-    setCategoryCounts(categoryCount);
-    setStatusCounts(statusCount);
-  }, [data]);
+export default async function MarketStats() {
+  const t = await getTranslations();
+  const { categoryCounts, statusCounts } = await getMarketStats();
 
   return (
     <section className={styles.statsContainer}>
-      <Header label="Market Insights" />
+      <Header label={t("market_marketInsights")} />
       <div className={styles.grid}>
         <article className={styles.container}>
-          <h2 className={styles.title}>Top Offers Genres</h2>
-          <PieChartGraph data={categoryCounts} outerRadius={80} />
+          <h2 className={styles.title}>{t("market_topOffersGenres")}</h2>
+          <GenreChart categoryCounts={categoryCounts} />
         </article>
         <article className={styles.container}>
-          <h2 className={styles.title}>Offers Status</h2>
-          <PieChartGraph data={statusCounts} />
+          <h2 className={styles.title}>{t("market_offersStatus")}</h2>
+          <StatusChart statusCounts={statusCounts} />
         </article>
       </div>
     </section>
   );
 }
-
-export default MarketStats;

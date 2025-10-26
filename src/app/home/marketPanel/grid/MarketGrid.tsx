@@ -22,13 +22,15 @@ export default function MarketGrid({
 }: MarketGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [visibleItemsCount, setVisibleItemsCount] = useState(1);
-  const gridRef = useRef(null);
+  const gridRef = useRef<HTMLUListElement | null>(null);
+
+  const validBooks = useMemo(() => books.filter((b) => b.book), [books]);
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const width = entry.contentRect.width;
-        const cols = Math.floor(width / ITEM_MIN_WIDTH);
+        const cols = Math.max(1, Math.floor(width / ITEM_MIN_WIDTH));
         setVisibleItemsCount(cols * ROW_COUNT);
       }
     });
@@ -40,51 +42,37 @@ export default function MarketGrid({
     return () => resizeObserver.disconnect();
   }, []);
 
-  const currentItems = useMemo(
-    () =>
-      books
-        .filter((book) => book.book)
-        .slice(
-          (currentPage - 1) * visibleItemsCount,
-          currentPage * visibleItemsCount
-        ),
-    [books, visibleItemsCount, currentPage]
-  );
+  const currentItems = useMemo(() => {
+    const start = (currentPage - 1) * visibleItemsCount;
+    const end = currentPage * visibleItemsCount;
+    return validBooks.slice(start, end);
+  }, [validBooks, visibleItemsCount, currentPage]);
+
+  const totalPages = Math.ceil(validBooks.length / visibleItemsCount);
+  const isFullGrid = currentItems.length >= visibleItemsCount / ROW_COUNT;
 
   return (
     <div className={styles.container}>
-      <ul
-        className={
-          currentItems.length >= visibleItemsCount / ROW_COUNT
-            ? styles.grid
-            : styles.smallGrid
-        }
-        ref={gridRef}
-      >
-        {currentItems?.map((i) => {
-          if (!i.book) {
-            return null;
-          }
-          return (
-            <li key={i.book._id}>
-              <ListItem<MarketBook>
-                item={i}
-                selectItem={selectItem}
-                selected={selectedItemId === i.book._id}
-                getTitle={(i) => i.book.volumeInfo.title}
-                getImageSrc={(i) =>
-                  i.book.volumeInfo.imageLinks?.smallThumbnail ??
-                  i.book.volumeInfo.imageLinks?.thumbnail ??
-                  null
-                }
-              />
-            </li>
-          );
-        })}
+      <ul className={isFullGrid ? styles.grid : styles.smallGrid} ref={gridRef}>
+        {currentItems.map((i) => (
+          <li key={i.book._id}>
+            <ListItem<MarketBook>
+              item={i}
+              selectItem={selectItem}
+              selected={selectedItemId === i.book._id}
+              getTitle={(i) => i.book.volumeInfo.title}
+              getImageSrc={(i) =>
+                i.book.volumeInfo.imageLinks?.smallThumbnail ??
+                i.book.volumeInfo.imageLinks?.thumbnail ??
+                null
+              }
+            />
+          </li>
+        ))}
       </ul>
       <div className={styles.dots}>
         <PaginatedListDots
-          totalPages={Math.ceil(books.length / visibleItemsCount)}
+          totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />

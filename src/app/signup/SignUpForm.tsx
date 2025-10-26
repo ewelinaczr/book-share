@@ -1,21 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { validateEmail } from "../../../shared/validators/emailValidator";
-import { validatePassword } from "../../../shared/validators/passwordValidator";
-import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
-import { SlKey } from "react-icons/sl";
-import { FaRegUser } from "react-icons/fa6";
-import { pacifico } from "../fonts";
+import { useSignupMutation } from "@/api/userApi";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import { pacifico } from "../fonts";
+import Image from "next/image";
 import styles from "../login/LogInForm.module.css";
 
-import Input from "@/components/inputs/Input";
-import Image from "next/image";
-import Button, { ButtonType } from "@/components/buttons/Button";
-import ButtonPlain from "@/components/buttons/ButtonPlain";
+import { SignupFields } from "./SignUpFields";
+import { SignupError } from "./SignUpError";
+import { SignupActions } from "./SignUpAction";
+import { GoogleSignupButton } from "./GoogleSignUpButton";
 
 type SignupFormInputs = {
   name: string;
@@ -25,65 +23,49 @@ type SignupFormInputs = {
 };
 
 export function SignUpForm() {
+  const t = useTranslations();
+  const router = useRouter();
+  const [formError, setFormError] = useState("");
+  const [signup] = useSignupMutation();
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInputs>();
-  const [formError, setFormError] = useState("");
-  const router = useRouter();
-
-  const onSubmit = async (data: SignupFormInputs) => {
-    setFormError("");
-
-    try {
-      const loginRes = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (loginRes?.error) {
-        setFormError("Account created, but login failed. Try manually.");
-      } else {
-        router.push("/");
-      }
-    } catch (err) {
-      console.error("Signup error:", err);
-      setFormError("Something went wrong. Please try again.");
-    }
-  };
 
   const password = watch("password");
 
-  const renderGoogleLoginButton = () => {
-    return (
-      <Button
-        type="submit"
-        ariaLabel="Sign in with Google"
-        disabled={isSubmitting}
-        buttonType={ButtonType.SECONDARY}
-        onClick={() => signIn("google")}
-      >
-        <div className={styles.googleButton}>
-          <img
-            className={styles.googleIcon}
-            src="/google.png"
-            alt="Google logo"
-          />
-          Sign in with Google
-        </div>
-      </Button>
-    );
-  };
+  const onSubmit = useCallback(
+    async (data: SignupFormInputs) => {
+      setFormError("");
+      try {
+        await signup(data).unwrap();
+        const loginRes = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+
+        if (loginRes?.error) {
+          setFormError(t("signup_accountCreatedLoginFailed"));
+        } else {
+          router.push("/");
+        }
+      } catch (err) {
+        setFormError(t("signup_somethingWentWrong"));
+      }
+    },
+    [signup, router, t]
+  );
 
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         <Image
-          src={"/reading2.jpg"}
-          alt={"Illustration of people reading books"}
+          src="/reading2.jpg"
+          alt="Illustration of people reading books"
           width={410}
           height={410}
         />
@@ -91,80 +73,30 @@ export function SignUpForm() {
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <p className={`${pacifico.className} ${styles.formTitle}`}>
-            Sign up with email
+            {t("signup_signUpButton")} with email
           </p>
-          <Input
-            id="name"
-            label="Full Name"
-            type="text"
-            placeholder="Enter your name"
-            icon={<FaRegUser />}
-            {...register("name", { required: "Name is required" })}
-            error={errors.name?.message}
+          <SignupFields
+            register={register}
+            errors={errors}
+            password={password}
           />
-          <Input
-            id="email"
-            label="Email"
-            type="email"
-            icon={<span>@</span>}
-            placeholder="Enter your e-mail"
-            {...register("email", {
-              required: "Email is required",
-              validate: (value) =>
-                validateEmail(value) || "Invalid email format",
-            })}
-            error={errors.email?.message}
-          />
-          <Input
-            id="password"
-            label="Password"
-            type="password"
-            placeholder="Enter your password"
-            icon={<SlKey />}
-            {...register("password", {
-              required: "Password is required",
-              validate: (value) =>
-                validatePassword(value) ||
-                "Password must be at least 8 characters long and contain letters and numbers",
-            })}
-            error={errors.password?.message}
-          />
-          <Input
-            id="passwordConfirm"
-            label="Confirm Password"
-            type="password"
-            placeholder="Enter your password"
-            icon={<SlKey />}
-            {...register("passwordConfirm", {
-              required: "Please confirm your password",
-              validate: (value) =>
-                confirmPassword(password, value) || "Passwords do not match",
-            })}
-            error={errors.passwordConfirm?.message}
-          />
-          <div className={styles.error}>
-            {formError ? <p>{formError}</p> : null}
-          </div>
-          <div className={styles.buttonContainer}>
-            <Button
-              type="submit"
-              ariaLabel="Sign up"
-              disabled={isSubmitting}
-              buttonType={ButtonType.PRIMARY}
-            >
-              {isSubmitting ? "Signing Up..." : "Sign Up"}
-            </Button>
-          </div>
+          <SignupError message={formError} />
+          <SignupActions isSubmitting={isSubmitting} />
           <p className={styles.redirectText}>
-            Already have an account?
-            <ButtonPlain
-              text="Log In"
-              ariaLabel="Log In"
+            {t("signup_alreadyHaveAccount")}
+            <button
+              type="button"
+              aria-label={t("signup_login")}
+              className={styles.plainButton}
               onClick={() => router.push("/login")}
-            />
+            >
+              {t("signup_login")}
+            </button>
           </p>
         </form>
-        <div className={styles.googleLogIn}> {renderGoogleLoginButton()}</div>
+        <div className={styles.googleLogIn}>
+          <GoogleSignupButton isSubmitting={isSubmitting} />
+        </div>
       </div>
     </div>
   );
