@@ -1,5 +1,6 @@
 .container {
   position: relative;
+  margin: 4rem 4rem 2rem 4rem;
 }
 
 .header {
@@ -25,4 +26,16 @@
 .stars {
   display: flex;
   align-items: center;
+}
+
+.loaderContainer,
+.errorContainer {
+  margin: 4rem;
+  display: flex;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem 2rem 2rem;
+  }
 }

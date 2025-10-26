@@ -74,6 +74,7 @@
   "market_noBooksFound": "Brak wyników. Zmień kryteria wyszukiwania",
   "market_loadingError": "Wystąpił błąd ładowania",
   "market_loading": "Wyszukiwanie...",
+  "market_myOffers": "Moje wypożyczenia",
 
   "bookshelf_addBookTitle": "Dodaj książkę na półkę",
   "bookshelf_status": "Kategoria",
@@ -95,6 +96,7 @@
   "bookshelf_ratings": "Moja ocena",
   "bookshelf_readingActivity": "Aktywność czytelnicza",
   "bookshelf_pageCount": "stron",
+  "bookshelf_error": "Twoja półka jest teraz niedostępna. Spróbuj później.",
 
   "popup_open": "Otwórz",
   "popup_close": "Zamknij",
@@ -125,7 +127,7 @@
   "signup_passwordRequired": "Hasło jest wymagane",
   "signup_passwordMin": "Hasło musi mieć co najmniej 8 znaków i zawierać litery oraz cyfry",
   "signup_passwordsDoNotMatch": "Hasła się nie zgadzają",
-  "signup_accountCreatedLoginFailed": "Konto utworzone, ale logowanie nie powiodło się_ Spróbuj ręcznie_",
+  "signup_accountCreatedLoginFailed": "Konto utworzone, ale logowanie nie powiodło się_ Spróbuj ręcznie.",
   "signup_somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie.",
   "signup_signingUp": "Rejestrowanie_",
   "signup_pleaseConfirmPassword": "Potwierdź swoje hasło",
@@ -158,6 +160,7 @@
   "chat_sendToOwnerAria": "Wyślij wiadomość do właściciela książki",
   "chat_noMessages": "Brak dostępnych wiadomości",
   "chat_messages": "Wiadomości",
+  "chat_error": "Wystąpił błąd. Spróbuj ponownie później",
 
   "labels_selected": "wybrano",
   "placeholders_isbn": "ISBN",
