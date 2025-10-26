@@ -68,7 +68,7 @@
   "market_noBooksFound": "No books found. Try to change criteria.",
   "market_loadingError": "Error loading bookshelf.",
   "market_loading": "Loading...",
-  "market_choodeBook": "",
+  "market_myOffers": "My offers",
 
   "bookshelf_addBookTitle": "Add book to the Bookshelf",
   "bookshelf_status": "Category",
@@ -90,6 +90,7 @@
   "bookshelf_ratings": "My rating",
   "bookshelf_readingActivity": "Reading activity",
   "bookshelf_pageCount": "pages",
+  "bookshelf_error": "Failed to load your bookshelf. Please try again later.",
 
   "popup_open": "Open",
   "popup_close": "Close",
@@ -153,6 +154,7 @@
   "chat_sendToOwnerAria": "Send message to book owner",
   "chat_noMessages": "No conversations available",
   "chat_messages": "Messages",
+  "chat_error": "Error occured. Try again later,",
 
   "labels_selected": "selected",
   "placeholders_isbn": "ISBN",

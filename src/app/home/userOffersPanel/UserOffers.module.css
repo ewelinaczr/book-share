@@ -1,5 +1,7 @@
 .container {
-  position: relative;
+  margin: 2rem 4rem 4rem 4rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -18,9 +20,15 @@
   padding: 0.2rem 0.6rem;
 }
 
-.emptyContainer {
+.loaderContainer,
+.errorContainer {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem 4rem 2rem;
+  }
 }
