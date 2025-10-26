@@ -20,9 +20,11 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider>
           <Providers>
-            <Navigation />
-            {children}
-            <Footer />
+            <div className={"page-wrapper"}>
+              <Navigation />
+              <main>{children}</main>
+              <Footer />
+            </div>
           </Providers>
         </NextIntlClientProvider>
       </body>

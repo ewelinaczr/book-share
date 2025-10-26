@@ -6,7 +6,7 @@ interface StatsOverviewProps {
   favoritePublisher?: string;
   ownedBooksCount?: number;
   longestBook?: GoogleBooksVolumeInfo;
-  readBooksCount?: number;
+  readBooksCount: number;
   t: (key: string) => string;
 }
 
@@ -29,7 +29,9 @@ export default function StatsOverview({
         <div className={styles.textBlock}>
           <p>{longestBook?.title}</p>
           <p>{longestBook?.authors?.[0]}</p>
-          <p>{`${longestBook?.pageCount} pages`}</p>
+          <p>
+            {longestBook?.pageCount} {t("bookshelf_pageCount")}
+          </p>
         </div>
       </article>
 

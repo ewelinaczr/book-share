@@ -8,6 +8,16 @@ import styles from "./BookshelfStats.module.css";
 export default async function BookshelfStats() {
   const t = await getTranslations();
 
+  const books = await getBookshelfStats();
+
+  if (!books) {
+    return (
+      <div className={styles.statsContainer}>
+        <span className={styles.emptyStats}>{t("bookshelf_emptyStats")}</span>
+      </div>
+    );
+  }
+
   const {
     categoryCounts,
     ratingCounts,
@@ -17,7 +27,7 @@ export default async function BookshelfStats() {
     ownedBooksCount,
     longestBook,
     readBooksCount,
-  } = await getBookshelfStats();
+  } = books;
 
   return (
     <section className={styles.statsContainer}>

@@ -199,7 +199,6 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
               icon={<CgDetailsMore />}
               ariaLabel={t("market_showMoreAria")}
               onClick={() => setPage(Page.DESCRIPTION)}
-              customStyles={{ width: "11rem" }}
             />
           </div>
         </div>
@@ -243,7 +242,6 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
               icon={<IoIosArrowBack />}
               ariaLabel={t("buttons_goBackToDetails")}
               onClick={() => setPage(Page.BOOK_DETAILS)}
-              customStyles={{ width: "11rem" }}
             />
           </div>
         </div>

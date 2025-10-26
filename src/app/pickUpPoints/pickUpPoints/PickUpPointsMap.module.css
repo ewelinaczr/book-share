@@ -1,5 +1,4 @@
 .panelContainer {
-  margin: 2rem 4rem 5rem 4rem;
   display: flex;
   flex-direction: column;
 }

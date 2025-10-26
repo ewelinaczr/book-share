@@ -23,8 +23,9 @@
 }
 
 .smallInsights {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -42,10 +43,14 @@
 }
 
 .statContainer {
-  display: flex;
-  gap: 1rem;
   width: 100%;
+  height: 100%;
   max-width: 100%;
+  padding: 2rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-direction: column;
 }
 
 .title {
@@ -55,9 +60,9 @@
 
 .emptyStats {
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
-  margin: 4rem 0rem;
   text-align: center;
 }
 
@@ -67,10 +72,16 @@
   }
   .smallInsights {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0;
     margin-bottom: 1rem;
   }
+
+  .statContainer {
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+
   .grid {
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;

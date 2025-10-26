@@ -18,7 +18,7 @@ export default function Settings() {
     fetchLocale();
   }, []);
 
-  const handleChange = async (locale: string) => {
+  const handleLanguageChange = async (locale: string) => {
     await setLocale(locale); // call server action
     setSelectedLocale(locale);
     window.location.reload(); // reload to apply new locale
@@ -26,16 +26,19 @@ export default function Settings() {
 
   return (
     <main className={styles.container}>
-      <Header label={t("settings_language")} />
-      <select
-        aria-label="Select language"
-        value={selectedLocale}
-        className={styles.select}
-        onChange={(e) => handleChange(e.target.value)}
-      >
-        <option value="en">{t("settings_en")}</option>
-        <option value="pl">{t("settings_pl")}</option>
-      </select>
+      <div className={styles.setting}>
+        <Header label={t("settings_language")} />
+        <select
+          id="selectLanguage"
+          aria-label="Select language"
+          value={selectedLocale}
+          className={styles.select}
+          onChange={(e) => handleLanguageChange(e.target.value)}
+        >
+          <option value="en">{t("settings_en")}</option>
+          <option value="pl">{t("settings_pl")}</option>
+        </select>
+      </div>
     </main>
   );
 }

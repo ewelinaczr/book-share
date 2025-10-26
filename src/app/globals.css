@@ -154,6 +154,16 @@ path.leaflet-interactive:focus {
   min-height: 15rem;
 }
 
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
 /* For Large Desktop View */
 @media (min-width: 1200px) {
 }

@@ -58,7 +58,6 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
             icon={<CgDetailsMore />}
             aria-expanded={page === Page.DESCRIPTION}
             onClick={() => setPage(Page.DESCRIPTION)}
-            customStyles={{ width: "11rem" }}
           />
         </div>
       </div>
@@ -92,7 +91,6 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
               icon={<IoIosArrowBack />}
               aria-expanded={page === Page.SPOT_DETAILS}
               onClick={() => setPage(Page.SPOT_DETAILS)}
-              customStyles={{ width: "11rem" }}
             />
           </div>
         </div>

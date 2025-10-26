@@ -127,7 +127,6 @@ export default function BookDetails<T>({
           }
           icon={<FaCircleInfo />}
           onClick={() => setShowMore(!showMore)}
-          customStyles={{ width: "12rem" }}
         />
       </div>
     </div>
