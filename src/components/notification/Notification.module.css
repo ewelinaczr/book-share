@@ -1,0 +1,7 @@
+.notificationSuccess {
+  color: var(--color-notification-success);
+}
+
+.notificationError {
+  color: var(--color-notification-error);
+}
