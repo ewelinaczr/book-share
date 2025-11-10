@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import cn from "classnames";
 import { navIconLinks } from "./navigationConfig";
 
 import { usePathname } from "next/navigation";
@@ -23,11 +24,12 @@ function NavIconLinks() {
       {navIconLinks.map((link) => (
         <li
           key={link.name}
-          className={`${styles.navIconLink} ${
+          className={cn(
+            styles.navIconLink,
             link.path === pathname
               ? styles.navIconLinkNameSelected
               : styles.navLinkName
-          }`}
+          )}
         >
           <Link href={link.path} className={styles.round}>
             <div>{link.icon}</div>

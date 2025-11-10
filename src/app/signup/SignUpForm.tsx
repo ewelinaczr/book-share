@@ -7,6 +7,7 @@ import { useSignupMutation } from "@/api/userApi";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { pacifico } from "../fonts";
+import cn from "classnames";
 import Image from "next/image";
 import styles from "../login/LogInForm.module.css";
 
@@ -72,7 +73,7 @@ export function SignUpForm() {
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <p className={`${pacifico.className} ${styles.formTitle}`}>
+          <p className={cn(pacifico.className, styles.formTitle)}>
             {t("signup_signUpButton")} with email
           </p>
           <SignupFields

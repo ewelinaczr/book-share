@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import Image from "next/image";
 import styles from "./ListItem.module.css";
 
@@ -28,7 +29,7 @@ export default function ListItem<T>({
         onClick={() => selectItem(item)}
         aria-pressed={selected}
         aria-label={`${title} ${selected ? "selected" : ""}`}
-        className={`${styles.container} ${selected ? styles.selected : ""}`}
+        className={cn(styles.container, { [styles.selected]: selected })}
       >
         {imageSrc ? (
           <div className={styles.imageWrapper}>

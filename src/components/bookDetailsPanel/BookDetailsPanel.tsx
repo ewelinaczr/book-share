@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import cn from "classnames";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
 import { useTranslations } from "next-intl";
@@ -28,9 +29,10 @@ export default function BookDetails<T>({
     return (
       <div
         id="book-details"
-        className={`${styles.detailsContainer} ${
+        className={cn(
+          styles.detailsContainer,
           showMore ? styles.visible : styles.hidden
-        }`}
+        )}
       >
         <div className={styles.majorInfo}>
           <div className={styles.info}>
@@ -92,9 +94,7 @@ export default function BookDetails<T>({
         </div>
         <div className={styles.info}>
           <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
-          <p
-            className={`${styles.fullDescription} ${styles.scrollableElement}`}
-          >
+          <p className={cn(styles.fullDescription, styles.scrollableElement)}>
             {data.description}
           </p>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { IoIosArrowBack } from "react-icons/io";
 import { useTranslations } from "next-intl";
 import { GoogleBooksVolumeInfo } from "@interfaces/Book";
@@ -20,7 +21,7 @@ export default function DescriptionPage({
     <section className={styles.pageContainer}>
       <div className={styles.info}>
         <div className={styles.infoLabel}>{t("bookDetails_description")}</div>
-        <p className={`${styles.fullDescription} ${styles.scrollableElement}`}>
+        <p className={cn(styles.fullDescription, styles.scrollableElement)}>
           {volumeInfo.description}
         </p>
         <div className={styles.button}>

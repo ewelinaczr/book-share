@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import cn from "classnames";
 import { IoAddSharp } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { useTranslations } from "next-intl";
@@ -41,9 +42,10 @@ export default function Popup({
     <>
       {renderOpenCloseButton()}
       <article
-        className={`${
+        className={cn(
+          styles.container,
           popupOpened ? styles.containerVisible : styles.containerHidden
-        } ${styles.container}`}
+        )}
       >
         <div
           role="dialog"

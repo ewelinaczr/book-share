@@ -1,11 +1,12 @@
 import React from "react";
+import cn from "classnames";
 import styles from "./WelcomePanel.module.css";
 import { pacifico } from "@/app/fonts";
 
 function WelcomePanel() {
   return (
     <div className={styles.welcomeContainer}>
-      <span className={`${pacifico.className} ${styles.welcome}`}>
+      <span className={cn(pacifico.className, styles.welcome)}>
         Welcome to Book Market!
       </span>
       <p className={styles.welcomeStepContainer}>

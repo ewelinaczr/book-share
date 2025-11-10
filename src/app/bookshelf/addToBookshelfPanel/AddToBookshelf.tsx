@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import cn from "classnames";
 import { useForm } from "react-hook-form";
 import { AddBookshelfBook } from "@interfaces/BookshelfBook";
 import { useTranslations } from "next-intl";
@@ -40,7 +41,7 @@ export default function AddToBookshelf() {
       </form>
 
       {status && (
-        <div className={`${styles.message} ${messageClass}`}>
+        <div className={cn(styles.message, messageClass)}>
           {t(status.messageKey)}
         </div>
       )}
