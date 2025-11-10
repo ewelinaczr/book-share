@@ -15,7 +15,7 @@ export interface PrivateMessage {
   timestamp?: string;
 }
 
-function Messages() {
+export default function Messages() {
   const [selectedChatUserId, setSelectedChatUserId] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<PrivateMessage[]>([]);
   const t = useTranslations();
@@ -100,5 +100,3 @@ function Messages() {
     </div>
   );
 }
-
-export default Messages;

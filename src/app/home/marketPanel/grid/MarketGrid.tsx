@@ -55,19 +55,18 @@ export default function MarketGrid({
     <div className={styles.container}>
       <ul className={isFullGrid ? styles.grid : styles.smallGrid} ref={gridRef}>
         {currentItems.map((i) => (
-          <li key={i.book._id}>
-            <ListItem<MarketBook>
-              item={i}
-              selectItem={selectItem}
-              selected={selectedItemId === i.book._id}
-              getTitle={(i) => i.book.volumeInfo.title}
-              getImageSrc={(i) =>
-                i.book.volumeInfo.imageLinks?.smallThumbnail ??
-                i.book.volumeInfo.imageLinks?.thumbnail ??
-                null
-              }
-            />
-          </li>
+          <ListItem<MarketBook>
+            key={i.book._id}
+            item={i}
+            selectItem={selectItem}
+            selected={selectedItemId === i.book._id}
+            getTitle={(i) => i.book.volumeInfo.title}
+            getImageSrc={(i) =>
+              i.book.volumeInfo.imageLinks?.smallThumbnail ??
+              i.book.volumeInfo.imageLinks?.thumbnail ??
+              null
+            }
+          />
         ))}
       </ul>
       <div className={styles.dots}>

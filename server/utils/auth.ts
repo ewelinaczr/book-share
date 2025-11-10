@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { Response } from "express";
 import { IUser } from "../models/userModel";
 import { UserRequest } from "../controllers/authController";
@@ -53,4 +54,19 @@ export const getUserOrFail = (
   }
 
   return { _id: user._id };
+};
+
+export const handleError = (res: Response, err: any): void => {
+  if (err.name === "ValidationError") {
+    res.status(422).json({ error: "Validation failed", details: err.errors });
+  } else {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const comparePasswords = async (
+  candidatePassword: string,
+  userPassword: string
+): Promise<boolean> => {
+  return await bcrypt.compare(candidatePassword, userPassword);
 };

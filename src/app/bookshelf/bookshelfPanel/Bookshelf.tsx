@@ -2,9 +2,8 @@
 
 import { BookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
-import { CiStar } from "react-icons/ci";
-import { FaStar } from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import { RatingFooter } from "./RatingFooter";
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./Bookshelf.module.css";
@@ -19,23 +18,6 @@ const getBookData = (item: BookshelfBook) => {
       volumeInfo.imageLinks?.thumbnail ??
       null,
   };
-};
-
-const renderRatingFooter = (
-  selectedItem: BookshelfBook,
-  t: (key: string) => string
-) => {
-  const rating = +selectedItem.rating;
-  const stars = Array.from({ length: 5 }, (_, i) =>
-    i < rating ? <FaStar key={i} /> : <CiStar key={i} />
-  );
-
-  return (
-    <div className={styles.ratingContainer}>
-      {t("bookshelf_rating")}
-      <div className={styles.stars}>{stars}</div>
-    </div>
-  );
 };
 
 export default function Bookshelf() {
@@ -90,9 +72,9 @@ export default function Bookshelf() {
               title="Read"
               books={read.data}
               getData={getBookData}
-              renderFooter={(selectedItem) =>
-                renderRatingFooter(selectedItem, t)
-              }
+              renderFooter={(selectedItem) => (
+                <RatingFooter selectedItem={selectedItem} />
+              )}
             />
           </li>
         )}

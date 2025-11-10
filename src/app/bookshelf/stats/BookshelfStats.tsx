@@ -7,16 +7,7 @@ import styles from "./BookshelfStats.module.css";
 
 export default async function BookshelfStats() {
   const t = await getTranslations();
-
   const books = await getBookshelfStats();
-
-  if (!books) {
-    return (
-      <div className={styles.statsContainer}>
-        <span className={styles.emptyStats}>{t("bookshelf_emptyStats")}</span>
-      </div>
-    );
-  }
 
   const {
     categoryCounts,
@@ -27,26 +18,30 @@ export default async function BookshelfStats() {
     ownedBooksCount,
     longestBook,
     readBooksCount,
-  } = books;
+  } = books ?? {};
 
   return (
     <section className={styles.statsContainer}>
       <Header label={t("bookshelf_insights")} />
       <div className={styles.container}>
-        <StatsOverview
-          favoritePublisher={favoritePublisher}
-          ownedBooksCount={ownedBooksCount}
-          longestBook={longestBook}
-          readBooksCount={readBooksCount}
-          t={t}
-        />
-        <Charts
-          authorBooksCounts={authorBooksCounts}
-          categoryCounts={categoryCounts}
-          ratingCounts={ratingCounts}
-          monthlyBooksCounts={monthlyBooksCounts}
-          t={t}
-        />
+        {!books ? (
+          <span className={styles.emptyStats}>{t("bookshelf_emptyStats")}</span>
+        ) : (
+          <>
+            <StatsOverview
+              favoritePublisher={favoritePublisher}
+              ownedBooksCount={ownedBooksCount}
+              longestBook={longestBook}
+              readBooksCount={readBooksCount}
+            />
+            <Charts
+              authorBooksCounts={authorBooksCounts}
+              categoryCounts={categoryCounts}
+              ratingCounts={ratingCounts}
+              monthlyBooksCounts={monthlyBooksCounts}
+            />
+          </>
+        )}
       </div>
     </section>
   );

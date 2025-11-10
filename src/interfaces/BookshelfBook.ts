@@ -6,7 +6,7 @@ export enum BookStatus {
   READ = "read",
 }
 
-export interface BookshelfBook {
+export interface BookshelfBook extends Book {
   status: BookStatus;
   own: Boolean;
   rating: Number;

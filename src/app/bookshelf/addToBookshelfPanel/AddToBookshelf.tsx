@@ -41,7 +41,7 @@ export default function AddToBookshelf() {
 
       {status && (
         <div className={`${styles.message} ${messageClass}`}>
-          {status.message}
+          {t(status.messageKey)}
         </div>
       )}
     </Popup>

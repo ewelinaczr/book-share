@@ -1,22 +1,22 @@
 import React from "react";
 import styles from "./BookshelfStats.module.css";
 import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
+import { getTranslations } from "next-intl/server";
 
 interface StatsOverviewProps {
   favoritePublisher?: string;
   ownedBooksCount?: number;
   longestBook?: GoogleBooksVolumeInfo;
-  readBooksCount: number;
-  t: (key: string) => string;
+  readBooksCount?: number;
 }
 
-export default function StatsOverview({
+export default async function StatsOverview({
   favoritePublisher,
   ownedBooksCount,
   longestBook,
   readBooksCount,
-  t,
 }: StatsOverviewProps) {
+  const t = await getTranslations();
   return (
     <div className={styles.smallInsights}>
       <article className={styles.statContainer}>

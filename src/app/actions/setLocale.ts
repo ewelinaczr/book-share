@@ -6,7 +6,6 @@ export async function setLocale(locale: string) {
   const cookieStore = await cookies();
   cookieStore.set("locale", locale, {
     path: "/",
-    maxAge: 60 * 60 * 24 * 365,
   });
 }
 

@@ -17,10 +17,6 @@ export interface IUser extends Document {
   bookshelf: mongoose.Types.ObjectId[];
   market: mongoose.Types.ObjectId[];
   googleId?: string;
-  correctPassword?: (
-    candidatePassword: string,
-    userPassword: string
-  ) => Promise<boolean>;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -76,13 +72,6 @@ const UserSchema = new Schema<IUser>({
   bookshelf: [{ type: mongoose.Schema.Types.ObjectId, ref: "BookshelfBook" }],
   market: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarketBook" }],
 });
-
-UserSchema.methods.correctPassword = async function (
-  candidatePassword: string,
-  userPassword: string
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password") || !this.password) return next();
