@@ -1,4 +1,4 @@
-import { GoogleBooksVolume } from "@/interfaces/googleBooks/GoogleBooks";
+import { GoogleBooksVolume } from "@interfaces/Book";
 import axios from "axios";
 
 export async function fetchBookByTitleAndAuthor(title: string, author: string) {

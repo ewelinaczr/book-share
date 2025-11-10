@@ -1,5 +1,5 @@
 import React from "react";
-import { BookshelfBook } from "@/interfaces/BookshelfBook";
+import { IBookshelfBook } from "@interfaces/BookshelfBook";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { useTranslations } from "next-intl";
@@ -8,7 +8,7 @@ import styles from "./Bookshelf.module.css";
 export function RatingFooter({
   selectedItem,
 }: {
-  selectedItem: BookshelfBook;
+  selectedItem: IBookshelfBook;
 }) {
   const t = useTranslations();
   const rating = +selectedItem.rating;

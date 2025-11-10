@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./BookshelfStats.module.css";
-import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
+import { GoogleBooksVolumeInfo } from "@interfaces/Book";
 import { getTranslations } from "next-intl/server";
 
 interface StatsOverviewProps {

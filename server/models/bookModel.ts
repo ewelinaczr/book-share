@@ -1,30 +1,8 @@
-import mongoose, { Document, Schema } from "mongoose";
-
-export interface IBook extends Document {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors: string[];
-    publisher?: string;
-    publishedDate?: string;
-    description?: string;
-    pageCount?: number;
-    categories?: string[];
-    imageLinks?: {
-      smallThumbnail?: string;
-      thumbnail?: string;
-    };
-    industryIdentifiers?: Array<{
-      type?: string;
-      identifier?: string;
-    }>;
-    language?: string;
-    averageRating?: number;
-    ratingsCount?: number;
-  };
-}
+import mongoose, { Schema } from "mongoose";
+import { IBook } from "@interfaces/Book";
 
 const BookSchema = new Schema<IBook>({
+  _id: { type: String }, // MongoDB ObjectId as string
   id: { type: String, unique: true, required: true }, // Google Books API id
   volumeInfo: {
     title: { type: String, required: true },

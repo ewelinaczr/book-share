@@ -1,4 +1,4 @@
-import Book from "./Book";
+import { IBookItem } from "./Book";
 
 export enum BookStatus {
   READING = "reading",
@@ -6,17 +6,16 @@ export enum BookStatus {
   READ = "read",
 }
 
-export interface BookshelfBook extends Book {
+export interface IBookshelfBook extends IBookItem {
   status: BookStatus;
-  own: Boolean;
-  rating: Number;
-  book: Book; // Full Book object
-  createdAt: string;
+  own: boolean;
+  rating: number;
+  createdAt: Date;
 }
 
 export interface AddBookshelfBook {
   status: BookStatus;
-  own: Boolean;
-  rating: Number;
+  own: boolean;
+  rating: number;
   isbn: string;
 }

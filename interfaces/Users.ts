@@ -1,4 +1,5 @@
-export interface User {
+export interface IUser {
+  _id: string;
   name: string;
   email: string;
   photo?: string;
@@ -10,9 +11,4 @@ export interface User {
   bookshelf: string[];
   market: string[];
   googleId?: string;
-  correctPassword?: (
-    candidatePassword: string,
-    userPassword: string
-  ) => Promise<boolean>;
-  _id: string;
 }

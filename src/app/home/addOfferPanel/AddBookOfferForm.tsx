@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import { MarketBookStatus, AddMarketBook } from "@interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import styles from "./AddBookOffer.module.css";
 

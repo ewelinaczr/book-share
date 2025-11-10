@@ -1,7 +1,7 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useTranslations } from "next-intl";
-import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
+import { GoogleBooksVolumeInfo } from "@interfaces/Book";
 import SmallButton from "@/components/buttons/SmallButton";
 import styles from "./BookMarketPanel.module.css";
 

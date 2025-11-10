@@ -1,22 +1,12 @@
-import mongoose, { Document, Schema } from "mongoose";
-
-export interface IMarketBook extends Document {
-  status: "borrow" | "claim" | "trade";
-  deadline?: Date;
-  ownerId: mongoose.Types.ObjectId;
-  book: mongoose.Types.ObjectId;
-  exchangedWith?: {
-    userId: mongoose.Types.ObjectId;
-    status: "borrow" | "claim" | "trade";
-    date?: Date;
-  };
-}
+import mongoose, { Schema } from "mongoose";
+import { IMarketBook, MarketBookStatus } from "@interfaces/MarketBook";
 
 const MarketBookSchema = new Schema<IMarketBook>({
+  _id: { type: String },
   status: {
     type: String,
-    enum: ["borrow", "claim", "trade"],
-    default: "borrow",
+    enum: Object.values(MarketBookStatus),
+    default: MarketBookStatus.BORROW,
   },
   deadline: { type: Date },
   ownerId: {

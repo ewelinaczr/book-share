@@ -1,6 +1,6 @@
 import React from "react";
-import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
-import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { GoogleBooksVolumeInfo } from "@interfaces/Book";
+import { MarketBookStatus } from "@interfaces/MarketBook";
 import { CiStar } from "react-icons/ci";
 import { useTranslations } from "next-intl";
 import { CgDetailsMore } from "react-icons/cg";

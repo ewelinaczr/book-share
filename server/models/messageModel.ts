@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { Message } from "@interfaces/Message";
 
-const privateMessageSchema = new mongoose.Schema({
+const privateMessageSchema = new mongoose.Schema<Message>({
   from: { type: String, required: true },
   to: { type: String, required: true },
   message: { type: String, required: true },

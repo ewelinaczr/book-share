@@ -2,8 +2,8 @@ import React from "react";
 import Label from "@/components/label/Label";
 import MessageOwnerSection from "./MessageOwnerSection";
 import OfferActionSection from "./OfferActionSection";
-import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
-import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { GoogleBooksVolumeInfo } from "@interfaces/Book";
+import { MarketBookStatus } from "@interfaces/MarketBook";
 import styles from "./BookMarketPanel.module.css";
 
 interface ActionPageProps {

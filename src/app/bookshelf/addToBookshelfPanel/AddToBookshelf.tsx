@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
+import { AddBookshelfBook } from "@interfaces/BookshelfBook";
 import { useTranslations } from "next-intl";
 import { useAddBookToBookshelf } from "./useAddBookToBookshelf";
 import Button, { ButtonType } from "@/components/buttons/Button";

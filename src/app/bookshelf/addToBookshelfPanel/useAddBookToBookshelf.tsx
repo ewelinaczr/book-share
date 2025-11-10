@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
-import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
+import { AddBookshelfBook } from "@interfaces/BookshelfBook";
 
 export function useAddBookToBookshelf() {
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
