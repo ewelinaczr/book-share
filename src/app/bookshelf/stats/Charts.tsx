@@ -3,22 +3,22 @@ import DotGraph from "@/app/statsGraphs/DotGraph";
 import HorizontalBarGraph from "@/app/statsGraphs/HorizontalBarGraph";
 import PieChartGraph from "@/app/statsGraphs/PieChartGraph";
 import styles from "./BookshelfStats.module.css";
+import { getTranslations } from "next-intl/server";
 
 interface ChartsProps {
   authorBooksCounts?: { name: string; value: number }[];
   categoryCounts?: Record<string, number>;
   ratingCounts?: Record<string, number>;
   monthlyBooksCounts?: { month: string; count: number }[];
-  t: (key: string) => string;
 }
 
-export default function Charts({
+export default async function Charts({
   authorBooksCounts,
   categoryCounts,
   ratingCounts,
   monthlyBooksCounts,
-  t,
 }: ChartsProps) {
+  const t = await getTranslations();
   if (
     !categoryCounts ||
     !authorBooksCounts ||
@@ -29,12 +29,10 @@ export default function Charts({
   }
   return (
     <div className={styles.grid}>
-      {
-        <article className={styles.statContainer}>
-          <h2 className={styles.title}>{t("bookshelf_topGenres")}</h2>
-          <PieChartGraph data={categoryCounts} />
-        </article>
-      }
+      <article className={styles.statContainer}>
+        <h2 className={styles.title}>{t("bookshelf_topGenres")}</h2>
+        <PieChartGraph data={categoryCounts} />
+      </article>
 
       <article className={styles.statContainer}>
         <h2 className={styles.title}>{t("bookshelf_favoriteAuthors")}</h2>

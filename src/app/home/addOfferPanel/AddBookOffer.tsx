@@ -10,14 +10,17 @@ export default function AddBookOffer() {
   const t = useTranslations();
   const { onSubmit, status, isLoading } = useAddBookOffer();
 
+  const messageClass =
+    status?.status === "error" ? styles.error : styles.success;
+
   return (
     <Popup title={t("market_addBookOfferTitle")}>
       <AddBookForm onSubmit={onSubmit} isLoading={isLoading} />
-      <div className={styles.notification}>
-        {status?.message && (
-          <Notification message={status.message} status={status.status} />
-        )}
-      </div>
+      {status && (
+        <div className={`${styles.notification} ${messageClass}`}>
+          <Notification message={t(status.messageKey)} status={status.status} />
+        </div>
+      )}
     </Popup>
   );
 }

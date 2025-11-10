@@ -42,7 +42,7 @@ export default function AddBookForm({
           error={errors.status?.message}
         />
       </div>
-      <div className={styles.tittleAuthor}>
+      <div className={styles.titleAuthor}>
         <Input
           id="isbn"
           className={styles.input}

@@ -51,9 +51,7 @@ function List<T>({ items, renderItem }: ListProps<T>) {
       )}
       <ul className={styles.listContainer} ref={listRef} role="list">
         {items.map((item, index) => (
-          <li key={index} role="listitem">
-            {renderItem(item)}
-          </li>
+          <div key={index}>{renderItem(item)}</div>
         ))}
       </ul>
       {showArrows ? (

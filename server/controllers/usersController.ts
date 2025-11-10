@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { handleError } from "../utils/auth";
 import User from "../models/userModel";
 
 export const getAllUsers = async (
@@ -9,7 +10,7 @@ export const getAllUsers = async (
     const users = await User.find();
     res.status(200).json(users);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -20,12 +21,12 @@ export const getUserById = async (
   try {
     const user = await User.findById({ _id: req.params.id });
     if (!user) {
-      res.status(404).json("User not found");
+      res.status(404).json({ error: "User not found" });
       return;
     }
     res.status(200).json(user);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -37,7 +38,7 @@ export const updateUserLocation = async (
     const { lat, lng } = req.body;
 
     if (!lat || !lng) {
-      res.status(400).json("Missing latitude or longitude");
+      res.status(400).json({ error: "Missing latitude or longitude" });
       return;
     }
 
@@ -48,13 +49,13 @@ export const updateUserLocation = async (
     );
 
     if (!updatedUser) {
-      res.status(404).json("User not found");
+      res.status(404).json({ error: "User not found" });
       return;
     }
 
     res.status(200).json(updatedUser);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -68,12 +69,12 @@ export const updateUserProfile = async (
       runValidators: true,
     });
     if (!updatedUser) {
-      res.status(404).json("User not found");
+      res.status(404).json({ error: "User not found" });
       return;
     }
     res.status(200).json(updatedUser);
   } catch (err: any) {
-    res.status(400).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -84,11 +85,11 @@ export const deleteUserAccount = async (
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
-      res.status(404).json("User not found");
+      res.status(404).json({ error: "User not found" });
       return;
     }
     res.status(200).json(null);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };

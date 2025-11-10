@@ -1,48 +1,44 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
 import { AddMarketBook } from "@/interfaces/MarketBook";
-import { useTranslations } from "next-intl";
 
-interface Status {
-  status: "success" | "error";
-  message: string;
-}
+type Status =
+  | { status: "success"; messageKey: string }
+  | { status: "error"; messageKey: string }
+  | undefined;
 
 export function useAddBookOffer() {
-  const t = useTranslations();
-  const [status, setStatus] = useState<Status | undefined>(undefined);
   const [addBookToMarket, { isLoading, isSuccess, isError }] =
     useAddBookToMarketMutation();
 
-  useEffect(() => {
-    if (isError) {
-      setStatus({ status: "error", message: t("market_addBookError") });
-    }
-    if (isSuccess) {
-      setStatus({ status: "success", message: t("market_addBookSuccess") });
-    }
-  }, [isError, isSuccess, t]);
+  const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
+
+  const status: Status = useMemo(() => {
+    if (errorKey) return { status: "error", messageKey: errorKey };
+    if (isError) return { status: "error", messageKey: "market_addBookError" };
+    if (isSuccess)
+      return { status: "success", messageKey: "market_addBookSuccess" };
+    return undefined;
+  }, [isError, isSuccess, errorKey]);
 
   const onSubmit = async (data: AddMarketBook) => {
-    setStatus(undefined);
+    setErrorKey(undefined);
     try {
       const bookData = data.isbn
         ? await fetchBookByIsbn(data.isbn)
         : await fetchBookByTitleAndAuthor(data.title, data.author);
 
-      if (bookData) {
-        await addBookToMarket({ status: data.status, book: bookData }).unwrap();
-      } else {
-        setStatus({ status: "error", message: t("market_bookNotFound") });
+      if (!bookData) {
+        setErrorKey("market_bookNotFound");
+        return;
       }
+
+      await addBookToMarket({ status: data.status, book: bookData }).unwrap();
     } catch (err: any) {
-      setStatus({
-        status: "error",
-        message: err.message || t("market_addBookError"),
-      });
+      setErrorKey(err.message || "market_addBookError");
     }
   };
 
