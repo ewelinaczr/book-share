@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import styles from "./PickUpSpotPanel.module.css";
-import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import cn from "classnames";
+import { IPickUpSpot } from "@interfaces/PickUpSpots";
 import { pacifico } from "@/app/fonts";
 import { CgDetailsMore } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
-import WelcomePanel from "../../home/marketPanel/welcomePanel/WelcomePanel";
 import { useTranslations } from "next-intl";
+import WelcomePanel from "../../home/marketPanel/welcomePanel/WelcomePanel";
 import SmallButton from "@/components/buttons/SmallButton";
+import styles from "./PickUpSpotPanel.module.css";
 
 enum Page {
   SPOT_DETAILS = "spotDetails",
@@ -15,7 +16,7 @@ enum Page {
 }
 
 export interface PickUpSpotPanelProps {
-  spot: PickUpSpot | null;
+  spot: IPickUpSpot | null;
 }
 export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
   const [page, setPage] = useState<Page>(Page.SPOT_DETAILS);
@@ -40,7 +41,7 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
           <p className={styles.infoLabel}>{t("pickUp_description")}</p>
           <div className={styles.description}>
             <p className={styles.descriptionGeneral}>{description}</p>
-            <p className={`${pacifico.className} ${styles.featuresTitle}`}>
+            <p className={cn(pacifico.className, styles.featuresTitle)}>
               {t("pickUp_whatYoullFind")}
             </p>
             {features.map((f) => (
@@ -73,9 +74,7 @@ export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
       <div className={styles.pageContainer}>
         <div className={styles.info}>
           <p className={styles.infoLabel}>description</p>
-          <div
-            className={`${styles.fullDescription} ${styles.scrollableElement}`}
-          >
+          <div className={cn(styles.fullDescription, styles.scrollableElement)}>
             <p className={styles.descriptionGeneral}>{description}</p>
             {features.map((f) => (
               <div className={styles.feature} key={f.name}>

@@ -1,3 +1,4 @@
+import cn from "classnames";
 import { useTranslations } from "next-intl";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styles from "./PaginatedListDots.module.css";
@@ -42,9 +43,9 @@ export default function PaginatedListDots({
             key={page}
             type="button"
             onClick={() => goToPage(page)}
-            className={`${styles.dot} ${
-              currentPage === page ? styles.active : ""
-            }`}
+            className={cn(styles.dot, {
+              [styles.active]: currentPage === page,
+            })}
             aria-label={`Page ${page}`}
           />
         );

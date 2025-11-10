@@ -68,7 +68,7 @@ function MobileNav() {
           <ul className={styles.mobileNavIconLinks}>
             {renderMobileNavCloseButton()}
             {renderMobileNavItems()}
-            <li key="theme" className={`${styles.navIconLink}`}>
+            <li key="theme" className={styles.navIconLink}>
               <ThemeButton />
             </li>
             {renderAuthButtons()}

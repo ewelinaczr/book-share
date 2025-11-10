@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { pacifico } from "../fonts";
+import cn from "classnames";
 import styles from "./LogInForm.module.css";
 import Image from "next/image";
 
@@ -60,7 +61,7 @@ export function LogInForm() {
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <p className={`${pacifico.className} ${styles.formTitle}`}>
+          <p className={cn(pacifico.className, styles.formTitle)}>
             {t("login_title")}
           </p>
           <LoginFields register={register} errors={errors} />

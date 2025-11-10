@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 
-export interface PickUpSpot {
+export interface IPickUpSpot {
   icon: IconType;
   name: string;
   adress: string;

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Button.module.css";
+import cn from "classnames";
 
 export enum ButtonType {
   PRIMARY,
@@ -31,9 +32,10 @@ export default function Button({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
-      className={`${
-        buttonType === ButtonType.PRIMARY ? styles.primary : styles.secondary
-      } ${styles.button}`}
+      className={cn(
+        buttonType === ButtonType.PRIMARY ? styles.primary : styles.secondary,
+        styles.button
+      )}
       style={customStyles}
     >
       {children}

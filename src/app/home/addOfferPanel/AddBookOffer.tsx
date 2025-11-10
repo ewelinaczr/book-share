@@ -1,4 +1,5 @@
 "use client";
+import cn from "classnames";
 import { useTranslations } from "next-intl";
 import { useAddBookOffer } from "./useAddBookOffer";
 import AddBookForm from "./AddBookOfferForm";
@@ -17,7 +18,7 @@ export default function AddBookOffer() {
     <Popup title={t("market_addBookOfferTitle")}>
       <AddBookForm onSubmit={onSubmit} isLoading={isLoading} />
       {status && (
-        <div className={`${styles.notification} ${messageClass}`}>
+        <div className={cn(styles.notification, messageClass)}>
           <Notification message={t(status.messageKey)} status={status.status} />
         </div>
       )}

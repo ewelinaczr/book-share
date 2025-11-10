@@ -1,4 +1,5 @@
 "use client";
+import cn from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { io, Socket } from "socket.io-client";
@@ -78,9 +79,10 @@ export default function Chat({
           return (
             <li
               key={i}
-              className={`${styles.listItem} ${
+              className={cn(
+                styles.listItem,
                 isOwnMessage ? styles.own : styles.received
-              }`}
+              )}
             >
               {msg.message}
             </li>
