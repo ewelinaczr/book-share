@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useExchangeMarketBookMutation } from "@/api/marketApi";
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import { useBookSocket } from "./useBookSocket";
 import BookDetailsPage from "./BookDetailsPage";
@@ -13,7 +13,7 @@ import Button, { ButtonType } from "@/components/buttons/Button";
 import styles from "./BookMarketPanel.module.css";
 
 export interface BookMarketPanelProps {
-  book: MarketBook | null;
+  book: IMarketBook | null;
 }
 
 enum Page {

@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   gap: 4rem;
-  height: calc(100vh);
+  height: 100vh;
   margin-top: 8rem;
 }
 

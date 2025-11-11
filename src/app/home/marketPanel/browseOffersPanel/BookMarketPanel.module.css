@@ -1,6 +1,5 @@
 .container {
   background-color: var(--bg-color-page);
-  max-height: 53rem;
   margin-top: 2rem;
   z-index: 1000;
   padding: 2rem 3rem;
