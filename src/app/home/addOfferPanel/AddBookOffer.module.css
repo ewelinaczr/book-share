@@ -10,7 +10,7 @@
   margin-top: 1rem;
 }
 
-.tittleAuthor {
+.titleAuthor {
   display: flex;
   flex-direction: row;
   gap: 2rem;
@@ -21,7 +21,7 @@
 }
 
 @media (max-width: 850px) {
-  .tittleAuthor {
+  .tttleAuthor {
     flex-direction: column;
     gap: 0;
     width: 100%;

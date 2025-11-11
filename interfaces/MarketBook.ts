@@ -1,4 +1,4 @@
-import Book from "./Book";
+import { IBookItem } from "./Book";
 
 export enum MarketBookStatus {
   BORROW = "borrow",
@@ -6,18 +6,16 @@ export enum MarketBookStatus {
   TRADE = "trade",
 }
 
-export interface MarketBook {
+export interface IMarketBook extends IBookItem {
   status: MarketBookStatus;
   deadline?: Date;
   ownerName: string;
   ownerId: String; // User._id
-  book: Book; // Full Book object
   exchangedWith: {
     userId: string; // Who exchanged the book
     status: MarketBookStatus;
     date: Date; // Last exchanged date
   };
-  _id: string;
 }
 
 export interface AddMarketBook {

@@ -33,3 +33,12 @@ export interface GoogleBooksResponse {
   totalItems: number;
   items?: GoogleBooksVolume[];
 }
+
+export interface IBook extends GoogleBooksVolume {
+  _id?: string; // MongoDB ObjectId
+}
+
+export interface IBookItem {
+  _id?: string; // MongoDB ObjectId
+  book: IBook; // Full Book object
+}

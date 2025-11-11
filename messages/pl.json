@@ -67,7 +67,7 @@
   "market_borrowedUntil": "Borrowed until {deadline}",
   "market_offerType": "Oferta: {offetType}",
   "market_overdue": "Po czasie",
-  "market_daysLeft": "{daysLeft} days left",
+  "market_daysLeft": "zostało {daysLeft}",
   "market_chooseBook": "Wybierz książkę żeby zobaczyć szczegółowy opis",
   "market_emptyList": "Brak książek w tej kategorii",
   "market_backToDetails": "Szczegółowy opis",

@@ -1,6 +1,7 @@
 "use client";
+import cn from "classnames";
 import { useForm } from "react-hook-form";
-import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import { MarketBookStatus, AddMarketBook } from "@interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import styles from "./AddBookOffer.module.css";
 
@@ -34,7 +35,7 @@ export default function AddBookForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-      <div className={`${styles.inputContainer} ${styles.select}`}>
+      <div className={cn(styles.inputContainer, styles.select)}>
         <Select
           label={t("labels_status")}
           options={statusOptions}
@@ -42,7 +43,7 @@ export default function AddBookForm({
           error={errors.status?.message}
         />
       </div>
-      <div className={styles.tittleAuthor}>
+      <div className={styles.titleAuthor}>
         <Input
           id="isbn"
           className={styles.input}

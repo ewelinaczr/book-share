@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./List.module.css";
+import cn from "classnames";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 interface ListProps<T> {
@@ -51,9 +52,7 @@ function List<T>({ items, renderItem }: ListProps<T>) {
       )}
       <ul className={styles.listContainer} ref={listRef} role="list">
         {items.map((item, index) => (
-          <li key={index} role="listitem">
-            {renderItem(item)}
-          </li>
+          <div key={index}>{renderItem(item)}</div>
         ))}
       </ul>
       {showArrows ? (
@@ -61,12 +60,12 @@ function List<T>({ items, renderItem }: ListProps<T>) {
           type="button"
           aria-label="Show next page"
           onClick={scrollRight}
-          className={`${styles.arrow} ${styles.arrowRight}`}
+          className={cn(styles.arrow, styles.arrowRight)}
         >
           <IoIosArrowForward />
         </button>
       ) : (
-        <div className={`${styles.arrowPlaceholder} ${styles.arrowRight}`} />
+        <div className={cn(styles.arrowPlaceholder, styles.arrowRight)} />
       )}
     </div>
   );

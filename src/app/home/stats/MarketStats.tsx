@@ -2,8 +2,8 @@ import { getTranslations } from "next-intl/server";
 import { getMarketStats } from "./getMarketStats";
 import Header from "@/components/headers/Header";
 import GenreChart from "./GenreChart";
-import StatusChart from "./StatusChart";
 import styles from "./MarketStats.module.css";
+import PieChartGraph from "@/app/statsGraphs/PieChartGraph";
 
 export default async function MarketStats() {
   const t = await getTranslations();
@@ -19,7 +19,7 @@ export default async function MarketStats() {
         </article>
         <article className={styles.container}>
           <h2 className={styles.title}>{t("market_offersStatus")}</h2>
-          <StatusChart statusCounts={statusCounts} />
+          <PieChartGraph data={statusCounts} />
         </article>
       </div>
     </section>

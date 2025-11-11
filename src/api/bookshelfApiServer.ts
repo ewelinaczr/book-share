@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth/next";
 import { authConfig } from "@/app/api/auth/[...nextauth]/config";
-import { BookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
+import { IBookshelfBook, BookStatus } from "@interfaces/BookshelfBook";
 
 export async function getAllBookshelfBooks(
   status?: BookStatus
-): Promise<BookshelfBook[]> {
+): Promise<IBookshelfBook[]> {
   const session = await getServerSession(authConfig);
   const token = session?.token;
   const apiUrl = "http://localhost:4000";

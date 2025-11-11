@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import cn from "classnames";
 import { IoMoonOutline } from "react-icons/io5";
 import { GoSun } from "react-icons/go";
 import { useTranslations } from "next-intl";
@@ -37,9 +38,7 @@ function ThemeButton() {
       </div>
       <button
         aria-label={t("buttons_toggleTheme")}
-        className={`${styles.toogle} ${
-          theme === "dark" ? styles.selected : ""
-        }`}
+        className={cn(styles.toogle, { [styles.selected]: theme === "dark" })}
         onClick={toggleTheme}
       ></button>
     </div>

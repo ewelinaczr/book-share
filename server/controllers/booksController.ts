@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { handleError } from "../utils/auth";
 import Book from "../models/bookModel";
 
 export const getBooks = async (req: Request, res: Response): Promise<void> => {
@@ -6,7 +7,7 @@ export const getBooks = async (req: Request, res: Response): Promise<void> => {
     const books = await Book.find();
     res.status(200).json(books);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -27,7 +28,7 @@ export const saveBook = async (req: Request, res: Response): Promise<void> => {
     const newBook = await Book.create(bookData);
     res.status(201).json(newBook);
   } catch (err: any) {
-    res.status(400).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -38,12 +39,12 @@ export const deleteBook = async (
   try {
     const deletedBook = await Book.findByIdAndDelete(req.params.id);
     if (!deletedBook) {
-      res.status(404).json("Book not found");
+      res.status(404).json({ error: "Book not found" });
       return;
     }
     res.status(200).json(null);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -57,12 +58,12 @@ export const updateBook = async (
       runValidators: true,
     });
     if (!updatedBook) {
-      res.status(404).json("Book not found");
+      res.status(404).json({ error: "Book not found" });
       return;
     }
     res.status(200).json(updatedBook);
   } catch (err: any) {
-    res.status(400).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -73,11 +74,11 @@ export const getBookById = async (
   try {
     const book = await Book.findOne({ _id: req.params.id });
     if (!book) {
-      res.status(404).json("Book not found");
+      res.status(404).json({ error: "Book not found" });
       return;
     }
     res.status(200).json(book);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };

@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { UserRequest } from "./authController";
 import { getUserOrFail } from "../utils/auth";
+import { handleError } from "../utils/auth";
 import mongoose from "mongoose";
 import User from "../models/userModel";
 import PrivateMessage from "../models/messageModel";
@@ -25,7 +26,7 @@ export const getMessageHistory = async (
 
     res.status(200).json(messages);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -44,7 +45,9 @@ export const getChatPartners = async (
     const otherUserIds = Array.from(
       new Set(
         messages.map((msg) =>
-          msg.from === user._id ? msg.to.toString() : msg.from.toString()
+          msg.from.toString() === user._id.toString()
+            ? msg.to.toString()
+            : msg.from.toString()
         )
       )
     );
@@ -70,9 +73,9 @@ export const getChatPartners = async (
       ],
     }).select("name _id googleId");
 
-    res.json(users);
-  } catch {
-    res.status(500).json("Failed to fetch messages.");
+    res.status(200).json(users);
+  } catch (err: any) {
+    handleError(res, err);
   }
 };
 
@@ -93,6 +96,6 @@ export const deleteChatHistory = async (
 
     res.status(200).json({ deletedCount: result.deletedCount });
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };

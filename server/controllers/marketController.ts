@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
+import { getUserOrFail } from "../utils/auth";
+import { handleError } from "../utils/auth";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
 import MarketBook from "../models/marketBookModel";
-import { getUserOrFail } from "../utils/auth";
 
 export const addBookToMarket = async (
   req: Request,
@@ -14,13 +15,12 @@ export const addBookToMarket = async (
   try {
     const { book, status, deadline } = req.body;
     const userId = authUser._id;
-    // Check if the book exists in books collection
     let bookToSave = await Book.findOne({ id: book.id });
     if (!bookToSave) bookToSave = await Book.create(book);
 
     const savedBook = await Book.findById(bookToSave._id);
     if (!savedBook || !savedBook._id) {
-      res.status(400).json("Book not found after creation.");
+      res.status(400).json({ error: "Book not found after creation." });
       return;
     }
     const bookId = savedBook._id.toString();
@@ -28,18 +28,16 @@ export const addBookToMarket = async (
     //Check if book already exists in user's market collection
     const user = await User.findById(userId).populate("market").lean();
     if (!user || !("market" in user)) {
-      res.status(400).json("User not found or market missing.");
+      res.status(400).json({ error: "User not found or market missing." });
       return;
     }
 
     const bookExists =
       Array.isArray(user.market) &&
-      user.market.some(
-        (marketBook: any) => marketBook.book?.toString() === bookId
-      );
+      user.market.some((entry: any) => entry.book?.toString() === bookId);
 
     if (bookExists) {
-      res.status(400).json("Book already exists in your market.");
+      res.status(400).json({ error: "Book already exists in your market." });
       return;
     }
 
@@ -57,7 +55,7 @@ export const addBookToMarket = async (
 
     res.status(201).json({ marketBook });
   } catch (err: any) {
-    res.status(400).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -77,7 +75,7 @@ export const getUserBooksFromMarket = async (
       .lean();
 
     if (!user || !("market" in user)) {
-      res.status(400).json("User not found or market missing.");
+      res.status(400).json({ error: "User not found or market missing." });
       return;
     }
 
@@ -95,7 +93,7 @@ export const getUserBooksFromMarket = async (
 
     res.status(200).json(filteredMarket);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -112,7 +110,7 @@ export const getMarketBooksByUserId = async (
     }).populate("book");
     res.status(200).json(marketBooks);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -150,7 +148,7 @@ export const getAllBooksFromMarket = async (
 
     res.status(200).json(filteredMarket);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -158,16 +156,18 @@ export const exchangeMarketBook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  try {
-    const user = getUserOrFail(req, res);
-    if (!user) return;
+  const user = getUserOrFail(req, res);
+  if (!user) return;
 
+  try {
     const userId = user._id;
     const marketBookId = req.params.id;
     const { status, date } = req.body;
 
     if (!status) {
-      res.status(400).json("Status is required to make an exchange.");
+      res
+        .status(400)
+        .json({ error: "Status is required to make an exchange." });
       return;
     }
 
@@ -187,20 +187,20 @@ export const exchangeMarketBook = async (
       );
 
       if (!updated) {
-        res.status(404).json("MarketBook not found.");
+        res.status(404).json({ error: "MarketBook not found." });
         return;
       }
 
       res.status(200).json(updated);
     } else {
-      // Remove from the Market
       const removed = await MarketBook.findByIdAndDelete(marketBookId);
       if (!removed) {
-        res.status(404).json("MarketBook not found or already removed.");
+        res
+          .status(404)
+          .json({ error: "MarketBook not found or already removed." });
         return;
       }
 
-      // Remove the reference from the owner's market array
       await User.findByIdAndUpdate(removed.ownerId, {
         $pull: { market: marketBookId },
       });
@@ -208,7 +208,7 @@ export const exchangeMarketBook = async (
       res.status(200).json(removed);
     }
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -228,8 +228,8 @@ export const getBorrowedBooks = async (
       .populate("ownerId", "name location");
 
     res.status(200).json(borrowedBooks);
-  } catch (error: any) {
-    res.status(500).json("Failed to fetch borrowed books.");
+  } catch (err: any) {
+    handleError(res, err);
   }
 };
 
@@ -250,8 +250,8 @@ export const getBorrowedFromMe = async (
       .populate("exchangedWith.userId", "name email");
 
     res.status(200).json(booksBorrowedFromMe);
-  } catch (error: any) {
-    res.status(500).json("Failed to fetch books borrowed from you.");
+  } catch (err: any) {
+    handleError(res, err);
   }
 };
 
@@ -270,13 +270,13 @@ export const updateMarketBook = async (
     );
 
     if (!updated) {
-      res.status(404).json("Market book not found or unauthorized");
+      res.status(404).json({ error: "Market book not found or unauthorized" });
       return;
     }
 
     res.status(200).json(updated);
   } catch (err: any) {
-    res.status(400).json(err.message);
+    handleError(res, err);
   }
 };
 
@@ -294,12 +294,12 @@ export const removeMarketBook = async (
     });
 
     if (!removed) {
-      res.status(404).json("Market book not found or unauthorized");
+      res.status(404).json({ error: "Market book not found or unauthorized" });
       return;
     }
 
     res.status(200).json(null);
   } catch (err: any) {
-    res.status(500).json(err.message);
+    handleError(res, err);
   }
 };

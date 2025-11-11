@@ -1,27 +1,9 @@
-import mongoose, { Document, models, Schema } from "mongoose";
+import mongoose, { models, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { validateEmail } from "../../shared/validators/emailValidator";
 import { validatePassword } from "../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../shared/validators/passwordConfirmValidator";
-
-export interface IUser extends Document {
-  _id: string;
-  name: string;
-  email: string;
-  photo?: string;
-  password?: string; // optional for Google users
-  passwordConfirm?: string; // optional for Google users
-  rating?: number;
-  experience?: number;
-  location?: { lat: string; lng: string };
-  bookshelf: mongoose.Types.ObjectId[];
-  market: mongoose.Types.ObjectId[];
-  googleId?: string;
-  correctPassword?: (
-    candidatePassword: string,
-    userPassword: string
-  ) => Promise<boolean>;
-}
+import { IUser } from "@interfaces/Users";
 
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: [true, "Please provide your name"] },
@@ -41,8 +23,8 @@ const UserSchema = new Schema<IUser>({
     minlength: [8, "Password must be at least 8 characters"],
     validate: [
       {
-        validator: function (val: string) {
-          return this.googleId || validatePassword(val);
+        validator: function (this: IUser, val: string): boolean {
+          return this.googleId ? true : validatePassword(val) === true;
         },
         message:
           "Password must be at least 8 characters and include letters and numbers",
@@ -76,13 +58,6 @@ const UserSchema = new Schema<IUser>({
   bookshelf: [{ type: mongoose.Schema.Types.ObjectId, ref: "BookshelfBook" }],
   market: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarketBook" }],
 });
-
-UserSchema.methods.correctPassword = async function (
-  candidatePassword: string,
-  userPassword: string
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password") || !this.password) return next();

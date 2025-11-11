@@ -1,9 +1,8 @@
 import React from "react";
 import Select from "@/components/inputs/Select";
 import Input from "@/components/inputs/Input";
-import { BookStatus } from "@/interfaces/BookshelfBook";
+import { AddBookshelfBook, BookStatus } from "@interfaces/BookshelfBook";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
 
 interface Props {
   register: UseFormRegister<AddBookshelfBook>;

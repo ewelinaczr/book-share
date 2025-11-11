@@ -1,6 +1,6 @@
 import { getAllBookshelfBooks } from "@/api/bookshelfApiServer";
-import { BookStatus } from "@/interfaces/BookshelfBook";
-import { GoogleBooksVolumeInfo } from "@/interfaces/googleBooks/GoogleBooks";
+import { BookStatus } from "@interfaces/BookshelfBook";
+import { GoogleBooksVolumeInfo } from "@interfaces/Book";
 
 export async function getBookshelfStats() {
   try {

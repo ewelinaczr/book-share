@@ -1,36 +1,30 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
-import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
-import { useTranslations } from "next-intl";
-
-interface Status {
-  status: "success" | "error";
-  message: string;
-}
+import { AddBookshelfBook } from "@interfaces/BookshelfBook";
 
 export function useAddBookToBookshelf() {
-  const t = useTranslations();
-  const [status, setStatus] = useState<Status | undefined>(undefined);
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
     useAddBookToBookshelfMutation();
 
-  useEffect(() => {
-    if (isError) {
-      setStatus({ status: "error", message: t("bookshelf_addBookError") });
-    }
-    if (isSuccess) {
-      setStatus({ status: "success", message: t("bookshelf_addBookSuccess") });
-    }
-  }, [isError, isSuccess, t]);
+  const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
+
+  const status = useMemo(() => {
+    if (errorKey) return { status: "error", messageKey: errorKey };
+    if (isError)
+      return { status: "error", messageKey: "bookshelf_addBookError" };
+    if (isSuccess)
+      return { status: "success", messageKey: "bookshelf_addBookSuccess" };
+    return undefined;
+  }, [isError, isSuccess, errorKey]);
 
   const onSubmit = async (data: AddBookshelfBook) => {
-    setStatus(undefined);
+    setErrorKey(undefined);
     try {
       const bookData = await fetchBookByIsbn(data.isbn);
       if (!bookData) {
-        setStatus({ status: "error", message: t("bookshelf_bookNotFound") });
+        setErrorKey("bookshelf_bookNotFound");
         return;
       }
 
@@ -41,10 +35,7 @@ export function useAddBookToBookshelf() {
         book: bookData,
       }).unwrap();
     } catch (err: any) {
-      setStatus({
-        status: "error",
-        message: err.message || t("bookshelf_addBookError"),
-      });
+      setErrorKey("bookshelf_addBookError");
     }
   };
 
