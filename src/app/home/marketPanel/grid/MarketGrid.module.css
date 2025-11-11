@@ -40,12 +40,12 @@
     min-height: 0;
   }
   .grid {
-    width: 100vw;
-    max-width: calc(100vw - 2 * 2rem);
+    width: 100%;
+    max-width: unset;
     margin-top: 0rem;
     row-gap: 3rem;
   }
   .dots {
-    width: calc(100vw - 2 * 2rem);
+    width: 100%;
   }
 }

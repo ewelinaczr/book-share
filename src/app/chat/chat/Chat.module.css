@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* Full height excluding text area and buttons (scrolling chat with actions visible) */
   height: calc(100vh - 22rem);
-
   gap: 1rem;
   width: 100%;
 }
@@ -11,7 +11,6 @@
 .list {
   list-style: none;
   width: 100%;
-  /* max-height: calc(100vh - 26rem); */
   overflow-y: auto;
   padding-right: 2rem;
   font-size: 1.2rem;
@@ -90,11 +89,7 @@
 }
 
 @media (max-width: 1150px) {
-  .container {
-    max-width: calc(100vw - 4rem);
-  }
   .action {
-    max-width: calc(100vw - 4rem);
     flex-direction: column;
   }
   .buttons {

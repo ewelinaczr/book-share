@@ -13,8 +13,6 @@
   scroll-behavior: smooth;
   padding: 15px;
   scrollbar-width: none;
-  width: calc(100% - 15px);
-  max-width: calc(100% - 15px);
   overflow: hidden;
 }
 
