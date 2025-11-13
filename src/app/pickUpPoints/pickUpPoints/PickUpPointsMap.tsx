@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import { IPickUpSpot } from "@interfaces/PickUpSpots";
 import { MapWrapper } from "../../home/marketPanel/map/MapWrapper";
 import { PickUpSpotPanel } from "../pickUpSpotPanel/PickUpSpotPanel";
 import { pickUpSpots } from "../../home/marketPanel/map/PickUpSpotsMock";
@@ -10,18 +10,18 @@ import Header from "@/components/headers/Header";
 
 function PickUpPointsMap() {
   const [displayedPickUpSpot, setDisplayedPickUpSpot] =
-    useState<PickUpSpot | null>(null);
+    useState<IPickUpSpot | null>(null);
 
   useEffect(() => {
     setDisplayedPickUpSpot(pickUpSpots[0]);
   }, []);
 
   return (
-    <div className={styles.panelContainer}>
+    <div className={styles.panelContainer} id="nextstep-step13">
       <Header label={"Explore Pick Up Points"} />
       <div className={styles.mapContainer}>
         <MapWrapper
-          selectItem={(item: PickUpSpot) => setDisplayedPickUpSpot(item)}
+          selectItem={(item: IPickUpSpot) => setDisplayedPickUpSpot(item)}
         />
         <PickUpSpotPanel spot={displayedPickUpSpot} />
       </div>

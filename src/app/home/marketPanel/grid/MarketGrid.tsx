@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import ListItem from "@/components/listItem/ListItem";
 import PaginatedListDots from "@/components/paginatedListDots/PaginatedListDots";
 import styles from "./MarketGrid.module.css";
@@ -10,8 +10,8 @@ const ITEM_MIN_WIDTH = 110;
 const ROW_COUNT = 3;
 
 export interface MarketGridProps {
-  books: MarketBook[];
-  selectItem: (item: MarketBook | null) => void;
+  books: IMarketBook[];
+  selectItem: (item: IMarketBook | null) => void;
   selectedItemId?: string;
 }
 
@@ -55,7 +55,7 @@ export default function MarketGrid({
     <div className={styles.container}>
       <ul className={isFullGrid ? styles.grid : styles.smallGrid} ref={gridRef}>
         {currentItems.map((i) => (
-          <ListItem<MarketBook>
+          <ListItem<IMarketBook>
             key={i.book._id}
             item={i}
             selectItem={selectItem}

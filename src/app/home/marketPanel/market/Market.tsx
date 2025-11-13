@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import { useMarketByStatus } from "./useMarketByStatus";
 import { filterBooks } from "./filterBooks";
 import { BookMarketPanel } from "../browseOffersPanel/BookMarketPanel";
@@ -16,7 +16,7 @@ export default function Market() {
   const { data, isLoading, isError, error } = useMarketByStatus();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchCategory, setSearchCategory] = useState("allGenres");
-  const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);
+  const [displayedBook, setDisplayedBook] = useState<IMarketBook | null>(null);
   const t = useTranslations();
 
   const marketBooks = useMemo(() => {
@@ -69,7 +69,7 @@ export default function Market() {
   };
 
   return (
-    <section className={styles.marketPanelContainer}>
+    <section className={styles.marketPanelContainer} id="nextstep-step7">
       <Header label={t("market_exploreMarketBooks")} />
       <Search
         books={data}

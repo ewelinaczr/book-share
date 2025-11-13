@@ -7,6 +7,7 @@ export enum BookStatus {
 }
 
 export interface IBookshelfBook extends IBookItem {
+  _id?: string;
   status: BookStatus;
   own: boolean;
   rating: number;

@@ -12,9 +12,11 @@ import Header from "@/components/headers/Header";
 export default function Popup({
   children,
   title,
+  onboardingId,
 }: {
   children: React.ReactNode;
   title: string;
+  onboardingId?: string;
 }) {
   const [popupOpened, setPopupOpened] = useState<boolean>(false);
   const t = useTranslations();
@@ -23,6 +25,7 @@ export default function Popup({
     return (
       <button
         type="button"
+        id={onboardingId}
         aria-label={popupOpened ? t("popup_close") : t("popup_open")}
         aria-expanded={popupOpened}
         className={styles.openButton}

@@ -1,10 +1,10 @@
 import { getServerSession } from "next-auth/next";
 import { authConfig } from "@/app/api/auth/[...nextauth]/config";
-import { MarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import { IMarketBook, MarketBookStatus } from "@interfaces/MarketBook";
 
 export async function getAllMarketBooks(
   status?: MarketBookStatus
-): Promise<MarketBook[]> {
+): Promise<IMarketBook[]> {
   const session = await getServerSession(authConfig);
   const token = session?.token; // depends on your callbacks setup
   const apiUrl = "http://localhost:4000";

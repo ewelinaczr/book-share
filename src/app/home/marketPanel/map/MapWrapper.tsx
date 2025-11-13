@@ -1,13 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
-import { PickUpSpot } from "@/interfaces/PickUpSpot";
+import { IPickUpSpot } from "@interfaces/PickUpSpots";
 import dynamic from "next/dynamic";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./MapWrapper.module.css";
 
 export interface MapWrapperProps {
-  selectItem: (item: PickUpSpot) => void;
+  selectItem: (item: IPickUpSpot) => void;
 }
 
 export function MapWrapper({ selectItem }: MapWrapperProps) {

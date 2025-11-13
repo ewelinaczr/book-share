@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
-import type { BookshelfBook, BookStatus } from "../interfaces/BookshelfBook";
+import type { IBookshelfBook, BookStatus } from "@interfaces/BookshelfBook";
 
 // Custom baseQuery that injects JWT token into Authorization header
 const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
@@ -24,7 +24,7 @@ export const bookshelfApi = createApi({
   baseQuery: baseQueryWithAuth,
   tagTypes: ["Bookshelf"],
   endpoints: (builder) => ({
-    getBookshelf: builder.query<BookshelfBook[], { status?: BookStatus }>({
+    getBookshelf: builder.query<IBookshelfBook[], { status?: BookStatus }>({
       query: (params) => ({
         url: "/",
         method: "GET",
@@ -32,16 +32,17 @@ export const bookshelfApi = createApi({
       }),
       providesTags: ["Bookshelf"],
     }),
-    addBookToBookshelf: builder.mutation<BookshelfBook, Partial<BookshelfBook>>(
-      {
-        query: (body) => ({
-          url: "/",
-          method: "POST",
-          body,
-        }),
-        invalidatesTags: ["Bookshelf"],
-      }
-    ),
+    addBookToBookshelf: builder.mutation<
+      IBookshelfBook,
+      Partial<IBookshelfBook>
+    >({
+      query: (body) => ({
+        url: "/",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Bookshelf"],
+    }),
   }),
 });
 

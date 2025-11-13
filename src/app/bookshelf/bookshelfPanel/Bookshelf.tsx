@@ -47,7 +47,7 @@ export default function Bookshelf() {
 
   return (
     <section className={styles.container}>
-      <ul className={styles.listContainer}>
+      <ul className={styles.listContainer} id="nextstep-step11">
         {Array.isArray(reading.data) && reading.data.length > 0 && (
           <li>
             <BookListPanel<IBookshelfBook>

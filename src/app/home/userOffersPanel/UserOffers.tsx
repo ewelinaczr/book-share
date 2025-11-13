@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import {
   useGetBorrowedBooksQuery,
@@ -16,7 +15,6 @@ import Header from "@/components/headers/Header";
 
 export default function UserOffers() {
   const t = useTranslations();
-  const { data: session } = useSession();
 
   const {
     data: myBooks,
@@ -85,7 +83,7 @@ export default function UserOffers() {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.container} id="nextstep-step8">
       <Header label={t("market_myOffers")} />
       {renderLoadingSpinner()}
       {renderErrorMesage()}

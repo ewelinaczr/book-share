@@ -1,15 +1,15 @@
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import SmallLabel from "@/components/label/SmallLabel";
 
 export function useRenderLabels() {
   const t = useTranslations();
 
-  const renderStatusLabel = (book: MarketBook) => (
+  const renderStatusLabel = (book: IMarketBook) => (
     <SmallLabel label={t(`market_${book.status}`)} />
   );
 
-  const renderProgressLabel = (book: MarketBook) => {
+  const renderProgressLabel = (book: IMarketBook) => {
     const end = new Date(book.exchangedWith.date);
     const start = new Date(end);
     start.setMonth(start.getMonth() - 1);

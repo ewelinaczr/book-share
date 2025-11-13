@@ -1,5 +1,28 @@
-import mongoose, { Schema } from "mongoose";
-import { IBook } from "@interfaces/Book";
+import mongoose, { Document, Schema } from "mongoose";
+
+export interface IBook extends Document {
+  id: string;
+  volumeInfo: {
+    title: string;
+    authors: string[];
+    publisher?: string;
+    publishedDate?: string;
+    description?: string;
+    pageCount?: number;
+    categories?: string[];
+    imageLinks?: {
+      smallThumbnail?: string;
+      thumbnail?: string;
+    };
+    industryIdentifiers?: Array<{
+      type?: string;
+      identifier?: string;
+    }>;
+    language?: string;
+    averageRating?: number;
+    ratingsCount?: number;
+  };
+}
 
 const BookSchema = new Schema<IBook>({
   _id: { type: String }, // MongoDB ObjectId as string

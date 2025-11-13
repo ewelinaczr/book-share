@@ -5,6 +5,7 @@ import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
 import Footer from "@/components/footer/Footer";
+import OnboardingWrapper from "./onboarding/OnboardingWrapper";
 
 export const metadata: Metadata = {
   title: "BookShare — Share and Discover Books Locally",
@@ -20,11 +21,13 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider>
           <Providers>
-            <div className={"page-wrapper"}>
-              <Navigation />
-              <main>{children}</main>
-              <Footer />
-            </div>
+            <OnboardingWrapper>
+              <div className={"page-wrapper"}>
+                <Navigation />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </OnboardingWrapper>
           </Providers>
         </NextIntlClientProvider>
       </body>

@@ -1,6 +1,6 @@
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 
-export function getBookData(item: MarketBook) {
+export function getBookData(item: IMarketBook) {
   return {
     ...item.book.volumeInfo,
     id: item.book._id ?? "",
