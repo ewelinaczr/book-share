@@ -23,7 +23,7 @@ export default async function BookshelfStats() {
   return (
     <section className={styles.statsContainer}>
       <Header label={t("bookshelf_insights")} />
-      <div className={styles.container}>
+      <div className={styles.container} id="nextstep-step10">
         {!books ? (
           <span className={styles.emptyStats}>{t("bookshelf_emptyStats")}</span>
         ) : (

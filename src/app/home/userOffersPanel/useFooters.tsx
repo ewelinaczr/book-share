@@ -1,4 +1,4 @@
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import { FaBookOpen } from "react-icons/fa6";
 import { useTranslations } from "next-intl";
 import styles from "./UserOffers.module.css";
@@ -6,7 +6,7 @@ import styles from "./UserOffers.module.css";
 export function useRenderFooters() {
   const t = useTranslations();
 
-  const renderOfferTypeFooter = (book: MarketBook) => (
+  const renderOfferTypeFooter = (book: IMarketBook) => (
     <div>
       <div className={styles.statusContainer}>
         <FaBookOpen />
@@ -16,7 +16,7 @@ export function useRenderFooters() {
     </div>
   );
 
-  const renderMessageOwnerFooter = (book: MarketBook) => (
+  const renderMessageOwnerFooter = (book: IMarketBook) => (
     <div>
       <div className={styles.statusContainer}>
         <FaBookOpen />

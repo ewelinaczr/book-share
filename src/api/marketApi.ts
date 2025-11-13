@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
-import type { MarketBook, MarketBookStatus } from "../interfaces/MarketBook";
+import type { IMarketBook, MarketBookStatus } from "@interfaces/MarketBook";
 
 // Custom baseQuery that injects JWT token into Authorization header
 const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
@@ -26,7 +26,7 @@ export const marketApi = createApi({
   endpoints: (builder) => ({
     // Get all books from the market (optionally filter by status)
     getAllMarketBooks: builder.query<
-      MarketBook[],
+      IMarketBook[],
       { status?: MarketBookStatus }
     >({
       query: (params) => ({
@@ -38,7 +38,7 @@ export const marketApi = createApi({
       providesTags: ["Market"],
     }),
     // Add a book to the market
-    addBookToMarket: builder.mutation<MarketBook, Partial<MarketBook>>({
+    addBookToMarket: builder.mutation<IMarketBook, Partial<IMarketBook>>({
       query: (body) => ({
         url: "/",
         method: "POST",
@@ -49,7 +49,7 @@ export const marketApi = createApi({
     }),
     // Get current user's market books (optionally filter by status)
     getUserMarketBooks: builder.query<
-      MarketBook[],
+      IMarketBook[],
       { status?: MarketBookStatus }
     >({
       query: (params) => ({
@@ -61,7 +61,7 @@ export const marketApi = createApi({
       providesTags: ["Market"],
     }),
     // Get all market books by a specific user
-    getMarketBooksByUserId: builder.query<MarketBook[], string>({
+    getMarketBooksByUserId: builder.query<IMarketBook[], string>({
       query: (userId) => ({
         url: `/${userId}`,
         method: "GET",
@@ -71,7 +71,7 @@ export const marketApi = createApi({
     }),
     // Exchange book on market
     exchangeMarketBook: builder.mutation<
-      MarketBook,
+      IMarketBook,
       { bookId: string; status: MarketBookStatus; date?: Date }
     >({
       query: ({ bookId, status, date }) => ({
@@ -83,7 +83,7 @@ export const marketApi = createApi({
       invalidatesTags: ["Market"],
     }),
     // Get market books borrowed by my
-    getBorrowedBooks: builder.query<MarketBook[], void>({
+    getBorrowedBooks: builder.query<IMarketBook[], void>({
       query: () => ({
         url: "/exchange/borrowed",
         method: "GET",
@@ -92,7 +92,7 @@ export const marketApi = createApi({
       providesTags: ["Market"],
     }),
     // Get market books borrowed from my
-    getBorrowedFromMe: builder.query<MarketBook[], void>({
+    getBorrowedFromMe: builder.query<IMarketBook[], void>({
       query: () => ({
         url: "/exchange/borrowed-from-me",
         method: "GET",

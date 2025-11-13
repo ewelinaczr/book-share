@@ -7,6 +7,7 @@ export enum MarketBookStatus {
 }
 
 export interface IMarketBook extends IBookItem {
+  _id?: string;
   status: MarketBookStatus;
   deadline?: Date;
   ownerName: string;

@@ -5,13 +5,13 @@ import { CiSearch } from "react-icons/ci";
 import { SlArrowDown } from "react-icons/sl";
 import { useTranslations } from "next-intl";
 import { popularBookGenres } from "./searchConfig";
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
 import styles from "./Search.module.css";
 
 export interface SearchProps {
-  books: MarketBook[] | undefined;
+  books: IMarketBook[] | undefined;
   searchQuery: string;
   searchCategory: string;
   setSearchQuery: (q: string) => void;

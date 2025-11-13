@@ -1,5 +1,5 @@
 import { useGetAllMarketBooksQuery } from "@/api/marketApi";
-import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { MarketBookStatus } from "@interfaces/MarketBook";
 
 export function useMarketByStatus(status?: MarketBookStatus) {
   const { data, isLoading, isError, error } = useGetAllMarketBooksQuery({

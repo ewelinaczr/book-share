@@ -1,11 +1,26 @@
-import mongoose, { models, Schema } from "mongoose";
+import mongoose, { Document, models, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { validateEmail } from "../../shared/validators/emailValidator";
 import { validatePassword } from "../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../shared/validators/passwordConfirmValidator";
-import { IUser } from "@interfaces/Users";
+
+export interface IUser extends Document {
+  _id: string;
+  name: string;
+  email: string;
+  photo?: string;
+  password?: string; // optional for Google users
+  passwordConfirm?: string; // optional for Google users
+  rating?: number;
+  experience?: number;
+  location?: { lat: string; lng: string };
+  bookshelf: mongoose.Types.ObjectId[];
+  market: mongoose.Types.ObjectId[];
+  googleId?: string;
+}
 
 const UserSchema = new Schema<IUser>({
+  _id: { type: String },
   name: { type: String, required: [true, "Please provide your name"] },
   email: {
     type: String,
@@ -23,8 +38,8 @@ const UserSchema = new Schema<IUser>({
     minlength: [8, "Password must be at least 8 characters"],
     validate: [
       {
-        validator: function (this: IUser, val: string): boolean {
-          return this.googleId ? true : validatePassword(val) === true;
+        validator: function (val: string) {
+          return this.googleId || validatePassword(val);
         },
         message:
           "Password must be at least 8 characters and include letters and numbers",

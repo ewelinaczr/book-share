@@ -15,7 +15,7 @@ export default function AddBookOffer() {
     status?.status === "error" ? styles.error : styles.success;
 
   return (
-    <Popup title={t("market_addBookOfferTitle")}>
+    <Popup title={t("market_addBookOfferTitle")} onboardingId="nextstep-step9">
       <AddBookForm onSubmit={onSubmit} isLoading={isLoading} />
       {status && (
         <div className={cn(styles.notification, messageClass)}>

@@ -1,4 +1,4 @@
-import { MarketBook } from "@/interfaces/MarketBook";
+import { IMarketBook } from "@interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import { getBookData } from "./getBookdata";
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
@@ -6,12 +6,12 @@ import BookListPanel from "@/components/bookListPanel/BookListPanel";
 export default function BorrowedFromMePanel({
   books,
 }: {
-  books: MarketBook[];
+  books: IMarketBook[];
 }) {
   const t = useTranslations();
 
   return (
-    <BookListPanel<MarketBook>
+    <BookListPanel<IMarketBook>
       title={t("market_borrowedFromMe")}
       books={books}
       getData={getBookData}

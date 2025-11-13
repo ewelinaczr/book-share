@@ -12,7 +12,7 @@ export default async function MarketStats() {
   return (
     <section className={styles.statsContainer}>
       <Header label={t("market_marketInsights")} />
-      <div className={styles.grid}>
+      <div className={styles.grid} id="nextstep-step6">
         <article className={styles.container}>
           <h2 className={styles.title}>{t("market_topOffersGenres")}</h2>
           <GenreChart categoryCounts={categoryCounts} />

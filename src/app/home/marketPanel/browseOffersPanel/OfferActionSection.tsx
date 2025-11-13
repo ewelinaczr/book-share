@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslations } from "next-intl";
-import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { MarketBookStatus } from "@interfaces/MarketBook";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import styles from "./BookMarketPanel.module.css";
 

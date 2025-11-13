@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
-import { AddMarketBook } from "@/interfaces/MarketBook";
+import { AddMarketBook } from "@interfaces/MarketBook";
 
 type Status =
   | { status: "success"; messageKey: string }
