@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import cn from "classnames";
-import { IPickUpSpot } from "@interfaces/PickUpSpots";
+
 import { pacifico } from "@/app/fonts";
 import { CgDetailsMore } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
 import { useTranslations } from "next-intl";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import WelcomePanel from "../../home/marketPanel/welcomePanel/WelcomePanel";
 import SmallButton from "@/components/buttons/SmallButton";
 import styles from "./PickUpSpotPanel.module.css";
@@ -16,7 +17,7 @@ enum Page {
 }
 
 export interface PickUpSpotPanelProps {
-  spot: IPickUpSpot | null;
+  spot: PickUpSpot | null;
 }
 export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
   const [page, setPage] = useState<Page>(Page.SPOT_DETAILS);

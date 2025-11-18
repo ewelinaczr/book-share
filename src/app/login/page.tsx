@@ -1,5 +1,5 @@
 import React from "react";
-import { LogInForm } from "./LogInForm";
+import { LogInForm } from "./ToFix";
 
 function page() {
   return <LogInForm />;
