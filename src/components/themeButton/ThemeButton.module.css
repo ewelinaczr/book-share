@@ -1,0 +1,45 @@
+.toogleContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 6.4rem;
+  height: 3.6rem;
+  background-color: var(--color-button-secondary);
+  border-radius: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  color: var(--text-color-2);
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: normal;
+}
+
+.toogle {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 2rem;
+  display: flex;
+  background-color: var(--color-button-special);
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  border: none;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.toogle:hover {
+  background-color: var(--color-button-primary-hover);
+}
+
+.selected {
+  transform: translateX(100%);
+}

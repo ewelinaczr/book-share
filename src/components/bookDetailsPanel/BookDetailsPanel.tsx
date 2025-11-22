@@ -1,0 +1,134 @@
+"use client";
+
+import { ReactNode, useState } from "react";
+import cn from "classnames";
+import { FaCircleInfo } from "react-icons/fa6";
+import { CiStar } from "react-icons/ci";
+import { useTranslations } from "next-intl";
+import styles from "./BookDetailsPanel.module.css";
+
+import { BookMetaData } from "../bookListPanel/BookListPanel";
+import SmallButton from "../buttons/SmallButton";
+
+type BookDetailsProps<T> = {
+  selectedItem: T;
+  getBookData: (item: T) => BookMetaData;
+  children?: ReactNode;
+};
+
+export default function BookDetails<T>({
+  selectedItem,
+  children,
+  getBookData,
+}: BookDetailsProps<T>) {
+  const [showMore, setShowMore] = useState(false);
+  const data = getBookData(selectedItem);
+  const t = useTranslations();
+
+  const renderBookDetails = () => {
+    return (
+      <div
+        id="book-details"
+        className={cn(
+          styles.detailsContainer,
+          showMore ? styles.visible : styles.hidden
+        )}
+      >
+        <div className={styles.majorInfo}>
+          <div className={styles.info}>
+            <p className={styles.infoLabel}>{t("bookDetails_authors")}</p>
+            {data.authors?.map((a) => (
+              <p key={a}>{a}</p>
+            ))}
+          </div>
+          <div className={styles.info}>
+            <p className={styles.infoLabel}>{t("bookDetails_genres")}</p>
+            {data.categories?.map((c) => (
+              <p className={styles.text} key={c}>
+                {c}
+              </p>
+            ))}
+          </div>
+          {data.averageRating && (
+            <div className={styles.info}>
+              <p className={styles.infoLabel}>{t("bookDetails_rating")}</p>
+              <div className={styles.ratingContainer}>
+                <CiStar />
+                <p>{data.averageRating}</p>
+                {data.ratingsCount && <p>{`(${data.ratingsCount})`}</p>}
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={styles.majorInfo}>
+          {data.publisher && (
+            <div className={styles.info}>
+              <p className={styles.infoLabel}>{t("bookDetails_publisher")}</p>
+              <p>{data.publisher}</p>
+            </div>
+          )}
+          <div className={styles.info}>
+            <p className={styles.infoLabel}>{t("bookDetails_publishedDate")}</p>
+            <p>{data.publishedDate}</p>
+          </div>
+          <div className={styles.info}>
+            <p className={styles.infoLabel}>{t("bookDetails_language")}</p>
+            <p>{data.language}</p>
+          </div>
+          {data.pageCount && (
+            <div className={styles.info}>
+              <p className={styles.infoLabel}>{t("bookDetails_pageCount")}</p>
+              <p>{data.pageCount}</p>
+            </div>
+          )}
+        </div>
+        <div className={styles.majorInfo}>
+          <div className={styles.info}>
+            {data.industryIdentifiers?.map((id) => (
+              <div className={styles.info} key={id.identifier}>
+                <p className={styles.infoLabel}>{id.type}</p>
+                <p>{id.identifier}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={styles.info}>
+          <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
+          <p className={cn(styles.fullDescription, styles.scrollableElement)}>
+            {data.description}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.titleContainer}>
+        <div className={styles.titleAuthor}>
+          <p className={styles.title}>{data.title}</p>
+          <p className={styles.separator}>{t("bookDetails_separator")}</p>
+          {data.authors?.length ? `${data.authors[0]}` : null}
+        </div>
+        <div className={styles.myBookInfo}>{children}</div>
+      </div>
+      {renderBookDetails()}
+      <div className={styles.buttonContainer}>
+        <SmallButton
+          ariaLabel={
+            showMore
+              ? t("bookDetails_hideDetails")
+              : t("bookDetails_showDetails")
+          }
+          text={
+            showMore
+              ? t("bookDetails_hideDetails")
+              : t("bookDetails_showDetails")
+          }
+          icon={<FaCircleInfo />}
+          onClick={() => setShowMore(!showMore)}
+        />
+      </div>
+    </div>
+  );
+}

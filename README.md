@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BookShare
 
-## Getting Started
+A fullstack web application for sharing and discovering books. Built with **Next.js** on the frontend and **Node.js + Express** on the backend.
+# Backend
 
-First, run the development server:
+ **Node.js + Express** backend designed to power a book exchange platform. It supports user authentication, personal bookshelves, market listings, and private messaging between users. The backend uses **MongoDB via Mongoose** for data persistence and follows a modular, controller-based architecture with clean separation of concerns.
+### Authentication
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Authentication is handled using **JSON Web Tokens**. Protected routes use a custom middleware that verifies tokens, extracts user identity, and injects it into the request object for downstream access. Both internal - mongo and external - google identifiers are supported.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Controllers**: All business logic is encapsulated in controller files. Each controller handles request validation, database interaction, and response formatting.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Routes**: Express routers delegate incoming requests to the appropriate controller functions. Middleware is applied per route to enforce authentication and access control.
 
-## Learn More
+- **Models & Schemas**: Mongoose models define the structure of documents. Schemas include validation rules to ensure data integrity.
 
-To learn more about Next.js, take a look at the following resources:
+- **Middleware**: Custom middleware handles authentication and request shaping. 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Real-Time Chat with WebSockets
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+In addition to RESTful messaging endpoints, this backend supports **real-time private messaging** using **WebSockets** (via socket.io). This enables instant communication between users without needing to poll the server. Messages sent through WebSocket are emitted to the recipient’s room in real time and persisted for history retrieval.
 
-## Deploy on Vercel
+### API Overview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### User Routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+|Method|Endpoint|Description|
+|---|---|---|
+|GET|`/users`|Get all users|
+|GET|`/users/:id`|Get user by ID|
+|PUT|`/users/:id/location`|Update user location|
+|PUT|`/users/:id/profile`|Update user profile (name, email, etc.)|
+|DELETE|`/users/:id`|Delete user account|
+#### Book Routes
+
+|Method|Endpoint|Description|
+|---|---|---|
+|GET|`/books`|Get all books|
+|GET|`/books/:id`|Get book by ID|
+|POST|`/books`|Save a new book|
+|PUT|`/books/:id`|Update book details|
+|DELETE|`/books/:id`|Delete book|
+#### Bookshelf Routes
+
+| Method | Endpoint             | Description                |
+| ------ | -------------------- | -------------------------- |
+| GET    | `/bookshelf`         | Get user's bookshelf       |
+| POST   | `/bookshelf`         | Add book to bookshelf      |
+| PUT    | `/bookshelf/:bookId` | Update book on bookshelf   |
+| DELETE | `/bookshelf/:bookId` | Remove book from bookshelf |
+#### Market Routes
+
+| Method | Endpoint                   | Description                  |
+| ------ | -------------------------- | ---------------------------- |
+| GET    | `/market`                  | Get all market books         |
+| POST   | `/market`                  | Add book to market           |
+| GET    | `/market/user`             | Get user's market listings   |
+| GET    | `/market/borrowed`         | Get books borrowed by user   |
+| GET    | `/market/borrowed-from-me` | Get books borrowed from user |
+| POST   | `/market/:id/exchange`     | Borrow or exchange a book    |
+| PUT    | `/market/:id`              | Update market book listing   |
+| DELETE | `/market/:id`              | Remove book from market      |
+#### Chat Routes
+
+| Method | Endpoint                | Description                     |
+| ------ | ----------------------- | ------------------------------- |
+| GET    | `/chat/history/:userId` | Get message history with a user |
+| GET    | `/chat/partners`        | Get list of chat partners       |
+| DELETE | `/chat/history/:userId` | Delete all messages with a user |
+
+# Frontend
+
+
+# Screenshots
+
+
+
+

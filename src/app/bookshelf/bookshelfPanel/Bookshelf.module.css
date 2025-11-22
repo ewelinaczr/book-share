@@ -1,0 +1,41 @@
+.container {
+  position: relative;
+  margin: 4rem 4rem 2rem 4rem;
+}
+
+.header {
+  margin: 0rem 4rem;
+}
+
+.list {
+  margin: 0.8rem;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.loaderContainer,
+.errorContainer {
+  margin: 4rem;
+  display: flex;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem;
+  }
+}
