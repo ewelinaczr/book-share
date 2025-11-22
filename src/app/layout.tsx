@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
 import { NextIntlClientProvider } from "next-intl";
+import OnboardingWrapper from "./onboarding/OnboardingWrapper";
 import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
@@ -20,11 +21,13 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider>
           <Providers>
-            <div className={"page-wrapper"}>
-              <Navigation />
-              <main>{children}</main>
-              <Footer />
-            </div>
+            <OnboardingWrapper>
+              <div className={"page-wrapper"}>
+                <Navigation />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </OnboardingWrapper>
           </Providers>
         </NextIntlClientProvider>
       </body>

@@ -69,7 +69,7 @@ export default function Market() {
   };
 
   return (
-    <section className={styles.marketPanelContainer}>
+    <section className={styles.marketPanelContainer} id="nextstep-step7">
       <Header label={t("market_exploreMarketBooks")} />
       <Search
         books={data}

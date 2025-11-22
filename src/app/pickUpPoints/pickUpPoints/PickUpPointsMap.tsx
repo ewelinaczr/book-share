@@ -19,7 +19,7 @@ function PickUpPointsMap() {
   return (
     <div className={styles.panelContainer}>
       <Header label={"Explore Pick Up Points"} />
-      <div className={styles.mapContainer}>
+      <div className={styles.panelContainer} id="nextstep-step13">
         <MapWrapper
           selectItem={(item: PickUpSpot) => setDisplayedPickUpSpot(item)}
         />

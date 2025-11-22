@@ -15,7 +15,7 @@ function NavLinks() {
       {navLinks.map((link) => (
         <li key={link.name}>
           <Link href={`${link.path}`}>
-            <div className={styles.navLink}>
+            <div className={styles.navLink} id={link.onboardingId}>
               <p
                 className={
                   link.path === pathname

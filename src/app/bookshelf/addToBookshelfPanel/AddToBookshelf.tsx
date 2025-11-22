@@ -25,7 +25,7 @@ export default function AddToBookshelf() {
     status?.status === "error" ? styles.error : styles.success;
 
   return (
-    <Popup title={t("bookshelf_addBookTitle")}>
+    <Popup title={t("bookshelf_addBookTitle")} onboardingId="nextstep-step12">
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <AddToBookshelfForm register={register} errors={errors} t={t} />
         <Button
