@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import cn from "classnames";
-import { IPickUpSpot } from "@interfaces/PickUpSpots";
+import { PickUpSpot } from "@/interfaces/PickUpSpot";
 import { pacifico } from "@/app/fonts";
 import { CgDetailsMore } from "react-icons/cg";
 import { IoIosArrowBack } from "react-icons/io";
@@ -16,7 +16,7 @@ enum Page {
 }
 
 export interface PickUpSpotPanelProps {
-  spot: IPickUpSpot | null;
+  spot: PickUpSpot | null;
 }
 export function PickUpSpotPanel({ spot }: PickUpSpotPanelProps) {
   const [page, setPage] = useState<Page>(Page.SPOT_DETAILS);
