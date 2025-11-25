@@ -56,7 +56,7 @@ export const addBookToBookshelf = async (
     });
 
     await User.findByIdAndUpdate(userId, {
-      $push: { bookshelf: bookshelfBook._id },
+      $set: { bookshelf: [bookshelfBook._id, ...user.bookshelf] },
     });
 
     res.status(201).json(bookshelfBook);

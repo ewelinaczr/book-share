@@ -12,34 +12,37 @@ export interface IMarketBook extends Document {
   };
 }
 
-const MarketBookSchema = new Schema<IMarketBook>({
-  status: {
-    type: String,
-    enum: ["borrow", "claim", "trade"],
-    default: "borrow",
-  },
-  deadline: { type: Date },
-  ownerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
-  exchangedWith: {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+const MarketBookSchema = new Schema<IMarketBook>(
+  {
     status: {
       type: String,
       enum: ["borrow", "claim", "trade"],
+      default: "borrow",
     },
-    date: {
-      type: Date,
-      default: Date.now,
+    deadline: { type: Date },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
+    exchangedWith: {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      status: {
+        type: String,
+        enum: ["borrow", "claim", "trade"],
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
   },
-});
+  { timestamps: true }
+);
 
 const MarketBook = mongoose.model<IMarketBook>("MarketBook", MarketBookSchema);
 export default MarketBook;

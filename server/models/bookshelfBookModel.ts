@@ -8,17 +8,20 @@ export interface IBookshelfBook extends Document {
   book: mongoose.Types.ObjectId;
 }
 
-const BookshelfBookSchema = new Schema<IBookshelfBook>({
-  _id: mongoose.Schema.Types.ObjectId,
-  status: {
-    type: String,
-    enum: ["reading", "wantToRead", "read"],
-    default: "wantToRead",
+const BookshelfBookSchema = new Schema<IBookshelfBook>(
+  {
+    _id: mongoose.Schema.Types.ObjectId,
+    status: {
+      type: String,
+      enum: ["reading", "wantToRead", "read"],
+      default: "wantToRead",
+    },
+    own: { type: Boolean, default: false },
+    rating: { type: Number, min: 0, max: 5, default: 0 },
+    book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
   },
-  own: { type: Boolean, default: false },
-  rating: { type: Number, min: 0, max: 5, default: 0 },
-  book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
-});
+  { timestamps: true }
+);
 
 const BookshelfBook = mongoose.model<IBookshelfBook>(
   "BookshelfBook",

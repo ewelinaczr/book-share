@@ -48,9 +48,9 @@ export const addBookToMarket = async (
       ownerId: userId,
     });
 
-    // Save market book in user's market
+    // Save market book in user's market, inserting at the front
     await User.findByIdAndUpdate(userId, {
-      $push: { market: marketBook._id },
+      $set: { market: [marketBook._id, ...user.market] },
     });
 
     res.status(201).json({ marketBook });
@@ -128,7 +128,8 @@ export const getAllBooksFromMarket = async (
       ],
     })
       .populate("book")
-      .populate("ownerId", "name location")
+      .populate("ownerId", "name")
+      .sort({ createdAt: -1 })
       .lean();
 
     const booksWithOwner = marketBooks.map((entry: any) => ({
