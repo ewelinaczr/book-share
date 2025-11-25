@@ -11,7 +11,9 @@ export default function BorrowedPanel({ books }: { books: MarketBook[] }) {
   const { renderProgressLabel } = useRenderLabels();
   const { renderMessageOwnerFooter } = useRenderFooters();
   const { renderMessageButton } = useMessageButton((item: MarketBook) =>
-    t("market_contact", { userName: item.exchangedWith.userId?.name ?? "" })
+    t("market_contact", {
+      userName: item.ownerId.name ?? "",
+    })
   );
 
   return (

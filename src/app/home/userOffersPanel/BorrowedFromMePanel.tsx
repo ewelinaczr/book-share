@@ -13,12 +13,12 @@ export default function BorrowedFromMePanel({
   const t = useTranslations();
   const { renderDeleteButton } = useDeleteButton((item: MarketBook) =>
     t("market_deleteConfirm", {
-      userName: item.exchangedWith.userId?.name ?? "",
+      userName: item.exchangedWith.userId.name ?? "",
     })
   );
   const { renderMessageButton } = useMessageButton((item: MarketBook) =>
     t("market_contact", {
-      userName: item.ownerName ?? "",
+      userName: item.exchangedWith.userId.name ?? "",
     })
   );
 

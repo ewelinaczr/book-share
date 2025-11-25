@@ -63,7 +63,7 @@
   "market_myMarketOffers": "Moje oferty",
   "market_borrowedBooks": "Pożyczone książki",
   "market_borrowedFromMe": "Pożyczone ode mnie",
-  "market_borrowedFrom": "Borrowed from${ownerName} {deadline}",
+  "market_borrowedFrom": "Borrowed from {ownerName} {deadline}",
   "market_borrowedUntil": "Borrowed until {deadline}",
   "market_offerType": "Oferta: {offetType}",
   "market_overdue": "Po czasie",

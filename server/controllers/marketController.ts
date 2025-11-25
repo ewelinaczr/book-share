@@ -124,7 +124,7 @@ export const getAllBooksFromMarket = async (
     const marketBooks = await MarketBook.find({
       $or: [
         { exchangedWith: null },
-        { "exchangedWith.user": { $exists: false } },
+        { "exchangedWith.userId": { $exists: false } },
       ],
     })
       .populate("book")

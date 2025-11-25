@@ -10,7 +10,10 @@ export interface MarketBook {
   status: MarketBookStatus;
   deadline?: Date;
   ownerName: string;
-  ownerId: String; // User._id
+  ownerId: {
+    _id: string;
+    name: string;
+  };
   book: Book; // Full Book object
   exchangedWith: {
     userId: {
