@@ -47,7 +47,7 @@ export const authConfig: AuthOptions = {
 
         // Return a plain object with required fields for NextAuth
         return {
-          id: (userDoc._id as mongoose.Types.ObjectId).toString(),
+          id: (userDoc._id as unknown as mongoose.Types.ObjectId).toString(),
           name: userDoc.name,
           email: userDoc.email,
           image: userDoc.photo || undefined,

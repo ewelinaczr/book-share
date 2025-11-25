@@ -103,7 +103,7 @@ export default function OnboardingWrapper({
           title: t("onboarding_step10_title"),
           content: t("onboarding_step10_description"),
           selector: "#nextstep-step10",
-          side: "bottom",
+          side: "left",
           showControls: true,
           showSkip: true,
           prevRoute: "/home",

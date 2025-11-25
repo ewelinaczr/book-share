@@ -3,7 +3,7 @@ import { getUserOrFail } from "../utils/auth";
 import { handleError } from "../utils/auth";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
-import MarketBook from "../models/marketBookModel";
+import MarketBook, { IMarketBook } from "../models/marketBookModel";
 
 export const addBookToMarket = async (
   req: Request,
@@ -259,14 +259,36 @@ export const updateMarketBook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const user = getUserOrFail(req, res);
-  if (!user) return;
-
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
   try {
-    const updated = await MarketBook.findOneAndUpdate(
-      { _id: req.params.id, ownerId: user._id },
-      req.body,
-      { new: true, runValidators: true }
+    const userId = authUser._id;
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Ensure the market entry belongs to this user
+    const user = await User.findById(userId)
+      .populate({ path: "market" })
+      .lean();
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    if (!("market" in user)) {
+      res.status(400).json({ error: "Market missing." });
+      return;
+    }
+
+    if (!user.market.some((book: IMarketBook) => book._id == id)) {
+      res.status(403).json({ error: "Not authorized to update this book." });
+      return;
+    }
+    const updated = await MarketBook.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
     );
 
     if (!updated) {
@@ -284,21 +306,19 @@ export const removeMarketBook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const user = getUserOrFail(req, res);
-  if (!user) return;
-
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
   try {
-    const removed = await MarketBook.findOneAndDelete({
-      _id: req.params.id,
-      ownerId: user._id,
+    const userId = authUser._id;
+    const { bookId } = req.params;
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { bookshelf: bookId },
     });
 
-    if (!removed) {
-      res.status(404).json({ error: "Market book not found or unauthorized" });
-      return;
-    }
+    await MarketBook.findByIdAndDelete(bookId);
 
-    res.status(200).json(null);
+    res.status(204).json({ message: "Book removed from market." });
   } catch (err: any) {
     handleError(res, err);
   }

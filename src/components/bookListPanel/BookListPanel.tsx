@@ -22,6 +22,7 @@ export interface BookMetaData {
   pageCount?: number;
   description?: string;
   industryIdentifiers?: { type: string; identifier: string }[];
+  borrowerName?: string;
 }
 
 type BookListPanelProps<T> = {
@@ -29,6 +30,9 @@ type BookListPanelProps<T> = {
   books: T[];
   renderLabel?: (item: T) => React.ReactNode;
   renderFooter?: (item: T) => React.ReactNode;
+  renderEditButton?: (item: T) => React.ReactNode;
+  renderDeleteButton?: (item: T) => React.ReactNode;
+  renderMessageButton?: (item: T) => React.ReactNode;
   getData: (item: T) => BookMetaData;
 };
 
@@ -37,6 +41,9 @@ export default function BookListPanel<T>({
   books,
   renderLabel,
   renderFooter,
+  renderEditButton,
+  renderDeleteButton,
+  renderMessageButton,
   getData,
 }: BookListPanelProps<T>) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
@@ -78,6 +85,9 @@ export default function BookListPanel<T>({
                       getTitle={() => title}
                       getImageSrc={() => imageSrc}
                       renderLabel={renderLabel}
+                      renderEditButton={renderEditButton}
+                      renderDeleteButton={renderDeleteButton}
+                      renderMessageButton={renderMessageButton}
                     />
                   </div>
                 );

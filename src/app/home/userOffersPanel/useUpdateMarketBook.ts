@@ -1,8 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { useAddBookToMarketMutation } from "@/api/marketApi";
-import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
-import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
+import { useEditMarketBookMutation } from "@/api/marketApi";
 import { AddMarketBook } from "@/interfaces/MarketBook";
 
 type Status =
@@ -10,9 +8,9 @@ type Status =
   | { status: "error"; messageKey: string }
   | undefined;
 
-export function useAddBookToMarket() {
-  const [addBookToMarket, { isLoading, isSuccess, isError }] =
-    useAddBookToMarketMutation();
+export function useUpdateMarketBookOffer(bookId: string) {
+  const [editBook, { isLoading, isSuccess, isError }] =
+    useEditMarketBookMutation();
 
   const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
 
@@ -27,16 +25,10 @@ export function useAddBookToMarket() {
   const onSubmit = async (data: AddMarketBook) => {
     setErrorKey(undefined);
     try {
-      const bookData = data.isbn
-        ? await fetchBookByIsbn(data.isbn)
-        : await fetchBookByTitleAndAuthor(data.title, data.author);
-
-      if (!bookData) {
-        setErrorKey("market_bookNotFound");
-        return;
-      }
-
-      await addBookToMarket({ status: data.status, book: bookData }).unwrap();
+      await editBook({
+        _id: bookId,
+        status: data.status,
+      });
     } catch (err: any) {
       setErrorKey(err.message || "market_addBookError");
     }

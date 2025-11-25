@@ -16,7 +16,7 @@ router
 router
   .route("/:id")
   .get(marketController.getMarketBooksByUserId)
-  .put(authController.protect, marketController.updateMarketBook)
+  .patch(authController.protect, marketController.updateMarketBook)
   .delete(authController.protect, marketController.removeMarketBook);
 
 router

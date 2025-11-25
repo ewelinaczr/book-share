@@ -1,17 +1,16 @@
 "use client";
 import { useMemo, useState } from "react";
-import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
-import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
+import { useEditBookshelfBookMutation } from "@/api/bookshelfApi";
 
 type Status =
   | { status: "success"; messageKey: string }
   | { status: "error"; messageKey: string }
   | undefined;
 
-export function useAddBookToBookshelf() {
-  const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
-    useAddBookToBookshelfMutation();
+export function useUpdateBookshelfBook(bookId: string) {
+  const [editBook, { isLoading, isSuccess, isError }] =
+    useEditBookshelfBookMutation();
 
   const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
 
@@ -27,18 +26,12 @@ export function useAddBookToBookshelf() {
   const onSubmit = async (data: AddBookshelfBook) => {
     setErrorKey(undefined);
     try {
-      const bookData = await fetchBookByIsbn(data.isbn);
-      if (!bookData) {
-        setErrorKey("bookshelf_bookNotFound");
-        return;
-      }
-
-      await addBookToBookshelf({
+      await editBook({
+        _id: bookId,
         status: data.status,
         own: !!data.own,
         rating: data.rating,
-        book: bookData,
-      }).unwrap();
+      });
     } catch (err: any) {
       setErrorKey("bookshelf_addBookError");
     }

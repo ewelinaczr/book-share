@@ -1,12 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { BookshelfBook, BookStatus } from "@/interfaces/BookshelfBook";
 import { useGetBookshelfQuery } from "@/api/bookshelfApi";
 import { useTranslations } from "next-intl";
+import { useDeleteButton } from "@/app/home/userOffersPanel/useDeleteButton";
+import { useEditButton } from "@/app/home/userOffersPanel/useEditButton";
 import { RatingFooter } from "./RatingFooter";
+import styles from "./Bookshelf.module.css";
+
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
-import styles from "./Bookshelf.module.css";
+import EditPopup from "./EditPopup";
 
 const getBookData = (item: BookshelfBook) => {
   const { volumeInfo } = item.book;
@@ -24,6 +29,9 @@ export default function Bookshelf() {
   const reading = useGetBookshelfQuery({ status: BookStatus.READING });
   const wantToRead = useGetBookshelfQuery({ status: BookStatus.WANT_TO_READ });
   const read = useGetBookshelfQuery({ status: BookStatus.READ });
+  const [itemToEdit, setItemToEdit] = useState<string | null>(null);
+  const { renderEditButton } = useEditButton<BookshelfBook>(setItemToEdit);
+  const { renderDeleteButton } = useDeleteButton();
   const t = useTranslations();
 
   const isLoading = reading.isLoading || wantToRead.isLoading || read.isLoading;
@@ -54,6 +62,8 @@ export default function Bookshelf() {
               title="Currently reading"
               books={reading.data}
               getData={getBookData}
+              renderEditButton={renderEditButton}
+              renderDeleteButton={renderDeleteButton}
             />
           </li>
         )}
@@ -63,6 +73,8 @@ export default function Bookshelf() {
               title="Want to read"
               books={wantToRead.data}
               getData={getBookData}
+              renderEditButton={renderEditButton}
+              renderDeleteButton={renderDeleteButton}
             />
           </li>
         )}
@@ -75,10 +87,15 @@ export default function Bookshelf() {
               renderFooter={(selectedItem) => (
                 <RatingFooter selectedItem={selectedItem} />
               )}
+              renderEditButton={renderEditButton}
+              renderDeleteButton={renderDeleteButton}
             />
           </li>
         )}
       </ul>
+      {itemToEdit ? (
+        <EditPopup bookId={itemToEdit} onClose={() => setItemToEdit(null)} />
+      ) : null}
     </section>
   );
 }

@@ -100,6 +100,23 @@ export const marketApi = createApi({
       }),
       providesTags: ["Market"],
     }),
+    removeBookFromMarket: builder.mutation<MarketBook, Partial<MarketBook>>({
+      query: ({ _id }) => ({
+        url: `/${_id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["Market"],
+    }),
+    editMarketBook: builder.mutation<MarketBook, Partial<MarketBook>>({
+      query: ({ _id, status }) => ({
+        url: `/${_id}`,
+        method: "PATCH",
+        credentials: "include",
+        body: { status },
+      }),
+      invalidatesTags: ["Market"],
+    }),
   }),
 });
 
@@ -111,4 +128,6 @@ export const {
   useExchangeMarketBookMutation,
   useGetBorrowedBooksQuery,
   useGetBorrowedFromMeQuery,
+  useRemoveBookFromMarketMutation,
+  useEditMarketBookMutation,
 } = marketApi;

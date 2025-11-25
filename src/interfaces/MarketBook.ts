@@ -13,7 +13,11 @@ export interface MarketBook {
   ownerId: String; // User._id
   book: Book; // Full Book object
   exchangedWith: {
-    userId: string; // Who exchanged the book
+    userId: {
+      _id: string;
+      name?: string;
+      email?: string;
+    };
     status: MarketBookStatus;
     date: Date; // Last exchanged date
   };

@@ -1,8 +1,8 @@
 "use client";
 import cn from "classnames";
 import { useForm } from "react-hook-form";
-import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import { useTranslations } from "next-intl";
+import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import styles from "./AddBookOffer.module.css";
 
 import Select from "@/components/inputs/Select";
@@ -21,9 +21,11 @@ export function useStatusOptions() {
 export default function AddBookForm({
   onSubmit,
   isLoading,
+  mode = "add",
 }: {
   onSubmit: (data: AddMarketBook) => void;
   isLoading: boolean;
+  mode?: "add" | "update";
 }) {
   const t = useTranslations();
   const {
@@ -44,30 +46,36 @@ export default function AddBookForm({
         />
       </div>
       <div className={styles.titleAuthor}>
-        <Input
-          id="isbn"
-          className={styles.input}
-          label={t("labels_isbn")}
-          placeholder={t("placeholders_isbn")}
-          {...register("isbn")}
-          error={errors.isbn?.message}
-        />
-        <Input
-          id="title"
-          className={styles.input}
-          label={t("labels_title")}
-          placeholder={t("placeholders_bookTitle")}
-          {...register("title")}
-          error={errors.title?.message}
-        />
-        <Input
-          id="author"
-          className={styles.input}
-          label={t("labels_author")}
-          placeholder={t("placeholders_authorName")}
-          {...register("author")}
-          error={errors.author?.message}
-        />
+        {mode === "add" ? (
+          <Input
+            id="isbn"
+            className={styles.input}
+            label={t("labels_isbn")}
+            placeholder={t("placeholders_isbn")}
+            {...register("isbn")}
+            error={errors.isbn?.message}
+          />
+        ) : null}
+        {mode === "add" ? (
+          <Input
+            id="title"
+            className={styles.input}
+            label={t("labels_title")}
+            placeholder={t("placeholders_bookTitle")}
+            {...register("title")}
+            error={errors.title?.message}
+          />
+        ) : null}
+        {mode === "add" ? (
+          <Input
+            id="author"
+            className={styles.input}
+            label={t("labels_author")}
+            placeholder={t("placeholders_authorName")}
+            {...register("author")}
+            error={errors.author?.message}
+          />
+        ) : null}
       </div>
       <div className={styles.button}>
         <Button

@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IBookshelfBook extends Document {
+  _id: string;
   status: "reading" | "wantToRead" | "read";
   own: boolean;
   rating: number;
@@ -8,6 +9,7 @@ export interface IBookshelfBook extends Document {
 }
 
 const BookshelfBookSchema = new Schema<IBookshelfBook>({
+  _id: mongoose.Schema.Types.ObjectId,
   status: {
     type: String,
     enum: ["reading", "wantToRead", "read"],

@@ -75,6 +75,8 @@
   "market_loadingError": "Wystąpił błąd ładowania",
   "market_loading": "Wyszukiwanie...",
   "market_myOffers": "Moje wypożyczenia",
+  "market_deleteConfirm": "Usuń gdy po zwrocie od {userName}",
+  "market_contact": "Napisz do {userName}",
 
   "bookshelf_addBookTitle": "Dodaj książkę na półkę",
   "bookshelf_addBookError": "Dodawanie książki nie powiodło się",
@@ -98,6 +100,7 @@
   "bookshelf_readingActivity": "Aktywność czytelnicza",
   "bookshelf_pageCount": "stron",
   "bookshelf_error": "Twoja półka jest teraz niedostępna. Spróbuj później.",
+  "bookshelf_update": "Zaktualizuj książkę na półce",
 
   "popup_open": "Otwórz",
   "popup_close": "Zamknij",

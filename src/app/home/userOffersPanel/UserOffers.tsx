@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   useGetBorrowedBooksQuery,
@@ -8,15 +8,17 @@ import {
   useGetUserMarketBooksQuery,
 } from "@/api/marketApi";
 import styles from "./UserOffers.module.css";
+
 import MyOffersPanel from "./MyOffersPanel";
 import BorrowedPanel from "./BorrowedPanel";
 import BorrowedFromMePanel from "./BorrowedFromMePanel";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import Header from "@/components/headers/Header";
+import EditPopup from "./EditPopup";
 
 export default function UserOffers() {
   const t = useTranslations();
-  const { data: session } = useSession();
+  const [itemToEdit, setItemToEdit] = useState<string | null>(null);
 
   const {
     data: myBooks,
@@ -64,23 +66,28 @@ export default function UserOffers() {
 
   const renderUserOffers = () => {
     return (
-      <ul>
-        {myBooks && (
-          <li>
-            <MyOffersPanel books={myBooks} />
-          </li>
-        )}
-        {borrowedBooks && (
-          <li>
-            <BorrowedPanel books={borrowedBooks} />
-          </li>
-        )}
-        {borrowedFromMeBooks && (
-          <li>
-            <BorrowedFromMePanel books={borrowedFromMeBooks} />
-          </li>
-        )}
-      </ul>
+      <>
+        <ul>
+          {myBooks && (
+            <li>
+              <MyOffersPanel books={myBooks} setItemToEdit={setItemToEdit} />
+            </li>
+          )}
+          {borrowedBooks && (
+            <li>
+              <BorrowedPanel books={borrowedBooks} />
+            </li>
+          )}
+          {borrowedFromMeBooks && (
+            <li>
+              <BorrowedFromMePanel books={borrowedFromMeBooks} />
+            </li>
+          )}
+        </ul>
+        {itemToEdit ? (
+          <EditPopup bookId={itemToEdit} onClose={() => setItemToEdit(null)} />
+        ) : null}
+      </>
     );
   };
 
