@@ -203,6 +203,12 @@
   "settings_pl": "Polish",
   "settings_en": "English",
 
+  "profile_title": "Profile",
+  "profile_name": "Name",
+  "profile_email": "Email",
+  "profile_uploading": "Uploading...",
+  "profile_upload": "Upload new photo",
+
   "onboarding_next": "Next",
   "onboarding_skip": "Skip",
   "onboarding_previous": "Previous",

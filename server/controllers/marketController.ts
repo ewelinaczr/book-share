@@ -311,13 +311,13 @@ export const removeMarketBook = async (
   if (!authUser) return;
   try {
     const userId = authUser._id;
-    const { bookId } = req.params;
+    const { id } = req.params;
 
     await User.findByIdAndUpdate(userId, {
-      $pull: { bookshelf: bookId },
+      $pull: { bookshelf: id },
     });
 
-    await MarketBook.findByIdAndDelete(bookId);
+    await MarketBook.findByIdAndDelete(id);
 
     res.status(204).json({ message: "Book removed from market." });
   } catch (err: any) {

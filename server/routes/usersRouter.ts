@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as authController from "../controllers/authController";
 import * as usersController from "../controllers/usersController";
+import { uploadProfilePhoto } from "../middlewares/upload";
 
 const router = Router();
 
@@ -19,5 +20,16 @@ router
 router
   .route("/location/:id")
   .patch(authController.protect, usersController.updateUserLocation);
+
+router.put(
+  "/:id/photo",
+  authController.protect,
+  uploadProfilePhoto.single("photo"),
+  usersController.updateUserPhoto
+);
+
+router
+  .route("/:id/photo")
+  .get(authController.protect, usersController.getUserPhoto);
 
 export default router;

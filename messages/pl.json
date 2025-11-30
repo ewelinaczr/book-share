@@ -205,6 +205,12 @@
   "settings_pl": "Polski",
   "settings_en": "Angielski",
 
+  "profile_title": "Profil",
+  "profile_name": "Imię",
+  "profile_email": "Email",
+  "profile_uploading": "Dodawanie...",
+  "profile_upload": "Dodaj nowe zdjęcie",
+
   "onboarding_next": "Dalej",
   "onboarding_skip": "Pomiń",
   "onboarding_previous": "Wstecz",
