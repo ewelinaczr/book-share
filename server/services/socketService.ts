@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel";
 import PrivateMessage from "../models/messageModel";
+import logger from "../utils/logger";
 
 export const setupSocketServer = (io: Server) => {
   const AUTH_SECRET = process.env.AUTH_SECRET;
@@ -17,6 +18,7 @@ export const setupSocketServer = (io: Server) => {
       const tokenValue = socket.handshake.auth?.accessToken;
 
       if (!tokenValue) {
+        logger.warn({ socketId: socket.id }, "Socket auth missing token");
         return next(new Error("Authentication error"));
       }
 
@@ -27,14 +29,16 @@ export const setupSocketServer = (io: Server) => {
         (await User.findById(decoded.id));
 
       if (!user || !user._id) {
-        console.log("No logged in user");
-        return;
+        logger.warn(
+          { socketId: socket.id, decodedId: decoded?.id },
+          "No logged in user for socket"
+        );
+        return next(new Error("Authentication error"));
       }
 
       (socket as any).user = user;
       next();
     } catch (err) {
-      console.log("Socket auth error:", err);
       next(new Error("Authentication error"));
     }
   });
@@ -46,13 +50,13 @@ export const setupSocketServer = (io: Server) => {
 
     if (userId) {
       currentlyConnectedUsers.set(userId, socket.id);
-      console.log(`${userId} connected with socket ID ${socket.id}`);
+      logger.info({ userId, socketId: socket.id }, "User connected");
     }
 
     socket.on("disconnect", () => {
       if (userId) {
         currentlyConnectedUsers.delete(userId);
-        console.log(`${userId} disconnected`);
+        logger.info({ userId, socketId: socket.id }, "User disconnected");
       }
     });
 
@@ -66,9 +70,24 @@ export const setupSocketServer = (io: Server) => {
 
       const recipientSocketId = currentlyConnectedUsers.get(to);
 
+      logger.info(
+        {
+          from,
+          to,
+          messageId: saved._id,
+          socketIdFrom: socket.id,
+          socketIdTo: recipientSocketId ?? null,
+        },
+        "Private message saved"
+      );
+
       // If the recipient is online, send the message directly to their socket
       if (recipientSocketId) {
         io.to(recipientSocketId).emit("private message", saved);
+        logger.info(
+          { to, recipientSocketId },
+          "Private message delivered to recipient socket"
+        );
       }
 
       // Echo the message back to the sender

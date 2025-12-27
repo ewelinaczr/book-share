@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { Response } from "express";
 import { IUser } from "../models/userModel";
 import { UserRequest } from "../controllers/authController";
+import logger from "./logger";
 
 const {
   AUTH_SECRET = "",
@@ -49,6 +50,10 @@ export const getUserOrFail = (
   const user = req.user;
 
   if (!user || typeof user._id !== "string") {
+    logger.warn(
+      { ip: (req as any).ip, path: req.originalUrl },
+      "Unauthorized request - user missing"
+    );
     res.status(401).json("User not found or no longer exists.");
     return null;
   }
@@ -57,10 +62,13 @@ export const getUserOrFail = (
 };
 
 export const handleError = (res: Response, err: any): void => {
-  if (err.name === "ValidationError") {
+  logger.error({ err }, "Controller error");
+  if (err && err.name === "ValidationError") {
     res.status(422).json({ error: "Validation failed", details: err.errors });
   } else {
-    res.status(500).json({ error: err.message });
+    res
+      .status(err?.statusCode || 500)
+      .json({ error: err?.message || "Internal Server Error" });
   }
 };
 

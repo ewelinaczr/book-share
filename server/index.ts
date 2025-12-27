@@ -1,6 +1,12 @@
 import express from "express";
 import cors from "cors";
+import requestLogger from "./middleware/requestLogger";
+import errorHandler from "./middleware/errorHandler";
+
 const app = express();
+
+// Compact request logging middleware (method, url, responseTime)
+app.use(requestLogger);
 
 app.use(
   cors({
@@ -24,5 +30,8 @@ app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/bookshelf", bookshelfRouter);
 app.use("/api/v1/market", marketRouter);
 app.use("/api/v1/chat", chatRouter);
+
+// Centralized error handler (after all routes)
+app.use(errorHandler);
 
 export default app;

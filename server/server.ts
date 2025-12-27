@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import http from "http";
 import app from "./index";
+import logger from "./utils/logger";
 import { Server } from "socket.io";
 import { connectToDatabase } from "./utils/db";
 import { setupSocketServer } from "./services/socketService";
@@ -22,9 +23,20 @@ connectToDatabase()
     setupSocketServer(io);
 
     server.listen(PORT, () => {
-      console.log(`Server running with Socket.IO on http://localhost:${PORT}`);
+      logger.info({ port: PORT }, `Server running with Socket.IO`);
     });
   })
   .catch((err) => {
-    console.error("Failed to connect to MongoDB:", err);
+    logger.error({ err }, "Failed to connect to MongoDB");
+    if (process.env.NODE_ENV === "production") process.exit(1);
   });
+
+// Global process handlers
+process.on("unhandledRejection", (reason: any) => {
+  logger.error({ reason }, "Unhandled Promise Rejection");
+});
+
+process.on("uncaughtException", (err: any) => {
+  logger.fatal({ err }, "Uncaught Exception");
+  if (process.env.NODE_ENV === "production") process.exit(1);
+});
