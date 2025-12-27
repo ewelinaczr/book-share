@@ -13,11 +13,17 @@
 }
 
 .statusContainer {
+  border: 1px solid var(--text-color);
   display: flex;
+  gap: 0.6rem;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   font-size: 1.4rem;
+  color: var(--text-color);
   padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  width: fit-content;
+  height: 2.4rem;
 }
 
 .loaderContainer,

@@ -5,6 +5,7 @@ import cn from "classnames";
 import { navIconLinks } from "./navigationConfig";
 import { PiHandWavingLight } from "react-icons/pi";
 import { useNextStep } from "nextstepjs";
+import { useGetRequestsToMeQuery } from "@/api/marketApi";
 
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,6 +18,7 @@ function NavIconLinks() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const { startNextStep } = useNextStep();
+  const { data: requests } = useGetRequestsToMeQuery();
 
   const renderAuthButtons = () => {
     return session ? <LogOutButton /> : <LogInButtons />;
@@ -38,6 +40,9 @@ function NavIconLinks() {
           <Link href={link.path} className={styles.round}>
             <div>{link.icon}</div>
           </Link>
+          {requests?.length && link.id === "requests" ? (
+            <div className={styles.notification}></div>
+          ) : null}
         </li>
       ))}
       <li key="onboarding" className={styles.navIconLink}>

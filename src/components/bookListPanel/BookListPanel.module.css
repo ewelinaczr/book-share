@@ -38,7 +38,7 @@
 }
 
 .noSelectedItem {
-  margin: 2rem 4rem;
+  margin: 0rem 4rem 2rem;
   margin-left: 4.2rem;
 }
 
@@ -52,7 +52,7 @@
     margin-top: 1rem;
   }
   .noSelectedItem {
-    margin-top: 1rem;
+    margin-top: 0rem;
   }
 }
 @media (max-width: 700px) {

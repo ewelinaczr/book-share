@@ -4,13 +4,18 @@ import { useAddBookToBookshelfMutation } from "@/api/bookshelfApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
 
+type Status =
+  | { status: "success"; messageKey: string }
+  | { status: "error"; messageKey: string }
+  | undefined;
+
 export function useAddBookToBookshelf() {
   const [addBookToBookshelf, { isLoading, isSuccess, isError }] =
     useAddBookToBookshelfMutation();
 
   const [errorKey, setErrorKey] = useState<string | undefined>(undefined);
 
-  const status = useMemo(() => {
+  const status: Status = useMemo(() => {
     if (errorKey) return { status: "error", messageKey: errorKey };
     if (isError)
       return { status: "error", messageKey: "bookshelf_addBookError" };

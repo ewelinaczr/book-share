@@ -14,6 +14,7 @@
   "navigation_openMenu": "Otwórz menu",
   "navigation_closeMenu": "Zamknij menu",
   "navigation_closeNavigation": "Zamknij menu nawigacyjne",
+  "navigation_requests": "Zapytania",
 
   "buttons_close": "Zamknij",
   "buttons_showDetails": "Pokaż szczegóły",
@@ -47,9 +48,10 @@
   "market_borrow": "Pożyczę",
   "market_claim": "Oddam",
   "market_trade": "Wymienię",
+  "market_owner": "Książkę pożycza",
   "market_contactOwner": "Skontaktuj się z właścicielem, aby ustalić szczegóły wymiany",
   "market_typeYourMessage": "Wpisz tutaj swoją wiadomość_",
-  "market_messageOwner": "Wiadomość do {owner}",
+  "market_messageOwner": "Wyślij wiadomość do {owner}",
   "market_offerBook": "Oferta: książka {offer}",
   "market_offerBookForDuration": "Oferta: książka {offer} na {duration}, do {endDate}",
   "market_addBookOfferTitle": "Dodaj ofertę książki",
@@ -63,7 +65,7 @@
   "market_myMarketOffers": "Moje oferty",
   "market_borrowedBooks": "Pożyczone książki",
   "market_borrowedFromMe": "Pożyczone ode mnie",
-  "market_borrowedFrom": "Borrowed from${ownerName} {deadline}",
+  "market_borrowedFrom": "Borrowed from {ownerName} {deadline}",
   "market_borrowedUntil": "Borrowed until {deadline}",
   "market_offerType": "Oferta: {offetType}",
   "market_overdue": "Po czasie",
@@ -75,6 +77,8 @@
   "market_loadingError": "Wystąpił błąd ładowania",
   "market_loading": "Wyszukiwanie...",
   "market_myOffers": "Moje wypożyczenia",
+  "market_deleteConfirm": "Usuń gdy po zwrocie od {userName}",
+  "market_contact": "Napisz do {userName}",
 
   "bookshelf_addBookTitle": "Dodaj książkę na półkę",
   "bookshelf_addBookError": "Dodawanie książki nie powiodło się",
@@ -98,10 +102,12 @@
   "bookshelf_readingActivity": "Aktywność czytelnicza",
   "bookshelf_pageCount": "stron",
   "bookshelf_error": "Twoja półka jest teraz niedostępna. Spróbuj później.",
+  "bookshelf_update": "Zaktualizuj książkę na półce",
 
   "popup_open": "Otwórz",
   "popup_close": "Zamknij",
 
+  "bookDetails_title": "Tytuł",
   "bookDetails_authors": "Autorzy",
   "bookDetails_genres": "Gatunki",
   "bookDetails_rating": "Ocena",
@@ -149,6 +155,7 @@
   "login_signUpWithGoogle": "Zaloguj się z Google",
   "login_emailRequired": "Email jest wymagany",
   "login_passwordRequired": "Hasło jest wymagane",
+  "login_passwordInvalid": "Nieprawidłowe hasło",
 
   "pickUp_address": "Punkt odbioru",
   "pickUp_openingHours": "Godziny otwarcia",
@@ -201,6 +208,12 @@
   "settings_language": "Zmień język",
   "settings_pl": "Polski",
   "settings_en": "Angielski",
+
+  "profile_title": "Profil",
+  "profile_name": "Imię",
+  "profile_email": "Email",
+  "profile_uploading": "Dodawanie...",
+  "profile_upload": "Dodaj nowe zdjęcie",
 
   "onboarding_next": "Dalej",
   "onboarding_skip": "Pomiń",

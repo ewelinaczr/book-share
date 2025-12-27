@@ -11,7 +11,7 @@ router
 
 router
   .route("/:bookId")
-  .put(authController.protect, bookshelfController.updateBookshelfBook)
+  .patch(authController.protect, bookshelfController.updateBookshelfBook)
   .delete(authController.protect, bookshelfController.removeBookshelfBook);
 
 export default router;

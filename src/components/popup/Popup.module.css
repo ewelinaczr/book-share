@@ -1,6 +1,7 @@
 .container {
   position: fixed;
   top: 6rem;
+  left: 0;
   z-index: 2000;
   backdrop-filter: blur(0.8rem);
   background: var(--popup-backdrop);

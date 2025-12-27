@@ -3,7 +3,7 @@ import { getUserOrFail } from "../utils/auth";
 import { handleError } from "../utils/auth";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
-import BookshelfBook from "../models/bookshelfBookModel";
+import BookshelfBook, { IBookshelfBook } from "../models/bookshelfBookModel";
 
 export const addBookToBookshelf = async (
   req: Request,
@@ -56,7 +56,7 @@ export const addBookToBookshelf = async (
     });
 
     await User.findByIdAndUpdate(userId, {
-      $push: { bookshelf: bookshelfBook._id },
+      $set: { bookshelf: [bookshelfBook._id, ...user.bookshelf] },
     });
 
     res.status(201).json(bookshelfBook);
@@ -113,16 +113,41 @@ export const updateBookshelfBook = async (
   if (!authUser) return;
 
   try {
-    const updatedEntry = await BookshelfBook.findOneAndUpdate(
-      { userId: authUser._id, bookId: req.params.bookId },
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedEntry) {
-      res.status(404).json({ error: "Book not found in bookshelf" });
+    const userId = authUser._id;
+    const { bookId } = req.params;
+    const { status, rating, own } = req.body;
+    // Ensure the bookshelf entry belongs to this user
+    const user = await User.findById(userId)
+      .populate({ path: "bookshelf" })
+      .lean();
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
       return;
     }
-    res.status(200).json(updatedEntry);
+
+    if (!("bookshelf" in user)) {
+      res.status(400).json({ error: "Bookshelf missing." });
+      return;
+    }
+
+    if (!user.bookshelf.some((book: IBookshelfBook) => book._id == bookId)) {
+      res.status(403).json({ error: "Not authorized to update this book." });
+      return;
+    }
+
+    const updated = await BookshelfBook.findByIdAndUpdate(
+      bookId,
+      { status, rating, own },
+      { new: true }
+    );
+
+    if (!updated) {
+      res.status(404).json({ error: "Bookshelf entry not found." });
+      return;
+    }
+
+    res.status(200).json(updated);
   } catch (err: any) {
     handleError(res, err);
   }
@@ -134,17 +159,17 @@ export const removeBookshelfBook = async (
 ): Promise<void> => {
   const authUser = getUserOrFail(req, res);
   if (!authUser) return;
-
   try {
-    const removed = await BookshelfBook.findOneAndDelete({
-      userId: authUser._id,
-      bookId: req.params.bookId,
+    const userId = authUser._id;
+    const { bookId } = req.params;
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { bookshelf: bookId },
     });
-    if (!removed) {
-      res.status(404).json({ error: "Book not found in bookshelf" });
-      return;
-    }
-    res.status(200).json(null);
+
+    await BookshelfBook.findByIdAndDelete(bookId);
+
+    res.status(204).json({ message: "Book removed from bookshelf." });
   } catch (err: any) {
     handleError(res, err);
   }

@@ -42,8 +42,32 @@ export const bookshelfApi = createApi({
         invalidatesTags: ["Bookshelf"],
       }
     ),
+    removeBookFromBookshelf: builder.mutation<
+      BookshelfBook,
+      Partial<BookshelfBook>
+    >({
+      query: ({ _id }) => ({
+        url: `/${_id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["Bookshelf"],
+    }),
+    editBookshelfBook: builder.mutation<BookshelfBook, Partial<BookshelfBook>>({
+      query: ({ _id, status, rating, own }) => ({
+        url: `/${_id}`,
+        method: "PATCH",
+        credentials: "include",
+        body: { status, rating, own },
+      }),
+      invalidatesTags: ["Bookshelf"],
+    }),
   }),
 });
 
-export const { useGetBookshelfQuery, useAddBookToBookshelfMutation } =
-  bookshelfApi;
+export const {
+  useGetBookshelfQuery,
+  useAddBookToBookshelfMutation,
+  useRemoveBookFromBookshelfMutation,
+  useEditBookshelfBookMutation,
+} = bookshelfApi;

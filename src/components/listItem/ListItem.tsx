@@ -10,6 +10,9 @@ interface ListItemProps<T> {
   getTitle: (item: T) => string;
   getImageSrc: (item: T) => string | null;
   renderLabel?: (item: T) => React.ReactNode;
+  renderEditButton?: (item: T) => React.ReactNode;
+  renderDeleteButton?: (item: T) => React.ReactNode;
+  renderMessageButton?: (item: T) => React.ReactNode;
 }
 
 export default function ListItem<T>({
@@ -19,9 +22,27 @@ export default function ListItem<T>({
   getTitle,
   getImageSrc,
   renderLabel,
+  renderEditButton,
+  renderDeleteButton,
+  renderMessageButton,
 }: ListItemProps<T>) {
   const title = getTitle(item);
   const imageSrc = getImageSrc(item);
+
+  const renderActionButtons = () => {
+    return (
+      <div
+        className={cn(styles.editDeleteButtons, {
+          [styles.editDeleteButtonsSelected]: selected,
+        })}
+      >
+        {renderEditButton && renderEditButton(item)}
+        {renderDeleteButton && renderDeleteButton(item)}
+        {renderMessageButton && renderMessageButton(item)}
+      </div>
+    );
+  };
+
   return (
     <li>
       <button
@@ -46,7 +67,10 @@ export default function ListItem<T>({
             <span className={styles.placeholderText}>{title}</span>
           </div>
         )}
-        {renderLabel ? renderLabel(item) : null}
+        {renderLabel ? (
+          <div className={styles.labelContainer}>{renderLabel(item)}</div>
+        ) : null}
+        {renderActionButtons()}
       </button>
     </li>
   );

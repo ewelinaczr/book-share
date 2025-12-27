@@ -3,7 +3,7 @@ import { getUserOrFail } from "../utils/auth";
 import { handleError } from "../utils/auth";
 import Book from "../models/bookModel";
 import User from "../models/userModel";
-import MarketBook from "../models/marketBookModel";
+import MarketBook, { IMarketBook } from "../models/marketBookModel";
 
 export const addBookToMarket = async (
   req: Request,
@@ -48,9 +48,9 @@ export const addBookToMarket = async (
       ownerId: userId,
     });
 
-    // Save market book in user's market
+    // Save market book in user's market, inserting at the front
     await User.findByIdAndUpdate(userId, {
-      $push: { market: marketBook._id },
+      $set: { market: [marketBook._id, ...user.market] },
     });
 
     res.status(201).json({ marketBook });
@@ -124,11 +124,12 @@ export const getAllBooksFromMarket = async (
     const marketBooks = await MarketBook.find({
       $or: [
         { exchangedWith: null },
-        { "exchangedWith.user": { $exists: false } },
+        { "exchangedWith.userId": { $exists: false } },
       ],
     })
       .populate("book")
-      .populate("ownerId", "name location")
+      .populate("ownerId", "name")
+      .sort({ createdAt: -1 })
       .lean();
 
     const booksWithOwner = marketBooks.map((entry: any) => ({
@@ -212,6 +213,193 @@ export const exchangeMarketBook = async (
   }
 };
 
+export const requestExchange = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const userId = user._id;
+    const marketBookId = req.params.id;
+    const { status, date } = req.body;
+
+    if (!status) {
+      res
+        .status(400)
+        .json({ error: "Status is required to request an exchange." });
+      return;
+    }
+
+    const updated = await MarketBook.findByIdAndUpdate(
+      marketBookId,
+      {
+        $push: {
+          pendingRequests: {
+            userId,
+            status,
+            date: date ?? new Date(),
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!updated) {
+      res.status(404).json({ error: "MarketBook not found." });
+      return;
+    }
+
+    res.status(200).json(updated);
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
+export const acceptExchange = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const marketBookId = req.params.id;
+    const { requestId, decision } = req.body;
+    // decision: "accept" | "decline"
+
+    const marketBook = await MarketBook.findById(marketBookId);
+    if (!marketBook) {
+      res.status(404).json({ error: "MarketBook not found." });
+      return;
+    }
+
+    const request = marketBook.pendingRequests?.find(
+      (r: any) => r._id.toString() === requestId
+    );
+    if (!request) {
+      res.status(404).json({ error: "Exchange request not found." });
+      return;
+    }
+
+    if (decision === "accept") {
+      // remove from market
+      const removed = await MarketBook.findByIdAndDelete(marketBookId);
+      if (!removed) {
+        res
+          .status(404)
+          .json({ error: "MarketBook not found or already removed." });
+        return;
+      }
+
+      await User.findByIdAndUpdate(removed.ownerId, {
+        $pull: { market: marketBookId },
+      });
+
+      res.status(200).json({ message: "Exchange accepted", book: removed });
+    } else {
+      // decline: just remove the pending request, keep book
+      const updated = await MarketBook.findByIdAndUpdate(
+        marketBookId,
+        {
+          $pull: { pendingRequests: { _id: requestId } },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({ message: "Exchange declined", book: updated });
+    }
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
+export const removeRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const marketBookId = req.params.id;
+    const requestId = req.params.requestId;
+
+    const marketBook = await MarketBook.findById(marketBookId);
+    if (!marketBook) {
+      res.status(404).json({ error: "MarketBook not found." });
+      return;
+    }
+
+    const request = marketBook.pendingRequests?.find(
+      (r: any) => r._id.toString() === requestId
+    );
+    if (!request) {
+      res.status(404).json({ error: "Exchange request not found." });
+      return;
+    }
+
+    // Only the user who created the request may remove it
+    if (request.userId.toString() !== user._id) {
+      res.status(403).json({ error: "Not authorized to remove this request." });
+      return;
+    }
+
+    const updated = await MarketBook.findByIdAndUpdate(
+      marketBookId,
+      { $pull: { pendingRequests: { _id: requestId } } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Request removed", book: updated });
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
+export const getRequestsMine = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const requestsMine = await MarketBook.find({
+      "pendingRequests.userId": user._id,
+    })
+      .populate("book")
+      .populate("ownerId", "name email")
+      .populate("pendingRequests.userId", "name email");
+
+    res.status(200).json(requestsMine);
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
+export const getRequestsToMe = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const requestsToMe = await MarketBook.find({
+      ownerId: user._id,
+      "pendingRequests.0": { $exists: true }, // only books with at least one request
+    })
+      .populate("book")
+      .populate("pendingRequests.userId", "name email");
+
+    res.status(200).json(requestsToMe);
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
 export const getBorrowedBooks = async (
   req: Request,
   res: Response
@@ -259,14 +447,36 @@ export const updateMarketBook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const user = getUserOrFail(req, res);
-  if (!user) return;
-
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
   try {
-    const updated = await MarketBook.findOneAndUpdate(
-      { _id: req.params.id, ownerId: user._id },
-      req.body,
-      { new: true, runValidators: true }
+    const userId = authUser._id;
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Ensure the market entry belongs to this user
+    const user = await User.findById(userId)
+      .populate({ path: "market" })
+      .lean();
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    if (!("market" in user)) {
+      res.status(400).json({ error: "Market missing." });
+      return;
+    }
+
+    if (!user.market.some((book: IMarketBook) => book._id == id)) {
+      res.status(403).json({ error: "Not authorized to update this book." });
+      return;
+    }
+    const updated = await MarketBook.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
     );
 
     if (!updated) {
@@ -284,21 +494,19 @@ export const removeMarketBook = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const user = getUserOrFail(req, res);
-  if (!user) return;
-
+  const authUser = getUserOrFail(req, res);
+  if (!authUser) return;
   try {
-    const removed = await MarketBook.findOneAndDelete({
-      _id: req.params.id,
-      ownerId: user._id,
+    const userId = authUser._id;
+    const { id } = req.params;
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { bookshelf: id },
     });
 
-    if (!removed) {
-      res.status(404).json({ error: "Market book not found or unauthorized" });
-      return;
-    }
+    await MarketBook.findByIdAndDelete(id);
 
-    res.status(200).json(null);
+    res.status(204).json({ message: "Book removed from market." });
   } catch (err: any) {
     handleError(res, err);
   }

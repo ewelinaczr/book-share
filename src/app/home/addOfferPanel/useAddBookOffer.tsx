@@ -3,14 +3,14 @@ import { useMemo, useState } from "react";
 import { useAddBookToMarketMutation } from "@/api/marketApi";
 import { fetchBookByIsbn } from "@/api/fetchBookByIsbn";
 import { fetchBookByTitleAndAuthor } from "@/api/fetchBooksByTitleAuthor";
-import { AddMarketBook } from "@/interfaces/MarketBook";
+import { RequestMarketBook } from "@/interfaces/MarketBook";
 
 type Status =
   | { status: "success"; messageKey: string }
   | { status: "error"; messageKey: string }
   | undefined;
 
-export function useAddBookOffer() {
+export function useAddBookToMarket() {
   const [addBookToMarket, { isLoading, isSuccess, isError }] =
     useAddBookToMarketMutation();
 
@@ -24,7 +24,7 @@ export function useAddBookOffer() {
     return undefined;
   }, [isError, isSuccess, errorKey]);
 
-  const onSubmit = async (data: AddMarketBook) => {
+  const onSubmit = async (data: RequestMarketBook) => {
     setErrorKey(undefined);
     try {
       const bookData = data.isbn

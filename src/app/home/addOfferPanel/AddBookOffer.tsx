@@ -1,18 +1,25 @@
 "use client";
 import cn from "classnames";
 import { useTranslations } from "next-intl";
-import { useAddBookOffer } from "./useAddBookOffer";
+import { useAddBookToMarket } from "./useAddBookOffer";
+import { usePopup } from "@/providers/PopupProvider";
+import styles from "./AddBookOffer.module.css";
+
 import AddBookForm from "./AddBookOfferForm";
 import Popup from "@/components/popup/Popup";
 import Notification from "@/components/notification/Notification";
-import styles from "./AddBookOffer.module.css";
 
 export default function AddBookOffer() {
   const t = useTranslations();
-  const { onSubmit, status, isLoading } = useAddBookOffer();
+  const { openPopupId } = usePopup();
+  const { onSubmit, status, isLoading } = useAddBookToMarket();
 
   const messageClass =
     status?.status === "error" ? styles.error : styles.success;
+
+  if (openPopupId) {
+    return null;
+  }
 
   return (
     <Popup title={t("market_addBookOfferTitle")} onboardingId="nextstep-step9">

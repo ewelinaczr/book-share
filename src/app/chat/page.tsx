@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import { useTranslations } from "next-intl";
 import Users from "./chat/Users";
@@ -41,6 +42,24 @@ export default function Messages() {
     // Clear messages when selected user changes
     setChatMessages([]);
   }, [selectedChatUserId]);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const userFromQuery = searchParams?.get("user") ?? "";
+    if (userFromQuery && userFromQuery !== selectedChatUserId) {
+      setSelectedChatUserId(userFromQuery);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (selectedChatUserId) {
+      router.replace(`/chat?user=${selectedChatUserId}`);
+    } else {
+      router.replace(`/chat`);
+    }
+  }, [selectedChatUserId, router]);
 
   useEffect(() => {
     // One-time initial sync

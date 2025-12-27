@@ -8,7 +8,12 @@ export interface IUser extends Document {
   _id: string;
   name: string;
   email: string;
-  photo?: string;
+  photo?: {
+    data: Buffer;
+    contentType: string;
+    size?: number;
+    filename?: string;
+  } | null;
   password?: string; // optional for Google users
   passwordConfirm?: string; // optional for Google users
   rating?: number;
@@ -28,7 +33,12 @@ const UserSchema = new Schema<IUser>({
     lowercase: true,
     validate: [validateEmail, "Please provide a valid email"],
   },
-  photo: String,
+  photo: {
+    data: Buffer,
+    contentType: String,
+    size: Number,
+    filename: String,
+  },
   password: {
     type: String,
     required: function () {

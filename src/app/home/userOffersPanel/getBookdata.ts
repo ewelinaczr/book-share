@@ -8,5 +8,6 @@ export function getBookData(item: MarketBook) {
       item.book.volumeInfo.imageLinks?.smallThumbnail ??
       item.book.volumeInfo.imageLinks?.thumbnail ??
       null,
+    borrowerName: item.exchangedWith.userId?.name,
   };
 }

@@ -82,6 +82,58 @@ export const marketApi = createApi({
       }),
       invalidatesTags: ["Market"],
     }),
+    // Request an exchange (borrow/claim/trade)
+    requestExchange: builder.mutation<
+      MarketBook,
+      { bookId: string; status: MarketBookStatus; date?: Date }
+    >({
+      query: ({ bookId, status, date }) => ({
+        url: `/exchange/request/${bookId}`,
+        method: "POST",
+        credentials: "include",
+        body: { status, date },
+      }),
+      invalidatesTags: ["Market"],
+    }),
+    getRequestsMine: builder.query<MarketBook[], void>({
+      query: () => ({
+        url: "/exchange/requests/mine",
+        method: "GET",
+      }),
+      providesTags: ["Market"],
+    }),
+    getRequestsToMe: builder.query<MarketBook[], void>({
+      query: () => ({
+        url: "/exchange/requests/to-me",
+        method: "GET",
+      }),
+      providesTags: ["Market"],
+    }),
+    // Accept or decline an exchange request
+    acceptExchange: builder.mutation<
+      MarketBook,
+      { bookId: string; requestId: string; decision: "accept" | "decline" }
+    >({
+      query: ({ bookId, requestId, decision }) => ({
+        url: `/exchange/accept/${bookId}`,
+        method: "POST",
+        credentials: "include",
+        body: { requestId, decision },
+      }),
+      invalidatesTags: ["Market"],
+    }),
+    // Withdraw (delete) a pending exchange request I created
+    withdrawRequest: builder.mutation<
+      MarketBook,
+      { bookId: string; requestId: string }
+    >({
+      query: ({ bookId, requestId }) => ({
+        url: `/exchange/request/${bookId}/${requestId}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["Market"],
+    }),
     // Get market books borrowed by my
     getBorrowedBooks: builder.query<MarketBook[], void>({
       query: () => ({
@@ -100,6 +152,23 @@ export const marketApi = createApi({
       }),
       providesTags: ["Market"],
     }),
+    removeBookFromMarket: builder.mutation<MarketBook, Partial<MarketBook>>({
+      query: ({ _id }) => ({
+        url: `/${_id}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["Market"],
+    }),
+    editMarketBook: builder.mutation<MarketBook, Partial<MarketBook>>({
+      query: ({ _id, status }) => ({
+        url: `/${_id}`,
+        method: "PATCH",
+        credentials: "include",
+        body: { status },
+      }),
+      invalidatesTags: ["Market"],
+    }),
   }),
 });
 
@@ -111,4 +180,11 @@ export const {
   useExchangeMarketBookMutation,
   useGetBorrowedBooksQuery,
   useGetBorrowedFromMeQuery,
+  useRemoveBookFromMarketMutation,
+  useEditMarketBookMutation,
+  useRequestExchangeMutation,
+  useAcceptExchangeMutation,
+  useGetRequestsMineQuery,
+  useGetRequestsToMeQuery,
+  useWithdrawRequestMutation,
 } = marketApi;

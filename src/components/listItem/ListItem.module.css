@@ -4,8 +4,8 @@
   gap: 0.2rem;
   outline: 2px solid var(--white);
   height: 15rem;
-  position: relative;
   border: none;
+  position: relative;
 }
 
 .selected {
@@ -33,4 +33,35 @@
 .placeholderText {
   font-weight: bold;
   color: var(--accent-blue);
+}
+
+.labelContainer {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  width: 100%;
+  height: 4rem;
+  position: absolute;
+  z-index: 2;
+}
+
+.editDeleteButtons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-items: end;
+  padding-right: 0.4rem;
+  padding-bottom: 0.4rem;
+  justify-content: end;
+  visibility: hidden;
+}
+
+.editDeleteButtonsSelected {
+  visibility: visible;
+  transform: translateX(0.4rem) translateY(0.4rem);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
 }

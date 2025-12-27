@@ -15,7 +15,7 @@
   display: flex;
   gap: 0.6rem;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.6rem;
   white-space: nowrap;
 }
 
@@ -40,6 +40,7 @@
 
 .title {
   font-weight: bold;
+  font-size: 1.6rem;
 }
 
 .info {
@@ -52,7 +53,7 @@
 
 .infoLabel {
   font-size: 1.2rem;
-  color: var(--gray);
+  color: var(--text-color);
 }
 
 .ratingContainer {
@@ -65,10 +66,6 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  justify-content: center;
-  align-self: flex-end;
-  margin-top: 1rem;
-  margin-right: 2rem;
 }
 
 .myBookInfo {
