@@ -70,6 +70,9 @@
   "market_borrowedBooks": "Borrowed Books",
   "market_borrowedFromMe": "Borrowed from me",
   "market_borrowedFrom": "Borrowed from {ownerName} {deadline}",
+  "market_borrowedUntil": "Borrowed until {deadline}",
+  "market_offerType": "Offer: {offerType}",
+  "market_typeYourMessage": "Type your message here...",
   "market_noBooksFound": "No books found. Try to change criteria.",
   "market_loadingError": "Error loading bookshelf.",
   "market_loading": "Loading...",
@@ -79,6 +82,11 @@
   "market_overdue": "Overdue",
   "market_deleteConfirm": "Delete when returned by {userName}",
   "market_contact": "Contact {userName}",
+  "market_bookNotFound": "Book not found in the market",
+  "market_bookRemoved": "Book removed from market",
+  "market_failedToRemoveBook": "Failed to remove book",
+  "market_updateBookSuccess": "Book offer updated successfully",
+  "market_updateBookError": "Failed to update book offer",
 
   "bookshelf_addBookTitle": "Add book to the Bookshelf",
   "bookshelf_addBookError": "Failed do add book",
@@ -103,6 +111,7 @@
   "bookshelf_pageCount": "pages",
   "bookshelf_error": "Failed to load your bookshelf. Please try again later.",
   "bookshelf_update": "Update book in the Bookshelf",
+  "bookshelf_bookNotFound": "Book not found in your Bookshelf",
 
   "popup_open": "Open",
   "popup_close": "Close",
@@ -248,6 +257,7 @@
   "onboarding_step13_description": "Discover nearby locations where you can pick up or drop off books with other readers.",
 
   "requeasts_noRequests": "No requests available",
+  "requests_noRequests": "No requests available",
   "requests_requestTo": "Request to {action} a book from {owner}",
   "requests_requestFrom": "{user} requested to {action} your book",
   "requests_acceptRequest": "Accept",
@@ -260,5 +270,15 @@
   "requests_incoming": "Incoming Requests",
   "requests_mine": "My Exchange Requests",
   "requests_error": "Error loading requests. Please try again later.",
-  "requests_empty": "You haven't made any requests yet."
+  "requests_empty": "You haven't made any requests yet.",
+  "requests_sent": "Exchange request sent",
+  "requests_send_error": "Something went wrong",
+  "requests_deleteSuccess": "Request withdrawn",
+  "requests_deleteError": "Failed to withdraw request",
+  "requests_acceptSuccess": "Request accepted",
+  "requests_acceptError": "Failed to accept request",
+  "requests_declineSuccess": "Request declined",
+  "requests_declineError": "Failed to decline request",
+  "profile_uploadSuccess": "Profile photo uploaded successfully",
+  "profile_uploadError": "Failed to upload profile photo"
 }
