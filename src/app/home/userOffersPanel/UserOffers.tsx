@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import {
   useGetBorrowedBooksQuery,
   useGetBorrowedFromMeQuery,
@@ -15,10 +16,13 @@ import BorrowedFromMePanel from "./BorrowedFromMePanel";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import Header from "@/components/headers/Header";
 import EditPopup from "./EditPopup";
+import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
 
 export default function UserOffers() {
   const t = useTranslations();
   const [itemToEdit, setItemToEdit] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const currentUserId = session?.user.id;
 
   const {
     data: myBooks,
@@ -90,6 +94,15 @@ export default function UserOffers() {
       </>
     );
   };
+
+  if (!currentUserId) {
+    return (
+      <section className={styles.container}>
+        <Header label={t("market_myOffers")} />
+        <LogInRedirect />
+      </section>
+    );
+  }
 
   return (
     <section className={styles.container}>

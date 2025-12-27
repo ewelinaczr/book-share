@@ -106,6 +106,7 @@
   "requests_empty": "Nie złożyłeś jeszcze żadnych próśb.",
   "requests_sent": "Wysłano prośbę o wymianę",
   "requests_send_error": "Coś poszło nie tak",
+  "requests_books": "Prośby o wymianę książek",
 
   "requests_deleteSuccess": "Prośba została wycofana",
   "requests_deleteError": "Nie udało się wycofać prośby",
@@ -140,6 +141,7 @@
   "bookshelf_error": "Twoja półka jest teraz niedostępna. Spróbuj później.",
   "bookshelf_update": "Zaktualizuj książkę na półce",
   "bookshelf_bookNotFound": "Książka nie znaleziona na półce",
+  "bookshelf_noBooks": "Nie dodałeś jeszcze żadnych książek na swoją półkę.",
 
   "popup_open": "Otwórz",
   "popup_close": "Zamknij",
@@ -251,6 +253,8 @@
   "profile_email": "Email",
   "profile_uploading": "Dodawanie...",
   "profile_upload": "Dodaj nowe zdjęcie",
+
+  "welcome_logIn": ", aby odkrywać spersonalizowane rekomendacje, zarządzać swoją kolekcją i korzystać ze wszystkich funkcji Bookshelf.",
 
   "onboarding_next": "Dalej",
   "onboarding_skip": "Pomiń",

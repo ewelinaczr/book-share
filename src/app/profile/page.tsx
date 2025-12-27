@@ -6,10 +6,21 @@ import { useSession } from "next-auth/react";
 import Header from "@/components/headers/Header";
 import ProfilePhoto from "@/components/photoUpload/ProfilePhoto";
 import styles from "./Profile.module.css";
+import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
 
 function page() {
   const t = useTranslations();
   const { data: session } = useSession();
+  const currentUserId = session?.user.id;
+
+  if (!currentUserId) {
+    return (
+      <main className={styles.authContainer}>
+        <Header label={t("profile_title")} />
+        <LogInRedirect />
+      </main>
+    );
+  }
 
   return (
     <main className={styles.container}>

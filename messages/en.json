@@ -112,6 +112,7 @@
   "bookshelf_error": "Failed to load your bookshelf. Please try again later.",
   "bookshelf_update": "Update book in the Bookshelf",
   "bookshelf_bookNotFound": "Book not found in your Bookshelf",
+  "bookshelf_noBooks": "You haven't added any books to your Bookshelf yet.",
 
   "popup_open": "Open",
   "popup_close": "Close",
@@ -280,5 +281,8 @@
   "requests_declineSuccess": "Request declined",
   "requests_declineError": "Failed to decline request",
   "profile_uploadSuccess": "Profile photo uploaded successfully",
-  "profile_uploadError": "Failed to upload profile photo"
+  "profile_uploadError": "Failed to upload profile photo",
+  "requests_books": "Book Exchange Requests",
+
+  "welcome_logIn": " to discover personalized books recommendations, manage your collection, and explore every Bookshelf feature!"
 }

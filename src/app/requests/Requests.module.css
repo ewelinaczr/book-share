@@ -1,8 +1,7 @@
 .container {
-  padding: 8rem 4rem 0rem 4rem;
+  padding: 8rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
 
 .requestsList {

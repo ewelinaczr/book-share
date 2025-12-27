@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getBookshelfStats } from "./getBookshelfStats";
+import { getSession } from "next-auth/react";
 import StatsOverview from "./StatsOverview";
 import Header from "@/components/headers/Header";
 import Charts from "./Charts";
@@ -8,6 +9,8 @@ import styles from "./BookshelfStats.module.css";
 export default async function BookshelfStats() {
   const t = await getTranslations();
   const books = await getBookshelfStats();
+  const session = await getSession();
+  const isLoggedInUser = session?.token;
 
   const {
     categoryCounts,
@@ -19,6 +22,10 @@ export default async function BookshelfStats() {
     longestBook,
     readBooksCount,
   } = books ?? {};
+
+  if (!isLoggedInUser) {
+    return null;
+  }
 
   return (
     <section className={styles.statsContainer}>

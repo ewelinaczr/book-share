@@ -7,11 +7,14 @@ import { useTranslations } from "next-intl";
 import { useDeleteButton } from "@/app/home/userOffersPanel/useDeleteButton";
 import { useEditButton } from "@/app/home/userOffersPanel/useEditButton";
 import { RatingFooter } from "./RatingFooter";
+import { useSession } from "next-auth/react";
 import styles from "./Bookshelf.module.css";
 
 import BookListPanel from "@/components/bookListPanel/BookListPanel";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import EditPopup from "./EditPopup";
+import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
+import Header from "@/components/headers/Header";
 
 const getBookData = (item: BookshelfBook) => {
   const { volumeInfo } = item.book;
@@ -33,15 +36,34 @@ export default function Bookshelf() {
   const { renderEditButton } = useEditButton<BookshelfBook>(setItemToEdit);
   const { renderDeleteButton } = useDeleteButton();
   const t = useTranslations();
+  const { data: session } = useSession();
+  const currentUserId = session?.user.id;
 
   const isLoading = reading.isLoading || wantToRead.isLoading || read.isLoading;
   const isError = reading.isError || wantToRead.isError || read.isError;
+
+  if (!currentUserId) {
+    return (
+      <section className={styles.errorContainer}>
+        <Header label={t("bookshelf_addBookTitle")} />
+        <LogInRedirect />
+      </section>
+    );
+  }
 
   if (isLoading) {
     return (
       <div className={styles.loaderContainer}>
         <LoadingSpinner />
       </div>
+    );
+  }
+
+  if (!reading.data?.length && !wantToRead.data?.length && !read.data?.length) {
+    return (
+      <section className={styles.errorContainer}>
+        <div>{t("bookshelf_noBooks")}</div>
+      </section>
     );
   }
 

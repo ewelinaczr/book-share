@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
 import styles from "./Chat.module.css";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
+import Header from "@/components/headers/Header";
+import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
 
 export interface PrivateMessage {
   from: string;
@@ -20,6 +23,17 @@ export default function Messages() {
   const [selectedChatUserId, setSelectedChatUserId] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<PrivateMessage[]>([]);
   const t = useTranslations();
+  const { data: session } = useSession();
+  const currentUserId = session?.user.id;
+
+  if (!currentUserId) {
+    return (
+      <main className={styles.container}>
+        <Header label={t("chat_messages")} />
+        <LogInRedirect />
+      </main>
+    );
+  }
 
   const {
     data: messages,

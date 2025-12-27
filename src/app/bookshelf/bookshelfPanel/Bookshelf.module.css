@@ -38,12 +38,19 @@
 
 .loaderContainer,
 .errorContainer {
-  margin: 4rem;
+  margin: 8rem 4rem;
   display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1150px) {
   .container {
     margin: 2rem;
+  }
+
+  .loaderContainer,
+  .errorContainer {
+    margin: 4rem;
+    display: flex;
   }
 }
