@@ -13,7 +13,7 @@ import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./Market.module.css";
 
 export default function Market() {
-  const { data, isLoading, isError, error } = useMarketByStatus();
+  const { data, isLoading, isError } = useMarketByStatus();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchCategory, setSearchCategory] = useState("allGenres");
   const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);

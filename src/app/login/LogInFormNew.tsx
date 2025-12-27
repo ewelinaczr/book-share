@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { pacifico } from "../fonts";
+import { toast } from "react-toastify";
 import cn from "classnames";
 import styles from "./LogInForm.module.css";
 import Image from "next/image";
 
 import { LoginFields } from "./LogInFields";
-import { LoginError } from "./LogInError";
 import { LoginActions } from "./LogInAction";
 import { GoogleLoginButton } from "./GoogleLoginButton";
 
@@ -23,7 +23,6 @@ type LoginFormInputs = {
 export function LogInForm() {
   const t = useTranslations();
   const router = useRouter();
-  const [formError, setFormError] = useState("");
 
   const {
     register,
@@ -33,7 +32,6 @@ export function LogInForm() {
 
   const onSubmit = useCallback(
     async (data: LoginFormInputs) => {
-      setFormError("");
       const res = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -41,7 +39,7 @@ export function LogInForm() {
       });
 
       if (res?.error) {
-        setFormError("Invalid credentials");
+        toast.error(t("login_invalidCredentials"));
       } else {
         router.push("/");
       }
@@ -65,7 +63,6 @@ export function LogInForm() {
             {t("login_title")}
           </p>
           <LoginFields register={register} errors={errors} />
-          <LoginError errorKey={formError} />
           <LoginActions isSubmitting={isSubmitting} />
           <p className={styles.redirectText}>
             {t("login_dontHaveAccount")}

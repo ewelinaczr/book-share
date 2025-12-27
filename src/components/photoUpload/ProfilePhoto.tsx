@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { toast } from "react-toastify";
 import {
   useUploadProfilePhotoMutation,
   useGetUserPhotoQuery,
@@ -47,9 +48,10 @@ export default function ProfilePhoto() {
 
     try {
       await uploadPhoto({ userId: currentUserId, file }).unwrap();
+      toast.success(t("profile_uploadSuccess"));
       refetch();
     } catch (err) {
-      console.error("Upload failed", err);
+      toast.error(t("profile_uploadError"));
     }
   };
 

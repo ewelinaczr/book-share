@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
 import { NextIntlClientProvider } from "next-intl";
 import OnboardingWrapper from "./onboarding/OnboardingWrapper";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 import Navigation from "@/components/navigation/Navigation";
@@ -25,6 +27,18 @@ export default async function RootLayout({
               <div className={"page-wrapper"}>
                 <Navigation />
                 <main>{children}</main>
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />
                 <Footer />
               </div>
             </OnboardingWrapper>

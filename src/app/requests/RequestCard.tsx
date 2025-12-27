@@ -6,6 +6,7 @@ import { useWithdrawRequestMutation } from "@/api/marketApi";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import { MarketBook, RequestMarketBook } from "@/interfaces/MarketBook";
 import styles from "./RequestCard.module.css";
+import { toast } from "react-toastify";
 
 function RequestCard({
   request,
@@ -28,7 +29,10 @@ function RequestCard({
       requestId: request._id as string,
     })
       .unwrap()
-      .catch((err) => console.error("Failed to withdraw request", err));
+      .then(() => {
+        toast.success(t("requests_deleteSuccess"));
+      })
+      .catch(() => toast.error(t("requests_deleteError")));
   };
 
   const renderActions = () => {

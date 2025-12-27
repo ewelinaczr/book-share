@@ -1,18 +1,3 @@
-.message {
-  height: 2rem;
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-}
-
-.success {
-  color: var(--color-notification-success);
-}
-
-.error {
-  color: var(--color-notification-error);
-}
-
 @media (max-width: 1150px) {
   .titleAuthor {
     flex-direction: column;

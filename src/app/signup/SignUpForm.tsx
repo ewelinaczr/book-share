@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useSignupMutation } from "@/api/userApi";
@@ -12,9 +12,9 @@ import Image from "next/image";
 import styles from "../login/LogInForm.module.css";
 
 import { SignupFields } from "./SignUpFields";
-import { SignupError } from "./SignUpError";
 import { SignupActions } from "./SignUpAction";
 import { GoogleSignupButton } from "./GoogleSignUpButton";
+import { toast } from "react-toastify";
 
 type SignupFormInputs = {
   name: string;
@@ -26,7 +26,6 @@ type SignupFormInputs = {
 export function SignUpForm() {
   const t = useTranslations();
   const router = useRouter();
-  const [formError, setFormError] = useState("");
   const [signup] = useSignupMutation();
 
   const {
@@ -40,7 +39,6 @@ export function SignUpForm() {
 
   const onSubmit = useCallback(
     async (data: SignupFormInputs) => {
-      setFormError("");
       try {
         await signup(data).unwrap();
         const loginRes = await signIn("credentials", {
@@ -50,12 +48,12 @@ export function SignUpForm() {
         });
 
         if (loginRes?.error) {
-          setFormError(t("signup_accountCreatedLoginFailed"));
+          toast.error(t("signup_accountCreatedLoginFailed"));
         } else {
           router.push("/");
         }
       } catch (err) {
-        setFormError(t("signup_somethingWentWrong"));
+        toast.error(t("signup_somethingWentWrong"));
       }
     },
     [signup, router, t]
@@ -81,7 +79,6 @@ export function SignUpForm() {
             errors={errors}
             password={password}
           />
-          <SignupError message={formError} />
           <SignupActions isSubmitting={isSubmitting} />
           <p className={styles.redirectText}>
             {t("signup_alreadyHaveAccount")}

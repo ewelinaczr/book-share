@@ -2,6 +2,7 @@ import React from "react";
 import Button, { ButtonType } from "../buttons/Button";
 import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export default function LogOutButton() {
   const t = useTranslations();
@@ -10,7 +11,7 @@ export default function LogOutButton() {
     try {
       signOut({ callbackUrl: "/" });
     } catch (error) {
-      console.error("Logout failed:", error);
+      toast.error(t("navigation_logOutError"));
     }
   };
 

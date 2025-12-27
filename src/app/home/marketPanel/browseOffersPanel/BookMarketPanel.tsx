@@ -5,6 +5,7 @@ import { useRequestExchangeMutation } from "@/api/marketApi";
 import { MarketBook } from "@/interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import { useBookSocket } from "./useBookSocket";
+import { toast } from "react-toastify";
 import BookDetailsPage from "./BookDetailsPage";
 import ActionPage from "./ActionPage";
 import DescriptionPage from "./DescriptionPage";
@@ -25,7 +26,8 @@ enum Page {
 export function BookMarketPanel({ book }: BookMarketPanelProps) {
   const t = useTranslations();
   const [page, setPage] = useState<Page>(Page.BOOK_DETAILS);
-  const [requestExchange] = useRequestExchangeMutation();
+  const [requestExchange, { isSuccess, isError, error }] =
+    useRequestExchangeMutation();
   const { data: session } = useSession();
   const socketRef = useBookSocket(session);
 
@@ -42,6 +44,15 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
       status: book.status,
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t("requests_sent"));
+    }
+    if (isError) {
+      toast.error(t("requests_send_error"));
+    }
+  }, [isSuccess, isError, error]);
 
   const marketBook = book?.book;
   const volumeInfo = marketBook?.volumeInfo;

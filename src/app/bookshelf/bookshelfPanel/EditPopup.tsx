@@ -7,7 +7,6 @@ import styles from "./EditPopup.module.css";
 
 import Header from "@/components/headers/Header";
 import AddToBookshelfForm from "../addToBookshelfPanel/AddToBookshelfForm";
-import Notification from "@/components/notification/Notification";
 import CloseButton from "@/components/closeButton/CloseButton";
 
 function EditPopup({
@@ -21,10 +20,7 @@ function EditPopup({
   const title = t("bookshelf_update");
   const { setOpenPopupType } = usePopup();
 
-  const { onSubmit, status, isLoading } = useUpdateBookshelfBook(bookId);
-
-  const messageClass =
-    status?.status === "error" ? styles.error : styles.success;
+  const { onSubmit, isLoading } = useUpdateBookshelfBook(bookId);
 
   const handleClose = () => {
     setOpenPopupType(null);
@@ -53,14 +49,6 @@ function EditPopup({
           onSubmit={onSubmit}
           isLoading={isLoading}
         />
-        {status && (
-          <div className={cn(styles.message, messageClass)}>
-            <Notification
-              message={t(status.messageKey)}
-              status={status.status}
-            />
-          </div>
-        )}
       </div>
     </article>
   );

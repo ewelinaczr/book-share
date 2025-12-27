@@ -5,6 +5,7 @@ import Button, { ButtonType } from "@/components/buttons/Button";
 import { useAcceptExchangeMutation } from "@/api/marketApi";
 import { useRouter } from "next/navigation";
 import { MarketBook, RequestMarketBook } from "@/interfaces/MarketBook";
+import { toast } from "react-toastify";
 import styles from "./RequestCard.module.css";
 
 function IncomingRequestCard({
@@ -37,7 +38,10 @@ function IncomingRequestCard({
               decision: "accept",
             })
               .unwrap()
-              .catch((err) => console.error("Failed to accept request", err));
+              .then(() => {
+                toast.success(t("requests_acceptSuccess"));
+              })
+              .catch(() => toast.error(t("requests_acceptError")));
           }}
           disabled={isAccepting}
         >
@@ -56,7 +60,10 @@ function IncomingRequestCard({
               decision: "decline",
             })
               .unwrap()
-              .catch((err) => console.error("Failed to decline request", err));
+              .then(() => {
+                toast.success(t("requests_declineSuccess"));
+              })
+              .catch(() => toast.error(t("requests_declineError")));
           }}
           disabled={isAccepting}
         >
