@@ -82,6 +82,46 @@ export const marketApi = createApi({
       }),
       invalidatesTags: ["Market"],
     }),
+    // Request an exchange (borrow/claim/trade)
+    requestExchange: builder.mutation<
+      MarketBook,
+      { bookId: string; status: MarketBookStatus; date?: Date }
+    >({
+      query: ({ bookId, status, date }) => ({
+        url: `/exchange/request/${bookId}`,
+        method: "POST",
+        credentials: "include",
+        body: { status, date },
+      }),
+      invalidatesTags: ["Market"],
+    }),
+    getRequestsMine: builder.query<MarketBook[], void>({
+      query: () => ({
+        url: "/exchange/requests/mine",
+        method: "GET",
+      }),
+      providesTags: ["Market"],
+    }),
+    getRequestsToMe: builder.query<MarketBook[], void>({
+      query: () => ({
+        url: "/exchange/requests/to-me",
+        method: "GET",
+      }),
+      providesTags: ["Market"],
+    }),
+    // Accept or decline an exchange request
+    acceptExchange: builder.mutation<
+      MarketBook,
+      { bookId: string; requestId: string; decision: "accept" | "decline" }
+    >({
+      query: ({ bookId, requestId, decision }) => ({
+        url: `/exchange/accept/${bookId}`,
+        method: "POST",
+        credentials: "include",
+        body: { requestId, decision },
+      }),
+      invalidatesTags: ["Market"],
+    }),
     // Get market books borrowed by my
     getBorrowedBooks: builder.query<MarketBook[], void>({
       query: () => ({
@@ -130,4 +170,8 @@ export const {
   useGetBorrowedFromMeQuery,
   useRemoveBookFromMarketMutation,
   useEditMarketBookMutation,
+  useRequestExchangeMutation,
+  useAcceptExchangeMutation,
+  useGetRequestsMineQuery,
+  useGetRequestsToMeQuery,
 } = marketApi;

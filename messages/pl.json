@@ -47,9 +47,10 @@
   "market_borrow": "Pożyczę",
   "market_claim": "Oddam",
   "market_trade": "Wymienię",
+  "market_owner": "Książkę pożycza",
   "market_contactOwner": "Skontaktuj się z właścicielem, aby ustalić szczegóły wymiany",
   "market_typeYourMessage": "Wpisz tutaj swoją wiadomość_",
-  "market_messageOwner": "Wiadomość do {owner}",
+  "market_messageOwner": "Wyślij wiadomość do {owner}",
   "market_offerBook": "Oferta: książka {offer}",
   "market_offerBookForDuration": "Oferta: książka {offer} na {duration}, do {endDate}",
   "market_addBookOfferTitle": "Dodaj ofertę książki",
@@ -105,6 +106,7 @@
   "popup_open": "Otwórz",
   "popup_close": "Zamknij",
 
+  "bookDetails_title": "Tytuł",
   "bookDetails_authors": "Autorzy",
   "bookDetails_genres": "Gatunki",
   "bookDetails_rating": "Ocena",
@@ -152,6 +154,7 @@
   "login_signUpWithGoogle": "Zaloguj się z Google",
   "login_emailRequired": "Email jest wymagany",
   "login_passwordRequired": "Hasło jest wymagane",
+  "login_passwordInvalid": "Nieprawidłowe hasło",
 
   "pickUp_address": "Punkt odbioru",
   "pickUp_openingHours": "Godziny otwarcia",

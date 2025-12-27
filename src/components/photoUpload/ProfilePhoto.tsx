@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import {
   useUploadProfilePhotoMutation,
   useGetUserPhotoQuery,
 } from "@/api/userApi";
-import styles from "./ProfilePhoto.module.css";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
-import { useTranslations } from "next-intl";
+import styles from "./ProfilePhoto.module.css";
 
 export default function ProfilePhoto() {
   const { data: session } = useSession();

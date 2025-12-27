@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { useEditMarketBookMutation } from "@/api/marketApi";
-import { AddMarketBook } from "@/interfaces/MarketBook";
+import { RequestMarketBook } from "@/interfaces/MarketBook";
 
 type Status =
   | { status: "success"; messageKey: string }
@@ -22,7 +22,7 @@ export function useUpdateMarketBookOffer(bookId: string) {
     return undefined;
   }, [isError, isSuccess, errorKey]);
 
-  const onSubmit = async (data: AddMarketBook) => {
+  const onSubmit = async (data: RequestMarketBook) => {
     setErrorKey(undefined);
     try {
       await editBook({

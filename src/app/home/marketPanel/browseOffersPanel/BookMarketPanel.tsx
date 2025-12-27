@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useExchangeMarketBookMutation } from "@/api/marketApi";
+import { useRequestExchangeMutation } from "@/api/marketApi";
 import { MarketBook } from "@/interfaces/MarketBook";
 import { useTranslations } from "next-intl";
 import { useBookSocket } from "./useBookSocket";
@@ -25,7 +25,7 @@ enum Page {
 export function BookMarketPanel({ book }: BookMarketPanelProps) {
   const t = useTranslations();
   const [page, setPage] = useState<Page>(Page.BOOK_DETAILS);
-  const [exchangeMarketBook] = useExchangeMarketBookMutation();
+  const [requestExchange] = useRequestExchangeMutation();
   const { data: session } = useSession();
   const socketRef = useBookSocket(session);
 
@@ -35,18 +35,11 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
     }
   }, [book]);
 
-  const getExchangeDate = (): Date => {
-    const date = new Date();
-    date.setMonth(date.getMonth() + 1);
-    return date;
-  };
-
-  const exchangeBook = () => {
+  const requestExchangeBook = () => {
     if (!session || !book?._id) return;
-    exchangeMarketBook({
+    requestExchange({
       bookId: book._id,
       status: book.status,
-      date: getExchangeDate(),
     });
   };
 
@@ -74,7 +67,7 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
           ownerId={ownerId}
           currentUserId={currentUserId}
           socketRef={socketRef}
-          onExchange={exchangeBook}
+          onExchange={requestExchangeBook}
         />
       ) : (
         <BookDetailsPage
@@ -87,7 +80,11 @@ export function BookMarketPanel({ book }: BookMarketPanelProps) {
         <Button
           type="submit"
           ariaLabel={t("buttons_toggleTheme")}
-          buttonType={ButtonType.PRIMARY}
+          buttonType={
+            page === Page.BOOK_DETAILS
+              ? ButtonType.PRIMARY
+              : ButtonType.SECONDARY
+          }
           onClick={() =>
             setPage(
               page === Page.BOOK_DETAILS ? Page.ACTION : Page.BOOK_DETAILS

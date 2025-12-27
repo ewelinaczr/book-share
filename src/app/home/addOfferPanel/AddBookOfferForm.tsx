@@ -2,7 +2,7 @@
 import cn from "classnames";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { AddMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
+import { RequestMarketBook, MarketBookStatus } from "@/interfaces/MarketBook";
 import styles from "./AddBookOffer.module.css";
 
 import Select from "@/components/inputs/Select";
@@ -23,7 +23,7 @@ export default function AddBookForm({
   isLoading,
   mode = "add",
 }: {
-  onSubmit: (data: AddMarketBook) => void;
+  onSubmit: (data: RequestMarketBook) => void;
   isLoading: boolean;
   mode?: "add" | "update";
 }) {
@@ -32,7 +32,7 @@ export default function AddBookForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<AddMarketBook>();
+  } = useForm<RequestMarketBook>();
   const statusOptions = useStatusOptions();
 
   return (

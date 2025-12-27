@@ -27,7 +27,7 @@ export default function OfferActionSection({
       <Button
         type="submit"
         ariaLabel={t("buttons_addBookToMarket")}
-        buttonType={ButtonType.PRIMARY}
+        buttonType={ButtonType.SECONDARY}
         onClick={onExchange}
       >
         {offer}

@@ -5,11 +5,20 @@ export interface IMarketBook extends Document {
   deadline?: Date;
   ownerId: mongoose.Types.ObjectId;
   book: mongoose.Types.ObjectId;
+
+  // final accepted exchange (only if accepted)
   exchangedWith?: {
     userId: mongoose.Types.ObjectId;
     status: "borrow" | "claim" | "trade";
     date?: Date;
   };
+
+  // multiple pending requests
+  pendingRequests?: {
+    userId: mongoose.Types.ObjectId;
+    status: "borrow" | "claim" | "trade";
+    date?: Date;
+  }[];
 }
 
 const MarketBookSchema = new Schema<IMarketBook>(
@@ -40,6 +49,24 @@ const MarketBookSchema = new Schema<IMarketBook>(
         default: Date.now,
       },
     },
+    pendingRequests: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        status: {
+          type: String,
+          enum: ["borrow", "claim", "trade"],
+          required: true,
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

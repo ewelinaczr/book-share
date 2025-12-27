@@ -95,9 +95,11 @@ export default function BookListPanel<T>({
             />
           </div>
           {selectedItem ? (
-            <BookDetails<T> selectedItem={selectedItem} getBookData={getData}>
-              {renderFooter?.(selectedItem)}
-            </BookDetails>
+            <BookDetails<T>
+              selectedItem={selectedItem}
+              getBookData={getData}
+              renderFooter={renderFooter}
+            ></BookDetails>
           ) : (
             <div className={styles.noSelectedItem}>
               {t("market_chooseBook")}

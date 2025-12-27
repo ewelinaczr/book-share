@@ -23,6 +23,34 @@ router
   .route("/exchange/:id")
   .patch(authController.protect, marketController.exchangeMarketBook);
 
+// Request an exchange (borrow/claim/trade) for a specific book
+router.post(
+  "/exchange/request/:id",
+  authController.protect,
+  marketController.requestExchange
+);
+
+// Requests I made to others
+router.get(
+  "/exchange/requests/mine",
+  authController.protect,
+  marketController.getRequestsMine
+);
+
+// Requests others made to me
+router.get(
+  "/exchange/requests/to-me",
+  authController.protect,
+  marketController.getRequestsToMe
+);
+
+// Accept or decline an exchange request
+router.post(
+  "/exchange/accept/:id",
+  authController.protect,
+  marketController.acceptExchange
+);
+
 router
   .route("/exchange/borrowed")
   .get(authController.protect, marketController.getBorrowedBooks);

@@ -63,12 +63,33 @@ export const userApi = createApi({
       query: (id) => ({
         url: `/${id}/photo`,
         method: "GET",
-        responseHandler: (response: Response) => response.blob(),
+        // return text on errors (serializable) and an object with arrayBuffer+contentType on success
+        responseHandler: async (response: Response) => {
+          if (!response.ok) return response.text();
+          const arrayBuffer = await response.arrayBuffer();
+          return {
+            data: arrayBuffer,
+            contentType: response.headers.get("content-type") || "image/jpeg",
+          } as { data: ArrayBuffer; contentType: string };
+        },
       }),
-      transformResponse: async (blob: Blob) => {
-        const arrayBuffer = await blob.arrayBuffer();
-        const base64 = Buffer.from(arrayBuffer).toString("base64");
-        return `data:${blob.type};base64,${base64}`;
+      transformResponse: (result: any) => {
+        // transformResponse only runs for successful results (the object with data/contentType)
+        if (!result || typeof result !== "object" || !result.data) return "";
+        const arrayBuffer: ArrayBuffer = result.data;
+        const bytes = new Uint8Array(arrayBuffer);
+        // Convert ArrayBuffer to base64 (work in small chunks to avoid call size limits)
+        let binary = "";
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          const chunk = bytes.subarray(i, i + chunkSize);
+          binary += String.fromCharCode.apply(null, Array.from(chunk) as any);
+        }
+        const base64 =
+          typeof btoa === "function"
+            ? btoa(binary)
+            : Buffer.from(binary, "binary").toString("base64");
+        return `data:${result.contentType};base64,${base64}`;
       },
       providesTags: ["UserPhoto"],
     }),

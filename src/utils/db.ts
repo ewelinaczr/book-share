@@ -22,7 +22,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) return cached.conn;
 
   const uri = process.env.MONGODB_URI;
-  console.log("uri", uri);
+
   if (!uri) {
     throw new Error("MONGODB_URI is not defined in environment variables");
   }

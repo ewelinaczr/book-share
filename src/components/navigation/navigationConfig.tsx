@@ -1,6 +1,7 @@
 import { FiUser } from "react-icons/fi";
 import { BsEnvelope } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
+import { LiaExchangeAltSolid } from "react-icons/lia";
 
 export const navLinks = [
   { id: "home", name: "Home", path: "/home", onboardingId: "nextstep-step2" },
@@ -18,6 +19,13 @@ export const navLinks = [
   },
 ];
 export const navIconLinks = [
+  {
+    id: "requests",
+    name: "Requests",
+    path: "/requests",
+    icon: <LiaExchangeAltSolid />,
+    onboardingId: "nextstep-step5",
+  },
   {
     id: "chat",
     name: "Chat",

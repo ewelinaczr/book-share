@@ -1,0 +1,81 @@
+.cardContainer {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  margin-bottom: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-left: 6px solid var(--bg-color-accent);
+  border-bottom-right-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+  gap: 2rem;
+}
+
+.infoContainer {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;
+  gap: 1rem;
+}
+
+.requestInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.requestInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.placeholder {
+  min-width: 9rem;
+  min-height: 15rem;
+  background-color: var(--placeholder-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageWrapper {
+  position: relative;
+  min-width: 7rem;
+  min-height: 8.8rem;
+}
+
+.placeholderText {
+  font-weight: bold;
+  color: var(--accent-blue);
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+  max-width: 50rem;
+  align-self: flex-end;
+}
+
+.bookInfoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 20rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.infoLabel {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.2rem;
+}

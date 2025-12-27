@@ -25,26 +25,22 @@ export default function ActionPage({
   socketRef,
   onExchange,
 }: ActionPageProps) {
-  const { title, authors } = volumeInfo;
+  const { title } = volumeInfo;
 
   return (
     <section className={styles.pageContainer}>
       <div className={styles.label}>
         <Label label={status} />
       </div>
-      <div className={styles.info}>
-        <p className={styles.title}>{title}</p>
-        {authors?.map((a) => (
-          <p key={a}>{a}</p>
-        ))}
-      </div>
-      <OfferActionSection status={status} onExchange={onExchange} />
+      <span className={styles.title}>{title}</span>
       <MessageOwnerSection
         ownerName={ownerName}
         ownerId={ownerId}
         currentUserId={currentUserId}
         socketRef={socketRef}
+        status={status}
       />
+      <OfferActionSection status={status} onExchange={onExchange} />
     </section>
   );
 }

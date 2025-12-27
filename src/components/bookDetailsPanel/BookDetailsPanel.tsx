@@ -14,12 +14,14 @@ type BookDetailsProps<T> = {
   selectedItem: T;
   getBookData: (item: T) => BookMetaData;
   children?: ReactNode;
+  renderFooter?: (selectedItem: T) => ReactNode;
 };
 
 export default function BookDetails<T>({
   selectedItem,
   children,
   getBookData,
+  renderFooter,
 }: BookDetailsProps<T>) {
   const [showMore, setShowMore] = useState(false);
   const data = getBookData(selectedItem);
@@ -114,6 +116,7 @@ export default function BookDetails<T>({
       </div>
       {renderBookDetails()}
       <div className={styles.buttonContainer}>
+        {renderFooter?.(selectedItem)}
         <SmallButton
           ariaLabel={
             showMore
