@@ -122,6 +122,18 @@ export const marketApi = createApi({
       }),
       invalidatesTags: ["Market"],
     }),
+    // Withdraw (delete) a pending exchange request I created
+    withdrawRequest: builder.mutation<
+      MarketBook,
+      { bookId: string; requestId: string }
+    >({
+      query: ({ bookId, requestId }) => ({
+        url: `/exchange/request/${bookId}/${requestId}`,
+        method: "DELETE",
+        credentials: "include",
+      }),
+      invalidatesTags: ["Market"],
+    }),
     // Get market books borrowed by my
     getBorrowedBooks: builder.query<MarketBook[], void>({
       query: () => ({
@@ -174,4 +186,5 @@ export const {
   useAcceptExchangeMutation,
   useGetRequestsMineQuery,
   useGetRequestsToMeQuery,
+  useWithdrawRequestMutation,
 } = marketApi;

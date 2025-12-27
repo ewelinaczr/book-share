@@ -37,6 +37,13 @@ router.get(
   marketController.getRequestsMine
 );
 
+// Remove a request I made for a specific book
+router.delete(
+  "/exchange/request/:id/:requestId",
+  authController.protect,
+  marketController.removeRequest
+);
+
 // Requests others made to me
 router.get(
   "/exchange/requests/to-me",

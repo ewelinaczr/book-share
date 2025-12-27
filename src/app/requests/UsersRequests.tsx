@@ -2,19 +2,17 @@ import React from "react";
 import { useGetRequestsMineQuery } from "@/api/marketApi";
 import { MarketBook, RequestMarketBook } from "@/interfaces/MarketBook";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 import RequestCard from "./RequestCard";
 import Header from "@/components/headers/Header";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./Requests.module.css";
-import { useSession } from "next-auth/react";
 
 const UsersRequests: React.FC = () => {
   const { data: requests, isLoading, isError } = useGetRequestsMineQuery();
   const t = useTranslations();
   const { data: session } = useSession();
   const currentUserId = session?.user.id;
-
-  console.log("print data", requests);
 
   if (isLoading) {
     return (

@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import Button, { ButtonType } from "@/components/buttons/Button";
+import { useAcceptExchangeMutation } from "@/api/marketApi";
+import { useRouter } from "next/navigation";
 import { MarketBook, RequestMarketBook } from "@/interfaces/MarketBook";
 import styles from "./RequestCard.module.css";
 
@@ -15,6 +17,9 @@ function IncomingRequestCard({
   const { title, imageLinks, authors } = book.book.volumeInfo;
   const imageSrc = imageLinks?.smallThumbnail ?? imageLinks?.thumbnail;
   const t = useTranslations();
+  const [acceptExchange, { isLoading: isAccepting }] =
+    useAcceptExchangeMutation();
+  const router = useRouter();
 
   const renderActions = () => {
     return (
@@ -23,6 +28,17 @@ function IncomingRequestCard({
           buttonType={ButtonType.PRIMARY}
           type="submit"
           ariaLabel="Accept Request"
+          onClick={() => {
+            if (!book._id || !request._id) return;
+            acceptExchange({
+              bookId: book._id as string,
+              requestId: request._id as string,
+              decision: "accept",
+            })
+              .unwrap()
+              .catch((err) => console.error("Failed to accept request", err));
+          }}
+          disabled={isAccepting}
         >
           {t("requests_acceptRequest")}
         </Button>
@@ -30,6 +46,17 @@ function IncomingRequestCard({
           buttonType={ButtonType.SECONDARY}
           type="submit"
           ariaLabel="Decline Request"
+          onClick={() => {
+            if (!book._id || !request._id) return;
+            acceptExchange({
+              bookId: book._id as string,
+              requestId: request._id as string,
+              decision: "decline",
+            })
+              .unwrap()
+              .catch((err) => console.error("Failed to decline request", err));
+          }}
+          disabled={isAccepting}
         >
           {t("requests_declineRequest")}
         </Button>
@@ -39,6 +66,11 @@ function IncomingRequestCard({
           type="submit"
           ariaLabel="Message Requester"
           customStyles={{ whiteSpace: "nowrap" }}
+          onClick={() => {
+            const requesterId = request?.userId?._id;
+            if (!requesterId) return;
+            router.push(`/chat?user=${requesterId}`);
+          }}
         >
           {t("requests_message_requester")}
         </Button>

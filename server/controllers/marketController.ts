@@ -315,6 +315,49 @@ export const acceptExchange = async (
   }
 };
 
+export const removeRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = getUserOrFail(req, res);
+  if (!user) return;
+
+  try {
+    const marketBookId = req.params.id;
+    const requestId = req.params.requestId;
+
+    const marketBook = await MarketBook.findById(marketBookId);
+    if (!marketBook) {
+      res.status(404).json({ error: "MarketBook not found." });
+      return;
+    }
+
+    const request = marketBook.pendingRequests?.find(
+      (r: any) => r._id.toString() === requestId
+    );
+    if (!request) {
+      res.status(404).json({ error: "Exchange request not found." });
+      return;
+    }
+
+    // Only the user who created the request may remove it
+    if (request.userId.toString() !== user._id) {
+      res.status(403).json({ error: "Not authorized to remove this request." });
+      return;
+    }
+
+    const updated = await MarketBook.findByIdAndUpdate(
+      marketBookId,
+      { $pull: { pendingRequests: { _id: requestId } } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Request removed", book: updated });
+  } catch (err: any) {
+    handleError(res, err);
+  }
+};
+
 export const getRequestsMine = async (
   req: Request,
   res: Response

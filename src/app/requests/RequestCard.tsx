@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useWithdrawRequestMutation } from "@/api/marketApi";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import { MarketBook, RequestMarketBook } from "@/interfaces/MarketBook";
 import styles from "./RequestCard.module.css";
@@ -15,6 +17,19 @@ function RequestCard({
   const { title, imageLinks, authors } = book.book.volumeInfo;
   const imageSrc = imageLinks?.smallThumbnail ?? imageLinks?.thumbnail;
   const t = useTranslations();
+  const [withdrawRequest, { isLoading: isWithdrawing }] =
+    useWithdrawRequestMutation();
+  const router = useRouter();
+
+  const handleDelete = () => {
+    if (!book._id || !request._id) return;
+    withdrawRequest({
+      bookId: book._id as string,
+      requestId: request._id as string,
+    })
+      .unwrap()
+      .catch((err) => console.error("Failed to withdraw request", err));
+  };
 
   const renderActions = () => {
     return (
@@ -23,6 +38,8 @@ function RequestCard({
           buttonType={ButtonType.PRIMARY}
           type="submit"
           ariaLabel="Delete Request"
+          disabled={isWithdrawing}
+          onClick={handleDelete}
         >
           {t("requests_deleteRequest")}
         </Button>
@@ -30,6 +47,12 @@ function RequestCard({
           buttonType={ButtonType.SECONDARY}
           type="submit"
           ariaLabel="Send message"
+          onClick={() => {
+            const ownerId = book?.ownerId?._id;
+            if (!ownerId) return;
+            router.push(`/chat?user=${ownerId}`);
+          }}
+          disabled={!book?.ownerId?._id}
         >
           {t("requests_message")}
         </Button>
