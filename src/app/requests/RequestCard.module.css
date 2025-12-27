@@ -9,6 +9,7 @@
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
   gap: 2rem;
+  align-items: start;
 }
 
 .infoContainer {
@@ -78,4 +79,26 @@
   font-size: 1.2rem;
   color: var(--text-color);
   margin-bottom: 0.2rem;
+}
+
+@media (max-width: 1150px) {
+  .cardContainer {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .infoContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .requestInfo {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4rem;
+    max-width: 20rem;
+    align-self: flex-start;
+  }
 }

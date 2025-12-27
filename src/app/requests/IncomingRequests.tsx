@@ -14,9 +14,11 @@ const IncomingRequestsList: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className={styles.loaderContainer}>
+      <div>
         <Header label={t("requests_incoming")} />
-        <LoadingSpinner />
+        <div className={styles.loaderContainer}>
+          <LoadingSpinner />
+        </div>
       </div>
     );
   }

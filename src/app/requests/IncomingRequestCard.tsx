@@ -28,6 +28,7 @@ function IncomingRequestCard({
           buttonType={ButtonType.PRIMARY}
           type="submit"
           ariaLabel="Accept Request"
+          customStyles={{ minWidth: "14rem" }}
           onClick={() => {
             if (!book._id || !request._id) return;
             acceptExchange({
@@ -46,6 +47,7 @@ function IncomingRequestCard({
           buttonType={ButtonType.SECONDARY}
           type="submit"
           ariaLabel="Decline Request"
+          customStyles={{ minWidth: "14rem" }}
           onClick={() => {
             if (!book._id || !request._id) return;
             acceptExchange({
@@ -65,7 +67,7 @@ function IncomingRequestCard({
           buttonType={ButtonType.SECONDARY}
           type="submit"
           ariaLabel="Message Requester"
-          customStyles={{ whiteSpace: "nowrap" }}
+          customStyles={{ whiteSpace: "nowrap", minWidth: "14rem" }}
           onClick={() => {
             const requesterId = request?.userId?._id;
             if (!requesterId) return;

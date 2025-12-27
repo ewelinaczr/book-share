@@ -39,6 +39,7 @@ function RequestCard({
           type="submit"
           ariaLabel="Delete Request"
           disabled={isWithdrawing}
+          customStyles={{ minWidth: "14rem" }}
           onClick={handleDelete}
         >
           {t("requests_deleteRequest")}
@@ -47,6 +48,7 @@ function RequestCard({
           buttonType={ButtonType.SECONDARY}
           type="submit"
           ariaLabel="Send message"
+          customStyles={{ minWidth: "14rem" }}
           onClick={() => {
             const ownerId = book?.ownerId?._id;
             if (!ownerId) return;
