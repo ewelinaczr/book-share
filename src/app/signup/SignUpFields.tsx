@@ -1,11 +1,13 @@
 import { SlKey } from "react-icons/sl";
 import { FaRegUser } from "react-icons/fa6";
-import Input from "@/components/inputs/Input";
 import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { confirmPassword } from "../../../shared/validators/passwordConfirmValidator";
 import { useTranslations } from "next-intl";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { useState } from "react";
+import Input from "@/components/inputs/Input";
 
 type Props = {
   register: UseFormRegister<any>;
@@ -15,6 +17,7 @@ type Props = {
 
 export function SignupFields({ register, errors, password }: Props) {
   const t = useTranslations();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -50,9 +53,13 @@ export function SignupFields({ register, errors, password }: Props) {
       <Input
         id="password"
         label={t("signup_password")}
-        type="password"
+        type={showPassword ? "text" : "password"}
         placeholder={t("signup_enterYourPassword")}
         icon={<SlKey />}
+        secondaryIcon={<IoEyeOutline />}
+        secondaryIconActive={<IoEyeOffOutline />}
+        isSecondaryIconActive={showPassword}
+        handleIconPress={setShowPassword}
         {...register("password", {
           required: t("signup_passwordRequired"),
           validate: (value) =>
@@ -67,7 +74,11 @@ export function SignupFields({ register, errors, password }: Props) {
       <Input
         id="passwordConfirm"
         label={t("signup_confirmPassword")}
-        type="password"
+        type={showPassword ? "text" : "password"}
+        secondaryIcon={<IoEyeOutline />}
+        secondaryIconActive={<IoEyeOffOutline />}
+        isSecondaryIconActive={showPassword}
+        handleIconPress={setShowPassword}
         placeholder={t("signup_enterYourPassword")}
         icon={<SlKey />}
         {...register("passwordConfirm", {

@@ -53,6 +53,10 @@ export function SignUpForm() {
           router.push("/");
         }
       } catch (err) {
+        if (err.data?.code === 11000) {
+          toast.error(t("signup_emailAlreadyInUse"));
+          return;
+        }
         toast.error(t("signup_somethingWentWrong"));
       }
     },

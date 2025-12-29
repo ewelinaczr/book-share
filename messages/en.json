@@ -144,7 +144,7 @@
   "signup_passwordRequired": "Password is required",
   "signup_passwordMin": "Password must be at least 8 characters long and contain letters and numbers",
   "signup_passwordsDoNotMatch": "Passwords do not match",
-  "signup_accountCreatedLoginFailed": "Account created, but login failed. Try agian.",
+  "signup_accountCreatedLoginFailed": "Account created, but login failed. Try again.",
   "signup_somethingWentWrong": "Something went wrong. Please try again.",
   "signup_signingUp": "Signing Up...",
   "signup_pleaseConfirmPassword": "Please confirm your password",
@@ -152,6 +152,7 @@
   "signup_signUpButton": "Sign up",
   "signup_signInWithGoogle": "Sign in with Google",
   "signup_login": "Sign in",
+  "signup_emailAlreadyInUse": "Email is already in use",
 
   "login_title": "Log in to continue your reading journey",
   "login_emailLabel": "E-mail address",

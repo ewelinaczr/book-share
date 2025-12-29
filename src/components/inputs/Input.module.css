@@ -36,9 +36,18 @@
   pointer-events: none;
 }
 
+.secondaryIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 .error {
-  margin-top: 0.4rem;
-  margin-left: 0.2rem;
+  font-size: 1.2rem;
+  margin: 0.2rem;
+  height: 2.4rem;
   color: var(--color-notification-error);
-  height: 2rem;
 }

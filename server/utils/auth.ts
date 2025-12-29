@@ -66,9 +66,10 @@ export const handleError = (res: Response, err: any): void => {
   if (err && err.name === "ValidationError") {
     res.status(422).json({ error: "Validation failed", details: err.errors });
   } else {
-    res
-      .status(err?.statusCode || 500)
-      .json({ error: err?.message || "Internal Server Error" });
+    res.status(err?.statusCode || 500).json({
+      error: err?.message,
+      code: err?.code || "Internal Server Error",
+    });
   }
 };
 

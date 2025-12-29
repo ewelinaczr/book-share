@@ -3,6 +3,8 @@ import { validateEmail } from "../../../shared/validators/emailValidator";
 import { validatePassword } from "../../../shared/validators/passwordValidator";
 import { useTranslations } from "next-intl";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { useState } from "react";
 import Input from "@/components/inputs/Input";
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 
 export function LoginFields({ register, errors }: Props) {
   const t = useTranslations();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -33,10 +36,14 @@ export function LoginFields({ register, errors }: Props) {
       />
       <Input
         id="password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         label={t("login_passwordLabel")}
         placeholder={t("login_enterPassword")}
         icon={<SlKey />}
+        secondaryIcon={<IoEyeOutline />}
+        secondaryIconActive={<IoEyeOffOutline />}
+        isSecondaryIconActive={showPassword}
+        handleIconPress={setShowPassword}
         {...register("password", {
           required: t("login_passwordRequired"),
           validate: (value) =>

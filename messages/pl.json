@@ -181,6 +181,7 @@
   "signup_signUpButton": "Zarejestruj się",
   "signup_signInWithGoogle": "Zaloguj się z Google",
   "signup_login": "Zaloguj się ",
+  "signup_emailAlreadyInUse": "Email jest już w użyciu",
 
   "login_title": "Zaloguj się, aby kontynuować swoją przygodę z czytaniem",
   "login_emailLabel": "Adres e-mail",
