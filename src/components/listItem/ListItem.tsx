@@ -33,7 +33,9 @@ export default function ListItem<T>({
     return (
       <div
         className={cn(styles.editDeleteButtons, {
-          [styles.editDeleteButtonsSelected]: selected,
+          [styles.editDeleteButtonsSelected]:
+            selected &&
+            (renderEditButton || renderDeleteButton || renderMessageButton),
         })}
       >
         {renderEditButton && renderEditButton(item)}

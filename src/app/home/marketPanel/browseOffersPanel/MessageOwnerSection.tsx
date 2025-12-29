@@ -99,7 +99,7 @@ export default function MessageOwnerSection({
         ariaLabel={t("chat_sendToOwnerAria")}
         buttonType={ButtonType.PRIMARY}
         onClick={sendMessage}
-        customStyles={{ marginTop: "0.6rem", marginBottom: "1.4rem" }}
+        customStyles={{ marginTop: "0.6rem", marginBottom: "1rem" }}
       >
         {ownerName ? t("market_messageOwner", { owner: ownerName }) : ""}
       </Button>

@@ -26,39 +26,27 @@ export default function Messages() {
   const { data: session } = useSession();
   const currentUserId = session?.user.id;
 
-  if (!currentUserId) {
-    return (
-      <main className={styles.container}>
-        <Header label={t("chat_messages")} />
-        <LogInRedirect />
-      </main>
-    );
-  }
-
   const {
     data: messages,
     isLoading: isMessagesLoading,
     error: messagesError,
   } = useGetChatHistoryQuery(selectedChatUserId, {
-    skip: !selectedChatUserId,
+    skip: !selectedChatUserId || !currentUserId,
   });
 
   const {
     data: partners,
     isLoading: isChatPartnersLoading,
     error: chatPartnersError,
-  } = useGetChatPartnersQuery();
+  } = useGetChatPartnersQuery(undefined, { skip: !currentUserId });
 
-  const isLoading = isMessagesLoading || isChatPartnersLoading;
-  const isError = messagesError || chatPartnersError;
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     // Clear messages when selected user changes
     setChatMessages([]);
   }, [selectedChatUserId]);
-
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
     const userFromQuery = searchParams?.get("user") ?? "";
@@ -81,6 +69,18 @@ export default function Messages() {
       setChatMessages(messages);
     }
   }, [messages]);
+
+  const isLoading = isMessagesLoading || isChatPartnersLoading;
+  const isError = messagesError || chatPartnersError;
+
+  if (!currentUserId) {
+    return (
+      <main className={styles.container}>
+        <Header label={t("chat_messages")} />
+        <LogInRedirect />
+      </main>
+    );
+  }
 
   if (isLoading) {
     return (

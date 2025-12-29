@@ -3,6 +3,7 @@
   display: flex;
   gap: 8rem;
   background: var(--bg-chat-gradient);
+  height: calc(100vh - 6rem);
 }
 
 .select {

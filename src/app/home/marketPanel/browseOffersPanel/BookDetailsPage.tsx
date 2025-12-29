@@ -64,15 +64,17 @@ export default function BookDetailsPage({
     return (
       <div className={styles.info}>
         <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
-        <p className={styles.description}>{description}</p>
-        <div className={styles.button}>
-          <SmallButton
-            text={t("market_showMore")}
-            icon={<CgDetailsMore />}
-            ariaLabel={t("market_showMoreAria")}
-            onClick={onShowMore}
-          />
-        </div>
+        <p className={styles.description}>{description ?? "-"}</p>
+        {description && description?.length > 300 && (
+          <div className={styles.button}>
+            <SmallButton
+              text={t("market_showMore")}
+              icon={<CgDetailsMore />}
+              ariaLabel={t("market_showMoreAria")}
+              onClick={onShowMore}
+            />
+          </div>
+        )}
       </div>
     );
   };

@@ -1,42 +1,99 @@
+/* =========================================================
+   Root – Base (Light Theme)
+   ========================================================= */
 :root {
+  /* -------------------------------------------------------
+     Fonts
+     ------------------------------------------------------- */
   --font-geist-sans: "Geist", sans-serif;
   --font-geist-mono: "Geist Mono", monospace;
-  /* Main colors */
+
+  /* -------------------------------------------------------
+     Core Colors
+     ------------------------------------------------------- */
   --white: rgb(255, 255, 255);
   --white-90: rgba(255, 255, 255, 0.95);
   --black: rgb(0, 0, 0);
+
+  /* -------------------------------------------------------
+     Brand Palette
+     ------------------------------------------------------- */
   --color-brand-primary: rgb(254, 186, 69);
   --color-brand-secondary: rgb(244, 241, 222);
   --color-brand-dark: #080a1a;
   --color-brand-brown: rgb(66, 59, 11);
   --color-brand-gray: rgb(140, 147, 168);
   --color-brand-gray-50: rgba(140, 147, 168, 0.5);
-  /* Text colors */
-  --text-color: var(--black); /* b > w */
-  --text-color-1: var(--white); /* w > b */
-  --text-color-2: var(--black); /* b > b */
-  /* Background colors */
-  --bg-color-nav: var(--white);
-  --bg-color-panel: rgb(244, 241, 222, 0.5);
-  --bg-color-page: var(--white);
-  --bg-color-accent: rgb(255, 222, 150);
+
+  /* -------------------------------------------------------
+     Text Colors
+     ------------------------------------------------------- */
+  --text-color: var(--black);
+  --text-color-1: var(--white);
+  --text-color-2: var(--black);
+
+  /* -------------------------------------------------------
+     Backgrounds – Global
+     ------------------------------------------------------- */
   --bg-color: var(--white);
+  --bg-color-page: var(--white);
+  --bg-color-nav: var(--white);
+  --bg-color-footer: var(--color-brand-secondary);
+  --bg-color-accent: rgb(255, 222, 150);
+
+  /* -------------------------------------------------------
+     Backgrounds – Panels & Inputs
+     ------------------------------------------------------- */
+  --bg-color-panel: rgb(244, 241, 222, 0.5);
+  --bg-color-panel-sec: var(--white);
   --bg-input: var(--white);
 
+  /* -------------------------------------------------------
+     Chat / Messaging
+     ------------------------------------------------------- */
   --bg-color-chat: var(--color-brand-primary);
   --bg-color-chat-1: var(--color-brand-primary);
   --bg-chat-gradient: var(--white);
-  --bg-scrollbar: var(--color-brand-dark);
-  --bg-color-footer: var(--color-brand-secondary);
-  /* UI specific variables */
-  --popup-backdrop: #e9eaf2cc;
+
+  /* -------------------------------------------------------
+     UI Elements
+     ------------------------------------------------------- */
   --popup-bg: var(--white);
+  --popup-backdrop: #e9eaf2cc;
+  --bg-scrollbar: var(--color-brand-dark);
+  --border-color: var(--black);
+  --placeholder-bg: linear-gradient(
+    145deg,
+    var(--color-brand-secondary) 0%,
+    var(--color-brand-gray-50) 100%
+  );
+
+  /* -------------------------------------------------------
+     Buttons
+     ------------------------------------------------------- */
   --button-bg: var(--black);
   --button-text: var(--white);
-  --placeholder-bg: var(--white);
+  --color-button-primary: var(--color-brand-dark);
+  --color-button-primary-hover: var(--color-brand-primary);
+  --color-button-secondary: var(--color-brand-secondary);
+  --color-button-secondary-hover: var(--color-brand-primary);
+  --color-button-special: var(--color-brand-dark);
+
+  /* -------------------------------------------------------
+     Accents
+     ------------------------------------------------------- */
   --accent-blue: #184e7e;
-  --border-color: var(--black);
-  /* Chart palette variables */
+
+  /* -------------------------------------------------------
+     Notifications / Status
+     ------------------------------------------------------- */
+  --color-notification-success: #56ca5a;
+  --color-notification-error: #ff4419;
+  --color-notification-alert: #ff4419;
+
+  /* -------------------------------------------------------
+     Charts / Data Viz
+     ------------------------------------------------------- */
   --chart-1: #ffd386;
   --chart-2: #b55e06ff;
   --chart-3: #fbcadfff;
@@ -49,44 +106,66 @@
   --chart-10: #ff6f61;
   --chart-11: #6b5b95;
   --chart-12: #d65076;
+
+  /* -------------------------------------------------------
+     Fallback
+     ------------------------------------------------------- */
   --fallback-color: #cccccc;
-  /* Notification */
-  --color-notification-success: #56ca5a;
-  --color-notification-error: #ff4419;
-  --color-notification-alert: #ff4419;
-  /* Buttons */
-  --color-button-primary: var(--color-brand-dark);
-  --color-button-primary-hover: var(--color-brand-primary);
-  --color-button-secondary: var(--color-brand-secondary);
-  --color-button-secondary-hover: var(--color-brand-primary);
-  --color-button-special: var(--color-brand-dark);
 }
 
+/* =========================================================
+   Dark Theme Overrides
+   ========================================================= */
 :root[data-theme="dark"] {
-  /* Text */
+  /* -------------------------------------------------------
+     Text
+     ------------------------------------------------------- */
   --text-color: var(--white-90);
   --text-color-1: var(--black);
   --text-color-2: var(--black);
-  /* Background */
-  --bg-color-nav: var(--color-brand-dark);
-  --bg-color-panel: rgb(255, 255, 255, 0.05);
-  --bg-color-page: rgb(255, 255, 255, 0.05);
+
+  /* -------------------------------------------------------
+     Backgrounds – Global
+     ------------------------------------------------------- */
   --bg-color: #202233;
-  --bg-input: #3c3f54;
+  --bg-color-page: rgb(255, 255, 255, 0.05);
+  --bg-color-nav: var(--color-brand-dark);
   --bg-color-footer: var(--color-brand-dark);
-  /* UI specific variables */
-  --popup-backdrop: #171a30cc;
-  --bg-scrollbar: var(--color-brand-dark);
-  --popup-bg: var(--color-brand-dark);
+
+  /* -------------------------------------------------------
+     Backgrounds – Panels & Inputs
+     ------------------------------------------------------- */
+  --bg-color-panel: rgb(255, 255, 255, 0.05);
+  --bg-color-panel-sec: rgb(255, 255, 255, 0.05);
+  --bg-input: #3c3f54;
+  --placeholder-bg: linear-gradient(
+    145deg,
+    #3c3f54 0%,
+    var(--color-brand-gray) 100%
+  );
+
+  /* -------------------------------------------------------
+     Chat / Messaging
+     ------------------------------------------------------- */
   --bg-color-chat: #d272fc;
   --bg-color-chat-1: var(--color-brand-dark);
-  --border-color: transparent;
   --bg-chat-gradient: linear-gradient(
-    135deg,
+    30deg,
     #ffffff21 0%,
     var(--color-brand-dark) 100%
   );
-  /* Buttons */
+
+  /* -------------------------------------------------------
+     UI Elements
+     ------------------------------------------------------- */
+  --popup-bg: var(--color-brand-dark);
+  --popup-backdrop: #171a30cc;
+  --bg-scrollbar: var(--color-brand-dark);
+  --border-color: transparent;
+
+  /* -------------------------------------------------------
+     Buttons
+     ------------------------------------------------------- */
   --color-button-primary: var(--color-brand-primary);
   --color-button-primary-hover: var(--color-brand-primary);
   --color-button-secondary: var(--color-brand-secondary);

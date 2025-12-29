@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { getBookshelfStats } from "./getBookshelfStats";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/app/api/auth/[...nextauth]/config";
 import StatsOverview from "./StatsOverview";
 import Header from "@/components/headers/Header";
 import Charts from "./Charts";
@@ -9,8 +10,8 @@ import styles from "./BookshelfStats.module.css";
 export default async function BookshelfStats() {
   const t = await getTranslations();
   const books = await getBookshelfStats();
-  const session = await getSession();
-  const isLoggedInUser = session?.token;
+  const session = await getServerSession(authConfig);
+  const isLoggedInUser = Boolean(session?.user?.id);
 
   const {
     categoryCounts,

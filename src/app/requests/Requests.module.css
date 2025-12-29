@@ -2,6 +2,8 @@
   padding: 8rem 4rem 4rem 4rem;
   display: flex;
   flex-direction: column;
+  background: var(--bg-chat-gradient);
+  min-height: calc(100vh - 6rem);
 }
 
 .requestsList {

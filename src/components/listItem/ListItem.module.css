@@ -18,7 +18,7 @@
 .placeholder {
   width: 10rem;
   height: 15rem;
-  background-color: var(--placeholder-bg);
+  background: var(--placeholder-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,7 +32,7 @@
 
 .placeholderText {
   font-weight: bold;
-  color: var(--accent-blue);
+  color: var(--text-color);
 }
 
 .labelContainer {
