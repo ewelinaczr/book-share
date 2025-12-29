@@ -8,15 +8,15 @@ export enum BookStatus {
 
 export interface BookshelfBook extends Book {
   status: BookStatus;
-  own: Boolean;
-  rating: Number;
+  own: boolean;
+  rating: number;
   book: Book; // Full Book object
   createdAt: string;
 }
 
 export interface AddBookshelfBook {
   status: BookStatus;
-  own: Boolean;
-  rating: Number;
+  own: boolean;
+  rating: number;
   isbn: string;
 }

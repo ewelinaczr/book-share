@@ -17,7 +17,7 @@ function PickUpPointsMap() {
   }, []);
 
   return (
-    <div className={styles.panelContainer}>
+    <>
       <Header label={"Explore Pick Up Points"} />
       <div className={styles.panelContainer} id="nextstep-step13">
         <MapWrapper
@@ -25,7 +25,7 @@ function PickUpPointsMap() {
         />
         <PickUpSpotPanel spot={displayedPickUpSpot} />
       </div>
-    </div>
+    </>
   );
 }
 

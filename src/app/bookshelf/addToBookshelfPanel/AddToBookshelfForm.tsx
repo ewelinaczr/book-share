@@ -1,8 +1,9 @@
+"use client";
+
 import React from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { BookStatus } from "@/interfaces/BookshelfBook";
-import { AddBookshelfBook } from "@/interfaces/BookshelfBook";
+import { BookStatus, AddBookshelfBook } from "@/interfaces/BookshelfBook";
 import styles from "./AddToBookshelf.module.css";
 
 import Select from "@/components/inputs/Select";
@@ -10,18 +11,18 @@ import Input from "@/components/inputs/Input";
 import Button, { ButtonType } from "@/components/buttons/Button";
 
 const statusOptions = [
-  { value: BookStatus.READING, label: "Currently reading" },
-  { value: BookStatus.WANT_TO_READ, label: "Want to read" },
-  { value: BookStatus.READ, label: "Read" },
+  { value: BookStatus.READING.toString(), label: "Currently reading" },
+  { value: BookStatus.WANT_TO_READ.toString(), label: "Want to read" },
+  { value: BookStatus.READ.toString(), label: "Read" },
 ];
 
 const ownOptions = [
-  { value: 1, label: "yes" },
-  { value: 0, label: "no" },
+  { value: "true", label: "yes" },
+  { value: "false", label: "no" },
 ];
 
 const ratingOptions = [1, 2, 3, 4, 5].map((val) => ({
-  value: val,
+  value: val.toString(),
   label: val.toString(),
 }));
 
@@ -38,30 +39,47 @@ export default function AddToBookshelfForm({
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<AddBookshelfBook>();
+
+  const status = watch("status");
+  const own = watch("own");
+  const rating = watch("rating");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <div>
         <Select
           label={t("bookshelf_status")}
+          value={status ?? ""}
           options={statusOptions}
-          {...register("status")}
+          onChange={(val) =>
+            setValue("status", val as BookStatus, {
+              shouldValidate: true,
+            })
+          }
           error={errors.status?.message}
         />
         <Select
           label={t("bookshelf_own")}
+          value={own === undefined ? "" : String(own)}
           options={ownOptions}
-          {...register("own")}
+          onChange={(val) =>
+            setValue("own", val === "true", { shouldValidate: true })
+          }
           error={errors.own?.message}
         />
       </div>
       <div>
         <Select
           label={t("bookshelf_rating")}
+          value={rating === undefined ? "" : String(rating)}
           options={ratingOptions}
-          {...register("rating")}
+          onChange={(val) =>
+            setValue("rating", Number(val), { shouldValidate: true })
+          }
           error={errors.rating?.message}
         />
         {mode === "add" && (

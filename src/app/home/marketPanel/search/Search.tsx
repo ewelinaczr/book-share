@@ -2,12 +2,12 @@
 
 import { useMemo } from "react";
 import { CiSearch } from "react-icons/ci";
-import { SlArrowDown } from "react-icons/sl";
 import { useTranslations } from "next-intl";
 import { popularBookGenres } from "./searchConfig";
 import { MarketBook } from "@/interfaces/MarketBook";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
+import Dropdown from "@/components/dropdown/Dropdown";
 import styles from "./Search.module.css";
 
 export interface SearchProps {
@@ -34,6 +34,19 @@ export default function Search({
 
   const selectedKey = labelToKey[searchCategory] ?? searchCategory;
 
+  const dropdownOptions = popularBookGenres.map((genreObj, index) => {
+    const booksByGenreCount = books?.filter((b) =>
+      b.book?.volumeInfo.categories?.includes(genreObj.label)
+    ).length;
+
+    const count = index === 0 ? books?.length : booksByGenreCount;
+
+    return {
+      value: genreObj.key,
+      label: `${t(`genre_${genreObj.key}`)} (${count})`,
+    };
+  });
+
   return (
     <div className={styles.inputContainer}>
       <Input
@@ -44,31 +57,12 @@ export default function Search({
         onChange={(e) => setSearchQuery(e.target.value)}
         withoutError
       />
-
-      <div className={styles.selectContainer}>
-        <SlArrowDown className={styles.icon} />
-        <select
-          aria-label="Select book genre"
-          value={selectedKey}
-          className={styles.select}
-          onChange={(e) => setSearchCategory(e.target.value)}
-        >
-          {popularBookGenres.map((genreObj, index) => {
-            const booksByGenreCount = books?.filter((b) =>
-              b.book?.volumeInfo.categories?.includes(genreObj.label)
-            ).length;
-
-            const count = index === 0 ? books?.length : booksByGenreCount;
-
-            return (
-              <option value={genreObj.key} key={genreObj.key}>
-                {t(`genre_${genreObj.key}`)} ({count})
-              </option>
-            );
-          })}
-        </select>
-      </div>
-
+      <Dropdown
+        ariaLabel="Select book genre"
+        value={selectedKey}
+        options={dropdownOptions}
+        onChange={setSearchCategory}
+      />
       <Button
         type="button"
         ariaLabel="Search clear button"

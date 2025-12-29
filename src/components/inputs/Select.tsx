@@ -1,39 +1,36 @@
-import React, { forwardRef, SelectHTMLAttributes } from "react";
-import styles from "./Select.module.css";
+"use client";
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+import React, { forwardRef } from "react";
+
+import styles from "./Select.module.css";
+import Dropdown, { DropdownOption } from "../dropdown/Dropdown";
+
+interface SelectProps {
   label?: string;
   error?: string;
-  options: { value: string | number; label: string }[];
+  options: DropdownOption[];
   customStyles?: React.CSSProperties;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, options, customStyles, ...props }, ref) => (
-    <div className={styles.container} style={customStyles}>
-      <label htmlFor={label} className={styles.label}>
-        {label}
-      </label>
-      <select
-        id={label}
-        ref={ref}
-        {...props}
-        className={styles.select}
-        style={customStyles}
-      >
-        <option value="" className={styles.option}>
-          Select an option
-        </option>
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+const Select = forwardRef<HTMLDivElement, SelectProps>(
+  ({ label, error, options, customStyles, value, onChange }, ref) => {
+    return (
+      <div className={styles.container} style={customStyles} ref={ref}>
+        {label && <label className={styles.label}>{label}</label>}
 
-      {error && <div>{error}</div>}
-    </div>
-  )
+        <Dropdown
+          value={value}
+          options={options}
+          onChange={onChange}
+          ariaLabel={label}
+        />
+
+        {error && <div className={styles.error}>{error}</div>}
+      </div>
+    );
+  }
 );
 
 Select.displayName = "Select";

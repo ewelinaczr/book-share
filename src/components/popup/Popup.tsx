@@ -56,8 +56,21 @@ export default function Popup({
           aria-labelledby={`popup-title-${title.replace(/\s+/g, "-")}`}
           className={styles.popup}
         >
-          <div id={`popup-title-${title.replace(/\s+/g, "-")}`}>
+          <div
+            id={`popup-title-${title.replace(/\s+/g, "-")}`}
+            className={styles.popupHeader}
+          >
             <Header label={title} />
+            <button
+              type="button"
+              aria-label="Close button"
+              onClick={() => setPopupOpened((prev) => !prev)}
+              className={styles.openButtonSmall}
+            >
+              <span className={styles.buttonIconSmall}>
+                <IoCloseOutline />
+              </span>
+            </button>
           </div>
           {children}
         </div>

@@ -31,17 +31,25 @@ export default function AddBookForm({
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RequestMarketBook>();
   const statusOptions = useStatusOptions();
+  const status = watch("status");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <div className={cn(styles.inputContainer, styles.select)}>
         <Select
           label={t("labels_status")}
+          value={status || ""}
           options={statusOptions}
-          {...register("status")}
+          onChange={(val) =>
+            setValue("status", val as MarketBookStatus, {
+              shouldValidate: true,
+            })
+          }
           error={errors.status?.message}
         />
       </div>

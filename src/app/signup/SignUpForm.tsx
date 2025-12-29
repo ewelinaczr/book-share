@@ -52,8 +52,8 @@ export function SignUpForm() {
         } else {
           router.push("/");
         }
-      } catch (err) {
-        if (err.data?.code === 11000) {
+      } catch (err: any) {
+        if (err?.data?.code === 11000) {
           toast.error(t("signup_emailAlreadyInUse"));
           return;
         }

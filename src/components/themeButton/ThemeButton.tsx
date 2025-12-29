@@ -29,7 +29,7 @@ function ThemeButton() {
   };
 
   return (
-    <div className={styles.toogleContainer}>
+    <div className={styles.toogleContainer} onClick={toggleTheme}>
       <div className={styles.icon}>
         <GoSun />
       </div>
@@ -39,7 +39,6 @@ function ThemeButton() {
       <button
         aria-label={t("buttons_toggleTheme")}
         className={cn(styles.toogle, { [styles.selected]: theme === "dark" })}
-        onClick={toggleTheme}
       ></button>
     </div>
   );
