@@ -4,6 +4,7 @@
   flex-direction: column;
   background: var(--bg-chat-gradient);
   min-height: calc(100vh - 6rem);
+  gap: 2rem;
 }
 
 .requestsList {

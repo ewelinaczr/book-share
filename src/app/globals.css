@@ -20,7 +20,7 @@
      ------------------------------------------------------- */
   --color-brand-primary: rgb(254, 186, 69);
   --color-brand-secondary: rgb(244, 241, 222);
-  --color-brand-dark: #080a1a;
+  --color-brand-dark: #01030c;
   --color-brand-brown: rgb(66, 59, 11);
   --color-brand-gray: rgb(140, 147, 168);
   --color-brand-gray-50: rgba(140, 147, 168, 0.5);
@@ -77,6 +77,7 @@
   --color-button-primary-hover: var(--color-brand-primary);
   --color-button-secondary: var(--color-brand-secondary);
   --color-button-secondary-hover: var(--color-brand-primary);
+  --color-button-secondary-nav-hover: var(--color-brand-secondary);
   --color-button-special: var(--color-brand-dark);
 
   /* -------------------------------------------------------
@@ -118,31 +119,59 @@
    ========================================================= */
 :root[data-theme="dark"] {
   /* -------------------------------------------------------
-     Text
-     ------------------------------------------------------- */
-  --text-color: var(--white-90);
-  --text-color-1: var(--black);
-  --text-color-2: var(--black);
+      Text (Improved Visibility)
+      ------------------------------------------------------- */
+  --text-color: #cbd5e1; /* Soft slate for body text */
+  --text-color-1: #ffffff; /* PURE WHITE for Logo and Titles */
+  --text-color-2: #cbd5e1; /* Muted slate for secondary labels */
 
   /* -------------------------------------------------------
-     Backgrounds – Global
-     ------------------------------------------------------- */
-  --bg-color: #202233;
-  --bg-color-page: rgb(255, 255, 255, 0.05);
-  --bg-color-nav: var(--color-brand-dark);
+      Backgrounds – Global
+      ------------------------------------------------------- */
+  --bg-color: #0b0f1a; /* Deeper midnight background */
+  --bg-color-nav: var(--color-brand-dark); /* Kept as per instructions */
   --bg-color-footer: var(--color-brand-dark);
 
   /* -------------------------------------------------------
-     Backgrounds – Panels & Inputs
-     ------------------------------------------------------- */
-  --bg-color-panel: rgb(255, 255, 255, 0.05);
-  --bg-color-panel-sec: rgb(255, 255, 255, 0.05);
-  --bg-input: #3c3f54;
-  --placeholder-bg: linear-gradient(
-    145deg,
-    #3c3f54 0%,
-    var(--color-brand-gray) 100%
-  );
+      Backgrounds – Panels & Inputs (Solid colors for depth)
+      ------------------------------------------------------- */
+  --bg-color-page: #161e2d;
+  --bg-color-panel: #161e2d; /* Solid dark blue-grey for the Market card */
+  --bg-color-panel-sec: #161e2d; /* Slightly lighter for secondary sections */
+  --bg-input: #1e293b; /* Matches panel-sec for a clean look */
+  --placeholder-bg: linear-gradient(145deg, #1e293b 0%, #0b0f1a 100%);
+
+  /* -------------------------------------------------------
+      UI Elements
+      ------------------------------------------------------- */
+  --popup-bg: #161e2d;
+  --popup-backdrop: rgba(11, 15, 26, 0.8);
+  --bg-scrollbar: var(--color-brand-dark);
+  --border-color: rgba(255, 255, 255, 0.08); /* Subtle dividers */
+
+  /* -------------------------------------------------------
+      Buttons (Balanced for Dark Mode)
+      ------------------------------------------------------- */
+  --color-button-primary: var(--color-brand-primary);
+  --color-button-primary-hover: var(--color-brand-primary);
+  --color-button-secondary-nav-hover: #263341;
+  /* Fixes the "Log out" button color */
+  --color-button-secondary: #263341; /* darker slate for better contrast */
+  --color-button-secondary-hover: #1f2937;
+
+  /* -------------------------------------------------------
+      Charts / Data Viz (Kept as per instructions)
+      ------------------------------------------------------- */
+  --chart-1: #38bdf8;
+  --chart-2: #fbbf24;
+  --chart-3: #f472b6;
+  --chart-4: #2dd4bf;
+  --chart-5: #a78bfa;
+  --chart-6: #fb7185;
+  --chart-7: #60a5fa;
+  --chart-8: #818cf8;
+  --chart-9: #fb923c;
+  --chart-10: #c084fc;
 
   /* -------------------------------------------------------
      Chat / Messaging
@@ -150,27 +179,10 @@
   --bg-color-chat: #d272fc;
   --bg-color-chat-1: var(--color-brand-dark);
   --bg-chat-gradient: linear-gradient(
-    30deg,
-    #ffffff21 0%,
+    135deg,
+    #818df811 0%,
     var(--color-brand-dark) 100%
   );
-
-  /* -------------------------------------------------------
-     UI Elements
-     ------------------------------------------------------- */
-  --popup-bg: var(--color-brand-dark);
-  --popup-backdrop: #171a30cc;
-  --bg-scrollbar: var(--color-brand-dark);
-  --border-color: transparent;
-
-  /* -------------------------------------------------------
-     Buttons
-     ------------------------------------------------------- */
-  --color-button-primary: var(--color-brand-primary);
-  --color-button-primary-hover: var(--color-brand-primary);
-  --color-button-secondary: var(--color-brand-secondary);
-  --color-button-secondary-hover: var(--color-brand-primary);
-  --color-button-special: var(--color-brand-dark);
 }
 
 html {

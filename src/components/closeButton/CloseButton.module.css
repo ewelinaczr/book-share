@@ -8,7 +8,7 @@
   width: 2rem;
   height: 2rem;
   background-color: var(--color-button-primary);
-  color: var(--black);
+  color: var(--text-color);
   border-radius: 1rem;
   display: flex;
   align-items: center;

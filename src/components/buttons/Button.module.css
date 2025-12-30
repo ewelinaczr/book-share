@@ -23,7 +23,7 @@
 
 .secondary {
   background-color: var(--color-button-secondary);
-  color: var(--black);
+  color: var(--text-color);
 }
 
 .secondary:hover:not(:disabled) {
