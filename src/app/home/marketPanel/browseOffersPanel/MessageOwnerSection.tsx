@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGetUserPhotoQuery } from "@/api/userApi";
 import { MarketBookStatus } from "@/interfaces/MarketBook";
+import { toast } from "react-toastify";
 import Button, { ButtonType } from "@/components/buttons/Button";
 import TextArea from "@/components/textArea/TextArea";
 import styles from "./BookMarketPanel.module.css";
@@ -32,12 +33,22 @@ export default function MessageOwnerSection({
 
   const sendMessage = () => {
     if (!message.trim() || !ownerId || !currentUserId) return;
-    socketRef.current?.emit("private message", {
-      from: currentUserId,
-      to: ownerId.toString(),
-      message,
-      timestamp: new Date().toISOString(),
-    });
+    socketRef.current?.emit(
+      "private message",
+      {
+        from: currentUserId,
+        to: ownerId.toString(),
+        message,
+        timestamp: new Date().toISOString(),
+      },
+      (response: { status: string; error: string }) => {
+        if (response.status === "ok") {
+          toast.success(t("chat_sendSuccess"));
+        } else {
+          toast.error(t("chat_sendError"));
+        }
+      }
+    );
     setMessage("");
   };
 

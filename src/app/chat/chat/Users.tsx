@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
+import cn from "classnames";
 import { useTranslations } from "next-intl";
+import { useGetUserPhotoQuery } from "@/api/userApi";
+import Header from "@/components/headers/Header";
 import styles from "./Users.module.css";
 
 interface User {
@@ -33,20 +36,39 @@ function Users({
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{t("chat_messages")}</div>
+      <Header label={t("chat_messages")} />
       <ul className={styles.list}>
         {chatUsers.map((user) => {
+          const {
+            data: photoDataUrl,
+            isLoading,
+            isError,
+          } = useGetUserPhotoQuery(user._id ?? "", { skip: !user._id });
+
           return (
             <li key={user._id}>
               <button
                 key={user._id}
                 type="button"
-                className={isUserSelected(user) ? styles.selected : styles.item}
+                className={cn(styles.item, {
+                  [styles.selected]: isUserSelected(user),
+                })}
                 onClick={() => setSelectedChatUserId(user.googleId ?? user._id)}
                 aria-pressed={isUserSelected(user)}
                 aria-label={`Open conversation with ${user.name}`}
               >
-                {user.name}
+                <div className={styles.profilePhoto}>
+                  {photoDataUrl && !isLoading && !isError ? (
+                    <img
+                      src={photoDataUrl}
+                      alt="Profile photo"
+                      className={styles.image}
+                    />
+                  ) : (
+                    <div className={styles.imagePlaceholder} />
+                  )}
+                </div>
+                <span> {user.name}</span>
               </button>
             </li>
           );

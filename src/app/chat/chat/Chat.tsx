@@ -3,6 +3,8 @@ import cn from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { io, Socket } from "socket.io-client";
+import { toast } from "react-toastify";
+import { useTranslations } from "next-intl";
 import { PrivateMessage } from "../page";
 import { BsSend } from "react-icons/bs";
 import { MdAttachFile } from "react-icons/md";
@@ -26,6 +28,7 @@ export default function Chat({
   const currentUserId = session?.user.id;
   const socketRef = useRef<Socket | null>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const t = useTranslations();
 
   useEffect(() => {
     if (listRef.current) {
@@ -33,37 +36,49 @@ export default function Chat({
     }
   }, [messages]);
 
-  const handleSocketEmission = useCallback((msg: PrivateMessage) => {
-    setChatMessages((prev) => [...prev, msg]);
-  }, []);
+  const handleSocketEmission = useCallback(
+    (msg: PrivateMessage) => {
+      if (msg.from !== currentUserId) {
+        setChatMessages((prev) => [...prev, msg]);
+      }
+    },
+    [currentUserId, setChatMessages]
+  );
 
-  // Initialize socket connection
   useEffect(() => {
     if (!session?.token) return;
 
     socketRef.current = io("http://localhost:4000", {
-      auth: {
-        accessToken: session.token,
-      },
+      auth: { accessToken: session.token },
     });
     socketRef.current?.on("private message", handleSocketEmission);
     return () => {
       socketRef.current?.off("private message", handleSocketEmission);
       socketRef.current?.disconnect();
     };
-  }, [session]);
+  }, [session, handleSocketEmission]);
 
   const sendMessage = () => {
-    // Emit message to server via socket
-    if (message.trim() && selectedChatUserId.trim()) {
+    if (message.trim() && selectedChatUserId.trim() && currentUserId) {
       const newMessage: PrivateMessage = {
-        from: currentUserId!,
+        from: currentUserId,
         to: selectedChatUserId,
-        message: message,
+        message: message.trim(),
         timestamp: new Date().toISOString(),
       };
-      socketRef.current?.emit("private message", newMessage);
-      setMessage("");
+
+      socketRef.current?.emit(
+        "private message",
+        newMessage,
+        (response: any) => {
+          if (response?.status === "ok") {
+            setChatMessages((prev) => [...prev, response.data || newMessage]);
+            setMessage("");
+          } else {
+            toast.error("Failed to send message");
+          }
+        }
+      );
     }
   };
 
@@ -75,17 +90,53 @@ export default function Chat({
     <div className={styles.container}>
       <ul className={styles.list} ref={listRef}>
         {messages.map((msg, i) => {
+          const currentMsgDate = new Date(msg.timestamp ?? "");
+          const prevMsgDate =
+            i > 0 ? new Date(messages[i - 1].timestamp ?? "") : null;
+
+          const isNewDay =
+            !prevMsgDate ||
+            currentMsgDate.toDateString() !== prevMsgDate.toDateString();
+
+          const timeString = currentMsgDate.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
+
+          const dateString = currentMsgDate.toLocaleDateString("en-US", {
+            weekday: "long",
+            day: "2-digit",
+            month: "2-digit",
+          });
+
           const isOwnMessage = msg.from === currentUserId;
+
           return (
-            <li
-              key={i}
-              className={cn(
-                styles.listItem,
-                isOwnMessage ? styles.own : styles.received
+            <>
+              {isNewDay && (
+                <div className={styles.dateDivider}>
+                  <p className={styles.timestamp}>{dateString}</p>
+                </div>
               )}
-            >
-              {msg.message}
-            </li>
+              <li
+                key={i}
+                className={cn(
+                  styles.listItemWrapper,
+                  isOwnMessage ? styles.itemOwn : styles.itemReceived
+                )}
+              >
+                <p className={styles.timestamp}>{timeString}</p>
+                <div
+                  className={cn(
+                    styles.listItem,
+                    isOwnMessage ? styles.own : styles.received
+                  )}
+                >
+                  {msg.message}
+                </div>
+              </li>
+            </>
           );
         })}
       </ul>
@@ -94,34 +145,34 @@ export default function Chat({
           value={message}
           placeholder="Write your message"
           onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
         />
         <div className={styles.buttons}>
           <Button
-            type="submit"
-            ariaLabel="Attach file to message"
+            type="button" // Changed from submit to button
+            ariaLabel="Attach file"
             buttonType={ButtonType.SECONDARY}
-            onClick={sendMessage}
+            onClick={() => {}}
             customStyles={{ width: "15rem" }}
           >
             <div className={styles.buttonIcon}>
-              <div className={styles.iconAttach}>
-                <MdAttachFile />
-              </div>
-              Attach
+              <MdAttachFile /> {t("chat_attach")}
             </div>
           </Button>
           <Button
-            type="submit"
+            type="button"
             ariaLabel="Send message"
             buttonType={ButtonType.PRIMARY}
             onClick={sendMessage}
             customStyles={{ width: "15rem" }}
           >
             <div className={styles.buttonIcon}>
-              <div className={styles.iconSend}>
-                <BsSend />
-              </div>
-              Send
+              <BsSend /> {t("chat_send")}
             </div>
           </Button>
         </div>

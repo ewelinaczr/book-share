@@ -203,12 +203,17 @@
   "pickUp_whatYoullFind": "Znajdziesz tutaj",
 
   "chat_close": "Zamknij",
+  "chat_send": "Wyślij",
+  "chat_attach": "Załącz",
   "chat_writeMessage": "Napisz wiadomość",
   "chat_typeYourMessage": "Wpisz tutaj swoją wiadomość_",
   "chat_sendToOwnerAria": "Wyślij wiadomość do właściciela książki",
   "chat_noMessages": "Brak dostępnych wiadomości",
-  "chat_messages": "Wiadomości",
+  "chat_messages": "Kontakty",
   "chat_error": "Wystąpił błąd. Spróbuj ponownie później",
+  "chat_sendSuccess": "Wysłano wiadomość",
+  "chat_sendError": "Nie udało się wysłać wiadomości",
+  "chat_conversation": "Wiadomości",
 
   "labels_selected": "wybrano",
   "placeholders_isbn": "ISBN",

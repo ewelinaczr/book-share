@@ -61,37 +61,45 @@ export const setupSocketServer = (io: Server) => {
     });
 
     // Listen for private messages
-    socket.on("private message", async ({ to, message }) => {
-      const from = userId;
-
-      if (!from || !to || !message) return;
-
-      const saved = await PrivateMessage.create({ from, to, message });
-
+    socket.on("private message", async ({ to, message }, callback) => {
       const recipientSocketId = currentlyConnectedUsers.get(to);
+      try {
+        // Validate data
+        if (!to || !message) {
+          return callback?.({ status: "error", message: "Missing fields" });
+        }
 
-      logger.info(
-        {
-          from,
+        // Save to DB
+        const saved = await PrivateMessage.create({
+          from: (socket as any).user.googleId ?? (socket as any).user._id,
           to,
-          messageId: saved._id,
-          socketIdFrom: socket.id,
-          socketIdTo: recipientSocketId ?? null,
-        },
-        "Private message saved"
-      );
+          message,
+        });
 
-      // If the recipient is online, send the message directly to their socket
-      if (recipientSocketId) {
-        io.to(recipientSocketId).emit("private message", saved);
+        // Echo the message back to the sender if successful
+        if (callback) {
+          callback({ status: "ok", data: saved });
+        }
+
+        // Send to recipient
+
+        if (recipientSocketId) {
+          io.to(recipientSocketId).emit("private message", saved);
+        }
         logger.info(
           { to, recipientSocketId },
           "Private message delivered to recipient socket"
         );
+      } catch (error) {
+        // Echo the message back to the sender if error occurs
+        if (callback) {
+          callback({ status: "error", message: "Internal server error" });
+          logger.info(
+            { to, recipientSocketId },
+            "Error delivering private message to recipient socket"
+          );
+        }
       }
-
-      // Echo the message back to the sender
-      socket.emit("private message", saved);
     });
   });
 };

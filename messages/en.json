@@ -174,12 +174,17 @@
   "pickUp_whatYoullFind": "What you'll find here",
 
   "chat_close": "Close",
+  "chat_send": "Send",
+  "chat_attach": "Attach",
   "chat_writeMessage": "Write your message",
   "chat_typeYourMessage": "Type your message here...",
   "chat_sendToOwnerAria": "Send message to book owner",
   "chat_noMessages": "No conversations available",
-  "chat_messages": "Messages",
+  "chat_messages": "Contacts",
   "chat_error": "Error occured. Try again later,",
+  "chat_sendSuccess": "Message sent",
+  "chat_sendError": "Failed to send message",
+  "chat_conversation": "Messages",
 
   "labels_selected": "selected",
   "placeholders_isbn": "ISBN",

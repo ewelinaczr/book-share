@@ -75,8 +75,8 @@ export default function Messages() {
 
   if (!currentUserId) {
     return (
-      <main className={styles.container}>
-        <Header label={t("chat_messages")} />
+      <main className={styles.emptyContainer}>
+        <Header label={t("chat_conversation")} />
         <LogInRedirect />
       </main>
     );
@@ -100,15 +100,14 @@ export default function Messages() {
 
   return (
     <div className={styles.container}>
-      {!selectedChatUserId ? (
-        <Users
-          chatUsers={partners}
-          selectedChatUserId={selectedChatUserId}
-          setSelectedChatUserId={(id: string) => setSelectedChatUserId(id)}
-        />
-      ) : null}
+      <Users
+        chatUsers={partners}
+        selectedChatUserId={selectedChatUserId}
+        setSelectedChatUserId={(id: string) => setSelectedChatUserId(id)}
+      />
       {selectedChatUserId ? (
-        <div>
+        <div className={styles.chatWrapper}>
+          <Header label={t("chat_conversation")} />
           <div className={styles.buttonWrapper}>
             <Button
               type="submit"
@@ -120,7 +119,7 @@ export default function Messages() {
                 marginBottom: "2rem",
               }}
             >
-              Close
+              {t("buttons_close")}
             </Button>
           </div>
           <Chat
