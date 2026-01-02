@@ -14,13 +14,16 @@ const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
     },
   };
 
-  const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api/v1/chat" });
+  const rawBaseQuery = fetchBaseQuery({
+    baseUrl: "http://localhost:4000/api/v1/chat",
+  });
   return rawBaseQuery(modifiedArgs, api, extraOptions);
 };
 
 export const chatApi = createApi({
   reducerPath: "chatApi",
   baseQuery: baseQueryWithAuth,
+  tagTypes: ["Chat", "Partners"],
   endpoints: (builder) => ({
     getChatHistory: builder.query<any, string>({
       query: (userId) => ({
@@ -28,6 +31,7 @@ export const chatApi = createApi({
         method: "GET",
         credentials: "include",
       }),
+      providesTags: (result, error, userId) => [{ type: "Chat", id: userId }],
     }),
     // Fetch all chat partners (users the current user has chatted with)
     getChatPartners: builder.query<any, void>({
@@ -37,6 +41,7 @@ export const chatApi = createApi({
         credentials: "include",
         params,
       }),
+      providesTags: ["Partners"],
     }),
   }),
 });

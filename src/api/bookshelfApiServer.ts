@@ -15,12 +15,12 @@ export async function getAllBookshelfBooks(
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    cache: "no-store",
+    next: {
+      revalidate: 3600,
+      tags: ["bookshelf"],
+    },
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch bookshelf books");
-  }
-
+  if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 }

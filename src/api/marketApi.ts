@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
+import { revalidateMarket } from "@/app/actions/revalidate";
 import type { MarketBook, MarketBookStatus } from "../interfaces/MarketBook";
 
 // Custom baseQuery that injects JWT token into Authorization header
@@ -17,6 +18,18 @@ const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
 
   const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api/v1/market" });
   return rawBaseQuery(modifiedArgs, api, extraOptions);
+};
+
+/** * This helper ensures we only clear the Next.js server cache
+ * if the backend mutation actually succeeds.
+ */
+const handleMarketRevalidation = async (arg: any, { queryFulfilled }: any) => {
+  try {
+    await queryFulfilled; // Wait for the API success
+    await revalidateMarket(); // Clear the Next.js Server Cache
+  } catch (error) {
+    console.error("Market revalidation skipped due to error:", error);
+  }
 };
 
 export const marketApi = createApi({
@@ -46,6 +59,7 @@ export const marketApi = createApi({
         credentials: "include",
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     // Get current user's market books (optionally filter by status)
     getUserMarketBooks: builder.query<
@@ -81,6 +95,7 @@ export const marketApi = createApi({
         body: { status, date },
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     // Request an exchange (borrow/claim/trade)
     requestExchange: builder.mutation<
@@ -94,6 +109,7 @@ export const marketApi = createApi({
         body: { status, date },
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     getRequestsMine: builder.query<MarketBook[], void>({
       query: () => ({
@@ -121,6 +137,7 @@ export const marketApi = createApi({
         body: { requestId, decision },
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     // Withdraw (delete) a pending exchange request I created
     withdrawRequest: builder.mutation<
@@ -133,6 +150,7 @@ export const marketApi = createApi({
         credentials: "include",
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     // Get market books borrowed by my
     getBorrowedBooks: builder.query<MarketBook[], void>({
@@ -159,6 +177,7 @@ export const marketApi = createApi({
         credentials: "include",
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
     editMarketBook: builder.mutation<MarketBook, Partial<MarketBook>>({
       query: ({ _id, status }) => ({
@@ -168,6 +187,7 @@ export const marketApi = createApi({
         body: { status },
       }),
       invalidatesTags: ["Market"],
+      onQueryStarted: handleMarketRevalidation,
     }),
   }),
 });

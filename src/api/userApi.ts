@@ -23,10 +23,6 @@ export const userApi = createApi({
   tagTypes: ["User", "UserPhoto"],
   baseQuery: baseQueryWithAuth,
   endpoints: (builder) => ({
-    getCurrentUser: builder.query<User, void>({
-      query: () => ({ url: "/me", method: "GET" }),
-      providesTags: ["User"],
-    }),
     login: builder.mutation<User, { email: string; password: string }>({
       query: (body) => ({ url: "/login", method: "POST", body }),
       invalidatesTags: ["User"],
@@ -97,7 +93,6 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetCurrentUserQuery,
   useLoginMutation,
   useLogoutMutation,
   useSignupMutation,
