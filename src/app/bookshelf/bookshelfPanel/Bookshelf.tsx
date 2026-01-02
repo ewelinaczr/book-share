@@ -60,11 +60,7 @@ export default function Bookshelf() {
   }
 
   if (!reading.data?.length && !wantToRead.data?.length && !read.data?.length) {
-    return (
-      <section className={styles.errorContainer}>
-        <div>{t("bookshelf_noBooks")}</div>
-      </section>
-    );
+    return null;
   }
 
   if (isError) {

@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 import { IoIosMenu } from "react-icons/io";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import ThemeButton from "../themeButton/ThemeButton";
-import LogOutButton from "./LogOutButton";
 import LogInButtons from "./LogInButtons";
 
 function MobileNav() {
@@ -44,7 +43,7 @@ function MobileNav() {
   };
 
   const renderAuthButtons = () => {
-    return session ? <LogOutButton /> : <LogInButtons />;
+    return session ? null : <LogInButtons />;
   };
 
   return (

@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ThemeButton from "../themeButton/ThemeButton";
 import LogInButtons from "./LogInButtons";
-import LogOutButton from "./LogOutButton";
 import styles from "./Navigation.module.css";
 
 function NavIconLinks() {
@@ -21,7 +20,7 @@ function NavIconLinks() {
   const { data: requests } = useGetRequestsToMeQuery();
 
   const renderAuthButtons = () => {
-    return session ? <LogOutButton /> : <LogInButtons />;
+    return session ? null : <LogInButtons />;
   };
 
   return (

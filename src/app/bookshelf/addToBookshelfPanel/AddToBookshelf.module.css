@@ -10,4 +10,7 @@
     align-items: start;
     width: 100%;
   }
+  .button {
+    margin-bottom: 2rem;
+  }
 }

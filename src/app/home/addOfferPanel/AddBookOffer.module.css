@@ -21,7 +21,7 @@
 }
 
 @media (max-width: 850px) {
-  .tttleAuthor {
+  .titleAuthor {
     flex-direction: column;
     gap: 0;
     width: 100%;

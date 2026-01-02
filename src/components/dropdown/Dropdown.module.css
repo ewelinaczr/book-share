@@ -58,3 +58,10 @@
 .item:hover {
   background: var(--color-brand-primary);
 }
+
+@media (max-width: 1150px) {
+  .dropdown {
+    position: relative;
+    width: 100%;
+  }
+}

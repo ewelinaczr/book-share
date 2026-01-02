@@ -5,8 +5,9 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import Header from "@/components/headers/Header";
 import ProfilePhoto from "@/components/photoUpload/ProfilePhoto";
-import styles from "./Profile.module.css";
 import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
+import LogOutButton from "@/components/navigation/LogOutButton";
+import styles from "./Profile.module.css";
 
 function page() {
   const t = useTranslations();
@@ -46,6 +47,7 @@ function page() {
           />
         </div>
       </div>
+      <LogOutButton />
     </main>
   );
 }
