@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
 import { NextIntlClientProvider } from "next-intl";
-import OnboardingWrapper from "./onboarding/OnboardingWrapper";
 import { ToastContainer } from "react-toastify";
+import OnboardingWrapper from "./onboarding/OnboardingWrapper";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
