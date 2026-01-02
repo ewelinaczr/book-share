@@ -1,0 +1,47 @@
+.scrollWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.listContainer {
+  display: flex;
+  gap: 3rem;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 15px;
+  scrollbar-width: none;
+  overflow: hidden;
+}
+
+.listContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 20px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-width: 2.6rem;
+  min-height: 2.6rem;
+  border-radius: 1.3rem;
+  background-color: var(--color-brand-secondary);
+  margin: 0.4rem;
+}
+
+.arrowRight {
+  margin-left: 15px;
+}
+
+.arrowPlaceholder {
+  min-width: 2.6rem;
+  min-height: 2.6rem;
+  background-color: transparent;
+}

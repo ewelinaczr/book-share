@@ -1,0 +1,48 @@
+.notification {
+  font-size: 1.4rem;
+  height: 2rem;
+  margin-left: 1rem;
+}
+
+.select,
+.button {
+  max-width: 30rem;
+  margin-top: 1rem;
+}
+
+.titleAuthor {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.author {
+  margin-top: 2.4rem;
+}
+
+@media (max-width: 850px) {
+  .titleAuthor {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  .inputs {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: start;
+    width: 100%;
+  }
+  .inputContainer {
+    width: 100%;
+  }
+  .author {
+    margin-top: 0;
+  }
+  .select,
+  .input,
+  .button {
+    margin-bottom: 1rem;
+    max-width: none;
+    width: 100%;
+  }
+}

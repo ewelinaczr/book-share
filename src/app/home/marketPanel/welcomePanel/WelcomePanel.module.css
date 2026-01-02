@@ -1,0 +1,27 @@
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  height: 100%;
+}
+
+.welcomeStepContainer {
+  display: flex;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcomeStep {
+  font-weight: bold;
+  margin-right: 1rem;
+  font-size: 3rem;
+  color: var(--color-brand-secondary);
+}
+
+.welcome {
+  align-self: center;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}

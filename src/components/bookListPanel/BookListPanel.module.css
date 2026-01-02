@@ -1,0 +1,64 @@
+.container {
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color-panel-sec);
+  border-left: 6px solid var(--bg-color-accent);
+  border-bottom-right-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+}
+
+.header {
+  margin: 1rem 4rem;
+  margin-top: 2rem;
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emptyList {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 4rem;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-family: Pacifico, Pacifico Fallback;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.noSelectedItem {
+  margin: 0rem 4rem 2rem;
+  margin-left: 4.2rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 0rem 2rem 2rem 2rem;
+    padding: 0px;
+  }
+  .header {
+    margin: 0rem 4rem;
+    margin-top: 1rem;
+  }
+  .noSelectedItem {
+    margin-top: 0rem;
+  }
+}
+@media (max-width: 700px) {
+  .container {
+    margin: 0;
+    margin-bottom: 2rem;
+  }
+}
