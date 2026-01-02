@@ -21,7 +21,7 @@ export default function MarketGrid({
   selectedItemId,
 }: MarketGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [visibleItemsCount, setVisibleItemsCount] = useState(1);
+  const [visibleItemsCount, setVisibleItemsCount] = useState(12);
   const gridRef = useRef<HTMLUListElement | null>(null);
 
   const validBooks = useMemo(() => books.filter((b) => b.book), [books]);
@@ -31,7 +31,12 @@ export default function MarketGrid({
       for (let entry of entries) {
         const width = entry.contentRect.width;
         const cols = Math.max(1, Math.floor(width / ITEM_MIN_WIDTH));
-        setVisibleItemsCount(cols * ROW_COUNT);
+        const newCount = cols * ROW_COUNT;
+
+        setVisibleItemsCount((prev) => {
+          if (prev !== newCount) return newCount;
+          return prev;
+        });
       }
     });
 
@@ -42,13 +47,20 @@ export default function MarketGrid({
     return () => resizeObserver.disconnect();
   }, []);
 
+  const totalPages = Math.ceil(validBooks.length / visibleItemsCount);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
   const currentItems = useMemo(() => {
     const start = (currentPage - 1) * visibleItemsCount;
-    const end = currentPage * visibleItemsCount;
+    const end = start + visibleItemsCount;
     return validBooks.slice(start, end);
   }, [validBooks, visibleItemsCount, currentPage]);
 
-  const totalPages = Math.ceil(validBooks.length / visibleItemsCount);
   const isFullGrid = currentItems.length >= visibleItemsCount / ROW_COUNT;
 
   return (

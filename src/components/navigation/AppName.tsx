@@ -9,7 +9,7 @@ function AppName() {
   const t = useTranslations();
 
   return (
-    <Link href={"/"}>
+    <Link href={"/"} prefetch={false}>
       <span className={cn(abrilFatface.className, styles.title)}>
         {t("navigation_title")}
       </span>

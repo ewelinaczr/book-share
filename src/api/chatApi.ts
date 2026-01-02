@@ -14,9 +14,7 @@ const baseQueryWithAuth = async (args: any, api: any, extraOptions: any) => {
     },
   };
 
-  const rawBaseQuery = fetchBaseQuery({
-    baseUrl: "http://localhost:4000/api/v1/chat",
-  });
+  const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api/v1/chat" });
   return rawBaseQuery(modifiedArgs, api, extraOptions);
 };
 

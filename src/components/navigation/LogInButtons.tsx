@@ -9,7 +9,7 @@ function LogInButtons() {
   return (
     <>
       <li key="signUpButton">
-        <Link href="/signup">
+        <Link href="/signup" prefetch={false}>
           <Button
             type="button"
             ariaLabel={t("navigation_signUp")}
@@ -21,7 +21,7 @@ function LogInButtons() {
         </Link>
       </li>
       <li key="logInButton">
-        <Link href="/login">
+        <Link href="/login" prefetch={false}>
           <Button
             type="button"
             ariaLabel={t("navigation_logIn")}

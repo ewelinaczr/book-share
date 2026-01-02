@@ -9,7 +9,8 @@ export default function LogOutButton() {
 
   const handleLogout = async () => {
     try {
-      signOut({ callbackUrl: "/" });
+      // callbackUrl: "/" ensures the user is redirected to home after clearing the session
+      await signOut({ callbackUrl: "/" });
     } catch (error) {
       toast.error(t("navigation_logOutError"));
     }
@@ -22,6 +23,7 @@ export default function LogOutButton() {
         ariaLabel={t("navigation_logOut")}
         buttonType={ButtonType.SECONDARY}
         onClick={handleLogout}
+        customStyles={{ minWidth: "10rem" }}
       >
         {t("navigation_logOut")}
       </Button>

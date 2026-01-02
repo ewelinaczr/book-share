@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import { pacifico } from "../fonts";
@@ -23,6 +23,8 @@ type LoginFormInputs = {
 export function LogInForm() {
   const t = useTranslations();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const {
     register,
@@ -41,10 +43,12 @@ export function LogInForm() {
       if (res?.error) {
         toast.error(t("login_invalidCredentials"));
       } else {
-        router.push("/");
+        toast.success(t("login_success"));
+        router.push(callbackUrl);
+        router.refresh();
       }
     },
-    [router]
+    [router, callbackUrl, t]
   );
 
   return (
@@ -55,6 +59,7 @@ export function LogInForm() {
           alt="Illustration of people reading books"
           width={410}
           height={410}
+          priority
         />
       </div>
       <div className={styles.formContainer}>

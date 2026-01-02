@@ -3,13 +3,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
 import { IoChevronBackCircle } from "react-icons/io5";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
-import Header from "@/components/headers/Header";
-import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
 import styles from "./Chat.module.css";
 
 export interface PrivateMessage {
@@ -23,22 +20,20 @@ export default function Messages() {
   const [selectedChatUserId, setSelectedChatUserId] = useState<string>("");
   const [chatMessages, setChatMessages] = useState<PrivateMessage[]>([]);
   const t = useTranslations();
-  const { data: session } = useSession();
-  const currentUserId = session?.user.id;
 
   const {
     data: messages,
     isLoading: isMessagesLoading,
     error: messagesError,
   } = useGetChatHistoryQuery(selectedChatUserId, {
-    skip: !selectedChatUserId || !currentUserId,
+    skip: !selectedChatUserId,
   });
 
   const {
     data: partners,
     isLoading: isChatPartnersLoading,
     error: chatPartnersError,
-  } = useGetChatPartnersQuery(undefined, { skip: !currentUserId });
+  } = useGetChatPartnersQuery(undefined);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -71,15 +66,6 @@ export default function Messages() {
 
   const isLoading = isMessagesLoading || isChatPartnersLoading;
   const isError = messagesError || chatPartnersError;
-
-  if (!currentUserId) {
-    return (
-      <main className={styles.emptyContainer}>
-        <Header label={t("chat_conversation")} />
-        <LogInRedirect />
-      </main>
-    );
-  }
 
   if (isLoading) {
     return (

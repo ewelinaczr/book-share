@@ -1,7 +1,8 @@
 "use client";
 import styles from "./Navigation.module.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { navIconLinks, navLinks } from "./navigationConfig";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
@@ -12,8 +13,14 @@ import LogInButtons from "./LogInButtons";
 
 function MobileNav() {
   const t = useTranslations();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
+
+  // Automatically close menu when the route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const renderMobileNavCloseButton = () => {
     return (
@@ -22,7 +29,7 @@ function MobileNav() {
           type="button"
           aria-label="Close navigation menu"
           className={styles.mobileCloseButton}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(false)}
         >
           <IoCloseCircleSharp />
         </button>
@@ -34,7 +41,12 @@ function MobileNav() {
     return [...navLinks, ...navIconLinks].map((link) => {
       return (
         <li key={link.name} className={styles.mobileNavIconLink}>
-          <Link href={link.path} className={styles.mobileLink}>
+          <Link
+            href={link.path}
+            className={styles.mobileLink}
+            prefetch={false}
+            onClick={() => setIsMenuOpen(false)}
+          >
             <div> {t(`navigation_${link.id}`)}</div>
           </Link>
         </li>
@@ -62,7 +74,7 @@ function MobileNav() {
         <div className={styles.mobileContainer}>
           <div
             className={styles.mobileContentBlur}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={() => setIsMenuOpen(false)}
           ></div>
           <ul className={styles.mobileNavIconLinks}>
             {renderMobileNavCloseButton()}

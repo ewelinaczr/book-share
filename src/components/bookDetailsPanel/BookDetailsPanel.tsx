@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useMemo } from "react";
 import cn from "classnames";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
@@ -17,6 +17,21 @@ type BookDetailsProps<T> = {
   renderFooter?: (selectedItem: T) => ReactNode;
 };
 
+const InfoBlock = ({
+  label,
+  children,
+  className,
+}: {
+  label: string;
+  children: ReactNode;
+  className?: string;
+}) => (
+  <div className={cn(styles.info, className)}>
+    <p className={styles.infoLabel}>{label}</p>
+    {children}
+  </div>
+);
+
 export default function BookDetails<T>({
   selectedItem,
   children,
@@ -24,88 +39,21 @@ export default function BookDetails<T>({
   renderFooter,
 }: BookDetailsProps<T>) {
   const [showMore, setShowMore] = useState(false);
-  const data = getBookData(selectedItem);
   const t = useTranslations();
 
-  const renderBookDetails = () => {
-    return (
-      <div
-        id="book-details"
-        className={cn(
-          styles.detailsContainer,
-          showMore ? styles.visible : styles.hidden
-        )}
-      >
-        <div className={styles.majorInfo}>
-          <div className={styles.info}>
-            <p className={styles.infoLabel}>{t("bookDetails_authors")}</p>
-            {data.authors?.map((a) => (
-              <p key={a}>{a}</p>
-            ))}
-          </div>
-          <div className={styles.info}>
-            <p className={styles.infoLabel}>{t("bookDetails_genres")}</p>
-            {data.categories?.map((c) => (
-              <p className={styles.text} key={c}>
-                {c}
-              </p>
-            ))}
-          </div>
-          {data.averageRating && (
-            <div className={styles.info}>
-              <p className={styles.infoLabel}>{t("bookDetails_rating")}</p>
-              <div className={styles.ratingContainer}>
-                <CiStar />
-                <p>{data.averageRating}</p>
-                {data.ratingsCount && <p>{`(${data.ratingsCount})`}</p>}
-              </div>
-            </div>
-          )}
-        </div>
-        <div className={styles.majorInfo}>
-          {data.publisher && (
-            <div className={styles.info}>
-              <p className={styles.infoLabel}>{t("bookDetails_publisher")}</p>
-              <p>{data.publisher}</p>
-            </div>
-          )}
-          <div className={styles.info}>
-            <p className={styles.infoLabel}>{t("bookDetails_publishedDate")}</p>
-            <p>{data.publishedDate}</p>
-          </div>
-          <div className={styles.info}>
-            <p className={styles.infoLabel}>{t("bookDetails_language")}</p>
-            <p>{data.language}</p>
-          </div>
-          {data.pageCount && (
-            <div className={styles.info}>
-              <p className={styles.infoLabel}>{t("bookDetails_pageCount")}</p>
-              <p>{data.pageCount}</p>
-            </div>
-          )}
-        </div>
-        <div className={styles.majorInfo}>
-          <div className={styles.info}>
-            {data.industryIdentifiers?.map((id) => (
-              <div className={styles.info} key={id.identifier}>
-                <p className={styles.infoLabel}>{id.type}</p>
-                <p>{id.identifier}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className={styles.info}>
-          <p className={styles.infoLabel}>{t("bookDetails_description")}</p>
-          <p className={cn(styles.fullDescription, styles.scrollableElement)}>
-            {data.description}
-          </p>
-        </div>
-      </div>
-    );
-  };
+  // Memoize data so it only recalculates if the item changes
+  const data = useMemo(
+    () => getBookData(selectedItem),
+    [selectedItem, getBookData]
+  );
+
+  const toggleLabel = showMore
+    ? t("bookDetails_hideDetails")
+    : t("bookDetails_showDetails");
 
   return (
     <div className={styles.container}>
+      {/* HEADER SECTION */}
       <div className={styles.titleContainer}>
         <div className={styles.titleAuthor}>
           <p className={styles.title}>{data.title}</p>
@@ -114,20 +62,81 @@ export default function BookDetails<T>({
         </div>
         <div className={styles.myBookInfo}>{children}</div>
       </div>
-      {renderBookDetails()}
+
+      {/* COLLAPSIBLE DETAILS SECTION */}
+      <div
+        id="book-details"
+        className={cn(
+          styles.detailsContainer,
+          showMore ? styles.visible : styles.hidden
+        )}
+      >
+        <div className={styles.majorInfo}>
+          <InfoBlock label={t("bookDetails_authors")}>
+            {data.authors?.map((author, idx) => (
+              <p key={`${author}-${idx}`}>{author}</p>
+            ))}
+          </InfoBlock>
+
+          <InfoBlock label={t("bookDetails_genres")}>
+            {data.categories?.map((cat, idx) => (
+              <p className={styles.text} key={`${cat}-${idx}`}>
+                {cat}
+              </p>
+            ))}
+          </InfoBlock>
+
+          {data.averageRating && (
+            <InfoBlock label={t("bookDetails_rating")}>
+              <div className={styles.ratingContainer}>
+                <CiStar />
+                <p>{data.averageRating}</p>
+                {data.ratingsCount && <p>{`(${data.ratingsCount})`}</p>}
+              </div>
+            </InfoBlock>
+          )}
+        </div>
+
+        <div className={styles.majorInfo}>
+          {data.publisher && (
+            <InfoBlock label={t("bookDetails_publisher")}>
+              <p>{data.publisher}</p>
+            </InfoBlock>
+          )}
+          <InfoBlock label={t("bookDetails_publishedDate")}>
+            <p>{data.publishedDate}</p>
+          </InfoBlock>
+          <InfoBlock label={t("bookDetails_language")}>
+            <p>{data.language}</p>
+          </InfoBlock>
+          {data.pageCount && (
+            <InfoBlock label={t("bookDetails_pageCount")}>
+              <p>{data.pageCount}</p>
+            </InfoBlock>
+          )}
+        </div>
+
+        <div className={styles.majorInfo}>
+          {data.industryIdentifiers?.map((id) => (
+            <InfoBlock key={id.identifier} label={id.type}>
+              <p>{id.identifier}</p>
+            </InfoBlock>
+          ))}
+        </div>
+
+        <InfoBlock label={t("bookDetails_description")}>
+          <p className={cn(styles.fullDescription, styles.scrollableElement)}>
+            {data.description}
+          </p>
+        </InfoBlock>
+      </div>
+
+      {/* FOOTER SECTION */}
       <div className={styles.buttonContainer}>
         {renderFooter?.(selectedItem)}
         <SmallButton
-          ariaLabel={
-            showMore
-              ? t("bookDetails_hideDetails")
-              : t("bookDetails_showDetails")
-          }
-          text={
-            showMore
-              ? t("bookDetails_hideDetails")
-              : t("bookDetails_showDetails")
-          }
+          ariaLabel={toggleLabel}
+          text={toggleLabel}
           icon={<FaCircleInfo />}
           onClick={() => setShowMore(!showMore)}
         />
