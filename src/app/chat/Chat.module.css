@@ -41,5 +41,20 @@
 
   .buttonWrapper {
     display: flex;
+    justify-content: start;
+  }
+
+  .backButton {
+    cursor: pointer;
+    color: var(--color-button-primary);
+    background-color: unset;
+    border: none;
+    width: 3.6rem;
+    height: 3.6rem;
+    display: flex;
+  }
+
+  .backButtonIcon {
+    font-size: 4rem;
   }
 }

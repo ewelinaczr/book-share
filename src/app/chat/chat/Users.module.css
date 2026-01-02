@@ -20,6 +20,7 @@
   align-items: center;
   justify-content: start;
   background-color: unset;
+  color: var(--text-color);
 }
 
 .selected {
@@ -46,6 +47,7 @@
   align-items: center;
   justify-content: center;
   background: var(--gray);
+  /* border: 1px solid var(--border-color); */
 }
 
 .image {
@@ -64,5 +66,8 @@
 @media (max-width: 1150px) {
   .item {
     width: 100%;
+  }
+  .containerDisplay {
+    display: none;
   }
 }

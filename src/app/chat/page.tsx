@@ -4,13 +4,13 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useGetChatHistoryQuery, useGetChatPartnersQuery } from "@/api/chatApi";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
+import { IoChevronBackCircle } from "react-icons/io5";
 import Users from "./chat/Users";
 import Chat from "./chat/Chat";
-import styles from "./Chat.module.css";
-import Button, { ButtonType } from "@/components/buttons/Button";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import Header from "@/components/headers/Header";
 import LogInRedirect from "@/components/loginRedirect/LogInRedirect";
+import styles from "./Chat.module.css";
 
 export interface PrivateMessage {
   from: string;
@@ -64,8 +64,7 @@ export default function Messages() {
   }, [selectedChatUserId, router]);
 
   useEffect(() => {
-    // One-time initial sync
-    if (!chatMessages.length && messages) {
+    if (messages) {
       setChatMessages(messages);
     }
   }, [messages]);
@@ -107,20 +106,13 @@ export default function Messages() {
       />
       {selectedChatUserId ? (
         <div className={styles.chatWrapper}>
-          <Header label={t("chat_conversation")} />
           <div className={styles.buttonWrapper}>
-            <Button
-              type="submit"
-              ariaLabel="Attach file to message"
-              buttonType={ButtonType.SECONDARY}
+            <button
+              className={styles.backButton}
               onClick={() => setSelectedChatUserId("")}
-              customStyles={{
-                width: "15rem",
-                marginBottom: "2rem",
-              }}
             >
-              {t("buttons_close")}
-            </Button>
+              <IoChevronBackCircle className={styles.backButtonIcon} />
+            </button>
           </div>
           <Chat
             messages={chatMessages}

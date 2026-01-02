@@ -118,7 +118,7 @@
 @media (max-width: 1150px) {
   .container {
     /* Full height excluding text area and buttons (scrolling chat with actions visible) */
-    height: calc(100vh - 22rem);
+    height: calc(100vh - 19rem);
   }
 
   .action {

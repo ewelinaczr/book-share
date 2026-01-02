@@ -113,14 +113,13 @@ export default function Chat({
           const isOwnMessage = msg.from === currentUserId;
 
           return (
-            <>
+            <li key={i}>
               {isNewDay && (
                 <div className={styles.dateDivider}>
                   <p className={styles.timestamp}>{dateString}</p>
                 </div>
               )}
-              <li
-                key={i}
+              <div
                 className={cn(
                   styles.listItemWrapper,
                   isOwnMessage ? styles.itemOwn : styles.itemReceived
@@ -135,8 +134,8 @@ export default function Chat({
                 >
                   {msg.message}
                 </div>
-              </li>
-            </>
+              </div>
+            </li>
           );
         })}
       </ul>

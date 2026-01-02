@@ -1,5 +1,5 @@
 .container {
-  background-color: var(--bg-color);
+  background-color: var(--bg-color-panel-sec);
   max-height: 50rem;
   z-index: 1000;
   padding: 2rem 3rem;

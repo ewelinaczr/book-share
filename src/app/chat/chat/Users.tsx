@@ -34,8 +34,19 @@ function Users({
     );
   };
 
+  const isAnyUserSelected = () => {
+    return chatUsers.some(
+      (user) =>
+        user.googleId === selectedChatUserId || user._id === selectedChatUserId
+    );
+  };
+
   return (
-    <div className={styles.container}>
+    <div
+      className={cn(styles.container, {
+        [styles.containerDisplay]: isAnyUserSelected(),
+      })}
+    >
       <Header label={t("chat_messages")} />
       <ul className={styles.list}>
         {chatUsers.map((user) => {
