@@ -92,33 +92,53 @@ To help new members get started, BookShare includes a guided onboarding flow tha
 
 ## UI Structure & Navigation
 
-### Dashboard
+### Log In and Sign Up
 
-The dashboard provides a quick overview of the user’s activity. It displays recent notifications, pending exchange requests, new messages, and a snapshot of reading statistics. This page helps users immediately understand what requires their attention.
+The Log In and Sign Up pages provide a simple, welcoming entry point into the platform. New users can create an account using traditional email and password or sign in instantly with Google. 
 
-### My Bookshelf
+![Group 1137](https://github.com/user-attachments/assets/53de5851-12e5-4fc7-9cb6-4a149ac2736e)
+
+### Bookshelf
 
 A personal library where users manage all their books. Books are grouped by reading status (Read, Currently Reading, Want to Read, For Exchange). Users can edit details, rate books, add notes, and add new titles via Google Books search. This section acts as a reading tracker and digital archive.
 
-### Marketplace (Explore)
+![localhost_3000_bookshelf(Nest Hub Max) (2) 1](https://github.com/user-attachments/assets/9ac7b808-d7c2-4c7f-a73c-ad96a7256827)
+
+
+### Marketplace
 
 A community‑driven catalog of books available for exchange. Users can browse listings, filter by genre or keywords, and view book owners. From here, they can send exchange requests that initiate the book‑sharing process.
+
+![Group 1138](https://github.com/user-attachments/assets/2b589317-5aeb-4e88-957f-1ebed485364b)
+![localhost_3000_home(Nest Hub Max) (3) 1](https://github.com/user-attachments/assets/3166957f-043d-4239-8a03-1b0528b71c5a)
+
 
 ### Map (Pickup Points)
 
 An interactive map showing all BookShare pickup locations. Users select a meeting point after an exchange is accepted. Markers include details such as café names, libraries, or designated BookShare spots.
 
+![Group 1139](https://github.com/user-attachments/assets/5fbdf1ca-24ed-4a1f-bfc5-e6a9bec5a3f7)
+
 ### Messages
 
 A real‑time chat interface for coordinating exchanges. Each conversation corresponds to a specific exchange request. Messages update instantly, and the full history is stored for future reference.
+
+![Group 1141](https://github.com/user-attachments/assets/e85118be-af51-4eaf-a5be-5d1b7ba2b759)
 
 ### Stats
 
 A visual analytics page showing the user’s reading habits. Charts illustrate reading frequency, genre distribution, and shelf composition. This section helps users reflect on their progress and stay motivated.
 
+![Group 1136](https://github.com/user-attachments/assets/e344fb3a-47a7-4b44-b0b3-4c7b49f5888f)
+
+
 ### Profile & Settings
 
 The user profile contains account details, preferences, and customization options. Users can update their information, enable Dark Mode, and adjust app settings. This section personalizes the BookShare experience.
+
+![Group 1140](https://github.com/user-attachments/assets/fb49ad37-56c3-4a10-9007-3a1ad63de51c)
+![localhost_3000_home(Nest Hub Max) (4) 1](https://github.com/user-attachments/assets/48bb1436-b5b7-403a-913b-efb930be8513)
+
 
 # Tech Stack
 
