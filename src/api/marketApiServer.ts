@@ -7,7 +7,7 @@ export async function getAllMarketBooks(
 ): Promise<MarketBook[]> {
   const session = await getServerSession(authConfig);
   const token = session?.token;
-  const apiUrl = "http://localhost:4000";
+  const apiUrl = process.env.BACKEND_URL ?? "http://localhost:4000";
   const query = status ? `?status=${status}` : "";
 
   const res = await fetch(`${apiUrl}/api/v1/market${query}`, {

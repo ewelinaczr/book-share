@@ -8,22 +8,25 @@ import { setupSocketServer } from "./services/socketService";
 
 dotenv.config();
 
-const PORT = process.env.APP_PORT || 4000;
+const PORT = Number(process.env.PORT ?? 4000);
 
 connectToDatabase()
   .then(() => {
     const server = http.createServer(app);
     const io = new Server(server, {
       cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.APP_URL || "http://localhost:3000",
         credentials: true,
       },
     });
 
     setupSocketServer(io);
 
-    server.listen(PORT, () => {
+    // Bind explicitly to 0.0.0.0 to ensure IPv4 accessibility on all hosts
+    server.listen(PORT, "0.0.0.0", () => {
       logger.info({ port: PORT }, `Server running with Socket.IO`);
+      const address = server.address();
+      logger.info({ address }, "Server listening address");
     });
   })
   .catch((err) => {

@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && npm run build:server",
+    "build:server": "tsc -p tsconfig.server.json",
     "start": "next start",
+    "start:server": "node dist-server/server/server.js",
     "lint": "next lint",
     "dev:server": "ts-node --project tsconfig.server.json server/server.ts"
   },

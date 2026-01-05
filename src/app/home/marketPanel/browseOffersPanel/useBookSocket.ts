@@ -8,7 +8,7 @@ export function useBookSocket(session?: Session | null) {
   useEffect(() => {
     if (!session) return;
 
-    socketRef.current = io("http://localhost:4000", {
+    socketRef.current = io(process.env.BACKEND_URL ?? "http://localhost:4000", {
       auth: { accessToken: session.token },
     });
 

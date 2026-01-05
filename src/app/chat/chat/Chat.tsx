@@ -48,7 +48,7 @@ export default function Chat({
   useEffect(() => {
     if (!session?.token) return;
 
-    socketRef.current = io("http://localhost:4000", {
+    socketRef.current = io(process.env.BACKEND_URL ?? "http://localhost:4000", {
       auth: { accessToken: session.token },
     });
     socketRef.current?.on("private message", handleSocketEmission);
@@ -88,7 +88,7 @@ export default function Chat({
 
   return (
     <div className={styles.container}>
-      <ul className={styles.list} ref={listRef}>
+      <ul className={cn(styles.list, styles.scrollContainer)} ref={listRef}>
         {messages.map((msg, i) => {
           const currentMsgDate = new Date(msg.timestamp ?? "");
           const prevMsgDate =
