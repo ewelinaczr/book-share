@@ -48,9 +48,12 @@ export default function Chat({
   useEffect(() => {
     if (!session?.token) return;
 
-    socketRef.current = io(process.env.BACKEND_URL ?? "http://localhost:4000", {
-      auth: { accessToken: session.token },
-    });
+    socketRef.current = io(
+      process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000",
+      {
+        auth: { accessToken: session.token },
+      }
+    );
     socketRef.current?.on("private message", handleSocketEmission);
     return () => {
       socketRef.current?.off("private message", handleSocketEmission);
