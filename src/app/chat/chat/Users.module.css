@@ -24,7 +24,7 @@
 }
 
 .selected {
-  background-color: var(--color-brand-secondary);
+  background-color: var(--color-button-secondary);
 }
 
 .item:hover {

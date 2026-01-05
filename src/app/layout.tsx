@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   title: "BookShare — Share and Discover Books Locally",
   description:
     "BookShare helps you discover, borrow, and exchange books with people in your community",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({
@@ -20,6 +24,11 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html>
+      <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+        <link rel="mask-icon" href="/favicon.svg" color="#FEBA45" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </head>
       <body>
         <NextIntlClientProvider>
           <Providers>

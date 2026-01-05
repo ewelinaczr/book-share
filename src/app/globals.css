@@ -176,7 +176,7 @@
      Chat / Messaging
      ------------------------------------------------------- */
   --bg-color-chat: #d272fc;
-  --bg-color-chat-1: var(--color-brand-dark);
+  --bg-color-chat-1: var(--color-brand-gray);
   --bg-chat-gradient: linear-gradient(
     135deg,
     #818df811 0%,

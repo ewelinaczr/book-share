@@ -167,6 +167,7 @@
   "login_emailRequired": "Email is required",
   "login_passwordRequired": "Password is required",
   "login_passwordInvalid": "Password is invalid",
+  "login_success": "Logged in",
 
   "pickUp_address": "Address",
   "pickUp_openingHours": "Opening hours",

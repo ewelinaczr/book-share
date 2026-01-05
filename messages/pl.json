@@ -196,6 +196,7 @@
   "login_emailRequired": "Email jest wymagany",
   "login_passwordRequired": "Hasło jest wymagane",
   "login_passwordInvalid": "Nieprawidłowe hasło",
+  "login_success": "Zalogowano",
 
   "pickUp_address": "Punkt odbioru",
   "pickUp_openingHours": "Godziny otwarcia",
