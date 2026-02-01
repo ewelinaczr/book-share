@@ -23,12 +23,9 @@
 .popup {
   background-color: var(--popup-bg);
   width: fit-content;
-  padding: 6rem;
-  padding-bottom: 4rem;
-  padding-top: 4rem;
+  padding: 4rem 6rem;
   border-radius: 0.4rem;
   height: fit-content;
-  margin-top: 2rem;
 }
 
 .openButton {
@@ -98,11 +95,11 @@
 
 @media (max-width: 1150px) {
   .container {
-    padding: 1rem;
+    padding: 3rem;
   }
   .popup {
-    padding: 4rem;
-    padding-bottom: 1rem;
+    width: 100%;
+    padding: 3rem;
   }
   .form {
     flex-direction: column;

@@ -41,6 +41,7 @@ export default function AddToBookshelfForm({
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<AddBookshelfBook>();
 
@@ -48,8 +49,17 @@ export default function AddToBookshelfForm({
   const own = watch("own");
   const rating = watch("rating");
 
+  const handleLocalSubmit = async (data: AddBookshelfBook) => {
+    try {
+      onSubmit(data);
+      reset();
+    } catch (error) {
+      console.error("Submission failed", error);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form onSubmit={handleSubmit(handleLocalSubmit)} className={styles.form}>
       <div>
         <Select
           label={t("bookshelf_status")}

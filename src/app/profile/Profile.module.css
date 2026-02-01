@@ -39,10 +39,12 @@
     flex-direction: column;
     gap: 2rem;
   }
-
   .authContainer {
     padding: 2rem 2rem;
     display: flex;
     flex-direction: column;
+  }
+  .input {
+    min-width: 100%;
   }
 }

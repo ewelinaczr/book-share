@@ -51,3 +51,9 @@
   height: 2.4rem;
   color: var(--color-notification-error);
 }
+
+@media (max-width: 1150px) {
+  .input {
+    min-width: 100%;
+  }
+}

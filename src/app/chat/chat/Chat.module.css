@@ -116,11 +116,13 @@
     /* Full height excluding text area and buttons (scrolling chat with actions visible) */
     height: calc(100vh - 19rem);
   }
-
   .action {
     flex-direction: column;
   }
   .buttons {
     flex-direction: row;
+  }
+  .list {
+    padding: 0;
   }
 }

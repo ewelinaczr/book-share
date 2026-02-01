@@ -64,4 +64,7 @@
     position: relative;
     width: 100%;
   }
+  .trigger {
+    min-width: 100%;
+  }
 }

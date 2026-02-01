@@ -51,7 +51,7 @@
   /* -------------------------------------------------------
      Chat / Messaging
      ------------------------------------------------------- */
-  --bg-color-chat: var(--color-brand-primary);
+  --bg-color-chat: var(--color-brand-secondary);
   --bg-color-chat-1: var(--color-brand-primary);
   --bg-chat-gradient: var(--white);
 
@@ -248,6 +248,7 @@ path.leaflet-interactive:focus {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height: 100vh;
 }
 
 main {

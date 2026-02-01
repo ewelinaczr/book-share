@@ -47,7 +47,7 @@ export default function MessageOwnerSection({
         } else {
           toast.error(t("chat_sendError"));
         }
-      }
+      },
     );
     setMessage("");
   };
@@ -110,7 +110,7 @@ export default function MessageOwnerSection({
         ariaLabel={t("chat_sendToOwnerAria")}
         buttonType={ButtonType.PRIMARY}
         onClick={sendMessage}
-        customStyles={{ marginTop: "0.6rem", marginBottom: "1rem" }}
+        customStyles={{ marginTop: "0.6rem" }}
       >
         {ownerName ? t("market_messageOwner", { owner: ownerName }) : ""}
       </Button>

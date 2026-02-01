@@ -11,34 +11,82 @@ interface ListProps<T> {
 function List<T>({ items, renderItem }: ListProps<T>) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const [showArrows, setShowArrows] = useState<boolean>(false);
-  const [listWidth, setListWidth] = useState<number>(0);
+
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(false);
+  const [listWidth, setListWidth] = useState<number | string>("100%");
+
+  const checkScrollLimits = () => {
+    if (listRef.current) {
+      const { scrollLeft, clientWidth, scrollWidth } = listRef.current;
+
+      setCanScrollLeft(scrollLeft > 5);
+
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 15;
+      setCanScrollRight(!isAtEnd);
+    }
+  };
 
   useEffect(() => {
-    if (scrollRef.current && listRef.current) {
-      const parentWidth = scrollRef.current.offsetWidth;
-      const firstItem = listRef.current.children[0] as HTMLElement;
+    const updateLayout = () => {
+      if (scrollRef.current && listRef.current) {
+        const parentWidth = scrollRef.current.offsetWidth;
+        const firstItem = listRef.current.children[0] as HTMLElement;
 
-      if (firstItem) {
-        const childWidth = firstItem.offsetWidth;
-        const maxBooksToDisplay = Math.floor(parentWidth / (childWidth + 30));
-        setListWidth(maxBooksToDisplay * (childWidth + 30));
-        setShowArrows(items.length > maxBooksToDisplay);
+        if (firstItem) {
+          const childWidth = firstItem.offsetWidth;
+          const gap = 30;
+          const maxBooksToDisplay = Math.floor(
+            parentWidth / (childWidth + gap),
+          );
+
+          if (maxBooksToDisplay > 0) {
+            setListWidth(maxBooksToDisplay * (childWidth + gap));
+          }
+        }
+        setTimeout(checkScrollLimits, 50);
       }
+    };
+
+    const observer = new ResizeObserver(updateLayout);
+    if (scrollRef.current) observer.observe(scrollRef.current);
+
+    updateLayout();
+    return () => observer.disconnect();
+  }, [items]);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (list) {
+      list.addEventListener("scroll", checkScrollLimits);
+      checkScrollLimits();
     }
+    return () => list?.removeEventListener("scroll", checkScrollLimits);
   }, [items]);
 
   const scrollLeft = () => {
-    listRef.current?.scrollBy({ left: -130, behavior: "smooth" });
+    if (!listRef.current) return;
+    listRef.current.scrollBy({
+      left: -listRef.current.clientWidth,
+      behavior: "smooth",
+    });
   };
 
   const scrollRight = () => {
-    listRef.current?.scrollBy({ left: 130, behavior: "smooth" });
+    if (!listRef.current) return;
+
+    const { scrollLeft, clientWidth, scrollWidth } = listRef.current;
+    if (scrollLeft + clientWidth >= scrollWidth - 15) return;
+
+    listRef.current.scrollBy({
+      left: listRef.current.clientWidth,
+      behavior: "smooth",
+    });
   };
 
   return (
     <div className={styles.scrollWrapper} ref={scrollRef}>
-      {showArrows ? (
+      {canScrollLeft ? (
         <button
           type="button"
           aria-label="Show previous page"
@@ -50,12 +98,19 @@ function List<T>({ items, renderItem }: ListProps<T>) {
       ) : (
         <div className={styles.arrowPlaceholder} />
       )}
-      <ul className={styles.listContainer} ref={listRef} role="list">
+
+      <ul
+        className={styles.listContainer}
+        ref={listRef}
+        role="list"
+        style={{ width: listWidth }}
+      >
         {items.map((item, index) => (
           <div key={index}>{renderItem(item)}</div>
         ))}
       </ul>
-      {showArrows ? (
+
+      {canScrollRight ? (
         <button
           type="button"
           aria-label="Show next page"

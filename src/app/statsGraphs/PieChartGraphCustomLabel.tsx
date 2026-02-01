@@ -1,3 +1,5 @@
+import styles from "./PieChartGraph.module.css";
+
 export const PieChartGraphCustomLabel = (props: any) => {
   const {
     cx,
@@ -35,8 +37,8 @@ export const PieChartGraphCustomLabel = (props: any) => {
   const lines = rawName.includes("-")
     ? rawName.split("-").map((line) => line.trim())
     : rawName.length > 10
-    ? rawName.split(" ")
-    : [rawName];
+      ? rawName.split(" ")
+      : [rawName];
 
   return (
     <>
@@ -47,6 +49,7 @@ export const PieChartGraphCustomLabel = (props: any) => {
         y2={lineY}
         stroke={fill}
         strokeWidth={1}
+        className={styles.label}
       />
       <text
         x={textX}
@@ -55,6 +58,7 @@ export const PieChartGraphCustomLabel = (props: any) => {
         textAnchor="middle"
         dominantBaseline="central"
         fontSize="1.2rem"
+        className={styles.label}
       >
         {lines.map((line, i) => (
           <tspan key={i} x={textX} dy={i === 0 ? 0 : "1.2rem"}>

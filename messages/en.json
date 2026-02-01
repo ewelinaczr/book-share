@@ -110,7 +110,7 @@
   "bookshelf_readingActivity": "Reading activity",
   "bookshelf_pageCount": "pages",
   "bookshelf_error": "Failed to load your bookshelf. Please try again later.",
-  "bookshelf_update": "Update book in the Bookshelf",
+  "bookshelf_update": "Update book",
   "bookshelf_bookNotFound": "Book not found in your Bookshelf",
   "bookshelf_noBooks": "You haven't added any books to your Bookshelf yet.",
 

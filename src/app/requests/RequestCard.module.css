@@ -96,9 +96,9 @@
   }
   .actions {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.4rem;
     max-width: 20rem;
-    align-self: flex-start;
+    align-self: flex-end;
   }
 }

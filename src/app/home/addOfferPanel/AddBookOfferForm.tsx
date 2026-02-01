@@ -33,13 +33,23 @@ export default function AddBookForm({
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<RequestMarketBook>();
   const statusOptions = useStatusOptions();
   const status = watch("status");
 
+  const handleLocalSubmit = async (data: RequestMarketBook) => {
+    try {
+      onSubmit(data);
+      reset();
+    } catch (error) {
+      console.error("Adding offer failed", error);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form onSubmit={handleSubmit(handleLocalSubmit)} className={styles.form}>
       <div className={cn(styles.inputContainer, styles.select)}>
         <Select
           label={t("labels_status")}

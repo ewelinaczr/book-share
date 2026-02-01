@@ -31,7 +31,7 @@ function EditPopup({
     <article
       className={cn(
         styles.container,
-        bookId ? styles.containerVisible : styles.containerHidden
+        bookId ? styles.containerVisible : styles.containerHidden,
       )}
     >
       <div
@@ -40,9 +40,12 @@ function EditPopup({
         aria-labelledby={`popup-title-${title.replace(/\s+/g, "-")}`}
         className={styles.popup}
       >
-        <div id={`popup-title-${title.replace(/\s+/g, "-")}`}>
-          <CloseButton handleClose={handleClose} />
+        <div
+          id={`popup-title-${title.replace(/\s+/g, "-")}`}
+          className={styles.header}
+        >
           <Header label={title} />
+          <CloseButton handleClose={handleClose} />
         </div>
         <AddToBookshelfForm
           mode="update"

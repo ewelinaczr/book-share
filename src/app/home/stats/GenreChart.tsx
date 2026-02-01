@@ -9,7 +9,7 @@ export default async function GenreChart({
 }) {
   const t = await getTranslations();
   const labelToKey = Object.fromEntries(
-    popularBookGenres.map((g) => [g.label, g.key])
+    popularBookGenres.map((g) => [g.label, g.key]),
   );
 
   const translatedCategoryCounts = Object.entries(categoryCounts).reduce(
@@ -19,8 +19,8 @@ export default async function GenreChart({
       acc[display] = count;
       return acc;
     },
-    {} as Record<string, number>
+    {} as Record<string, number>,
   );
 
-  return <PieChartGraph data={translatedCategoryCounts} outerRadius={80} />;
+  return <PieChartGraph data={translatedCategoryCounts} outerRadius={70} />;
 }
