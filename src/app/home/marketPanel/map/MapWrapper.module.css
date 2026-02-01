@@ -1,0 +1,15 @@
+.mapWrapper {
+  width: 60vw;
+  max-width: 60vw;
+  min-width: 60vw;
+  max-height: 50rem;
+  height: 50rem;
+}
+
+@media (max-width: 1150px) {
+  .mapWrapper {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+  }
+}

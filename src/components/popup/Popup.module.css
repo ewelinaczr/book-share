@@ -1,0 +1,111 @@
+.container {
+  position: fixed;
+  top: 6rem;
+  left: 0;
+  z-index: 2000;
+  backdrop-filter: blur(0.8rem);
+  background: var(--popup-backdrop);
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.containerVisible {
+  visibility: visible;
+}
+
+.containerHidden {
+  visibility: hidden;
+}
+
+.popup {
+  background-color: var(--popup-bg);
+  width: fit-content;
+  padding: 4rem 6rem;
+  border-radius: 0.4rem;
+  height: fit-content;
+}
+
+.openButton {
+  width: 6rem;
+  height: 6rem;
+  background-color: var(--color-button-primary);
+  color: var(--text-color);
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 3000;
+  border-radius: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.openButtonSmall {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-button-primary);
+  color: var(--text-color);
+  border-radius: 2rem;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  border: none;
+}
+
+.buttonIcon {
+  color: var(--text-color-1);
+  font-size: 3.2rem;
+  margin-top: 0.4rem;
+  font-weight: normal;
+}
+
+.buttonIconSmall {
+  color: var(--text-color-1);
+  font-size: 1.8rem;
+  margin-top: 0.1rem;
+  margin-right: 0.05rem;
+  font-weight: normal;
+}
+
+.buttonText {
+  display: none;
+  position: absolute;
+  right: 110%;
+  background-color: var(--color-button-secondary);
+  border-radius: 0.4rem;
+  padding: 10px;
+  z-index: 1;
+  width: min-content;
+  white-space: nowrap;
+}
+
+.openButton:hover .buttonText {
+  display: block;
+}
+
+.popupHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    padding: 2.4rem;
+  }
+  .popup {
+    width: 100%;
+    padding: 2rem;
+  }
+  .form {
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: start;
+    width: 100%;
+  }
+}

@@ -1,0 +1,163 @@
+.container {
+  background-color: var(--bg-color-page);
+  margin-top: 2rem;
+  z-index: 1000;
+  padding: 2rem 3rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+  border-right: 6px solid var(--bg-color-accent);
+  height: 53rem;
+  width: -webkit-fill-available;
+}
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  width: -webkit-fill-available;
+  gap: 0.6rem;
+}
+
+.actionContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: end;
+  margin-top: 1rem;
+}
+
+.label {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1.6rem;
+  height: 3.6rem;
+  align-self: flex-start;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.infoLabel {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.4rem;
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  height: 1.8rem;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 1.4rem;
+}
+
+.fullDescription {
+  overflow-y: auto;
+  text-align: justify;
+  max-height: 37rem;
+  padding-right: 2rem;
+  scrollbar-gutter: stable;
+  font-size: 1.4rem;
+}
+.scrollableElement::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+.scrollableElement::-webkit-scrollbar-track {
+  background: var(--placeholder-bg);
+  border-radius: 4px;
+}
+
+.scrollableElement::-webkit-scrollbar-thumb {
+  background-color: var(--color-brand-secondary);
+  border-radius: 4px;
+}
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.showMore {
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  align-self: flex-end;
+  font-size: 1.2rem;
+}
+
+.button {
+  width: fit-content;
+  align-self: flex-end;
+  margin-top: 1rem;
+}
+
+.notRated {
+  color: var(--text-color);
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.profilePhoto {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+  background-color: var(--bg-color-panel);
+}
+
+@media (max-width: 1150px) {
+  .container {
+    padding: 2rem 2rem;
+    overflow: hidden;
+    height: fit-content;
+  }
+  .description {
+    -webkit-line-clamp: 8;
+  }
+  .fullDescription {
+    height: 50rem;
+    overflow: hidden;
+  }
+}

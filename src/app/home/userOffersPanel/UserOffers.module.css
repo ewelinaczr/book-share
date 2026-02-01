@@ -1,0 +1,47 @@
+.container {
+  margin: 2rem 4rem 4rem 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin: 0rem 4rem;
+}
+
+.list {
+  margin: 0.8rem;
+}
+
+.statusContainer {
+  border: 1px solid var(--text-color);
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  width: fit-content;
+  height: 2.4rem;
+}
+
+.loaderContainer,
+.errorContainer {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  display: flex;
+}
+
+.loginPrompt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 1150px) {
+  .container {
+    margin: 2rem 2rem 4rem 2rem;
+  }
+}
