@@ -38,11 +38,25 @@ export default function Chat({
 
   const handleSocketEmission = useCallback(
     (msg: PrivateMessage) => {
-      if (msg.from !== currentUserId) {
-        setChatMessages((prev) => [...prev, msg]);
+      const fromId = String(msg.from);
+      const toId = String(msg.to);
+      const myId = String(currentUserId);
+      const selectedId = String(selectedChatUserId);
+
+      // Only add if the message is from the person I am currently chatting with
+      const isForMeFromSelected = toId === myId && fromId === selectedId;
+
+      if (isForMeFromSelected) {
+        setChatMessages((prev) => {
+          // Check for duplicates using the now-existing _id
+          const isDuplicate = prev.some(
+            (m) => m._id && msg._id && String(m._id) === String(msg._id),
+          );
+          return isDuplicate ? prev : [...prev, msg];
+        });
       }
     },
-    [currentUserId, setChatMessages],
+    [currentUserId, selectedChatUserId, setChatMessages], // Added dependencies
   );
 
   useEffect(() => {
@@ -54,12 +68,14 @@ export default function Chat({
         auth: { accessToken: session.token },
       },
     );
-    socketRef.current?.on("private message", handleSocketEmission);
+
+    socketRef.current.on("private message", handleSocketEmission);
+
     return () => {
       socketRef.current?.off("private message", handleSocketEmission);
       socketRef.current?.disconnect();
     };
-  }, [session, handleSocketEmission]);
+  }, [session?.token, handleSocketEmission]);
 
   const sendMessage = () => {
     if (message.trim() && selectedChatUserId.trim() && currentUserId) {
@@ -75,6 +91,7 @@ export default function Chat({
         newMessage,
         (response: any) => {
           if (response?.status === "ok") {
+            // Use the data from server which contains the real _id
             setChatMessages((prev) => [...prev, response.data || newMessage]);
             setMessage("");
           } else {
@@ -113,10 +130,10 @@ export default function Chat({
             month: "2-digit",
           });
 
-          const isOwnMessage = msg.from === currentUserId;
+          const isOwnMessage = String(msg.from) === String(currentUserId);
 
           return (
-            <li key={i}>
+            <li key={msg._id || i}>
               {isNewDay && (
                 <div className={styles.dateDivider}>
                   <p className={styles.timestamp}>{dateString}</p>
@@ -156,7 +173,7 @@ export default function Chat({
         />
         <div className={styles.buttons}>
           <Button
-            type="button" // Changed from submit to button
+            type="button"
             ariaLabel="Attach file"
             buttonType={ButtonType.SECONDARY}
             onClick={() => {}}

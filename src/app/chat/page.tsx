@@ -10,6 +10,7 @@ import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import styles from "./Chat.module.css";
 
 export interface PrivateMessage {
+  _id?: string;
   from: string;
   to: string;
   message: string;

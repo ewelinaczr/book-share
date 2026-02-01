@@ -10,9 +10,7 @@ export const setupSocketServer = (io: Server) => {
     throw new Error("Missing AUTH_SECRET in environment variables");
   }
 
-  const currentlyConnectedUsers = new Map<string, string>();
-
-  // Before any socket connection is accepted
+  // Middleware for authentication
   io.use(async (socket, next) => {
     try {
       const tokenValue = socket.handshake.auth?.accessToken;
@@ -24,18 +22,18 @@ export const setupSocketServer = (io: Server) => {
 
       const decoded = jwt.verify(tokenValue, AUTH_SECRET) as { id: string };
 
-      let user =
+      const user =
         (await User.findOne({ googleId: decoded.id })) ||
         (await User.findById(decoded.id));
 
       if (!user || !user._id) {
         logger.warn(
           { socketId: socket.id, decodedId: decoded?.id },
-          "No logged in user for socket"
+          "No logged in user for socket",
         );
         return next(new Error("Authentication error"));
       }
-
+      // Attach the Logged-In User's data to this specific socket connection (data from Mongo db)
       (socket as any).user = user;
       next();
     } catch (err) {
@@ -43,61 +41,58 @@ export const setupSocketServer = (io: Server) => {
     }
   });
 
-  // Every time a new user connects to the WebSocket server
   io.on("connection", (socket) => {
     const user = (socket as any).user;
-    const userId = user.googleId ?? user?.id;
+    // SELF: Identify the Logged-In User's ID
+    const userId = String(user.googleId ?? user._id);
 
-    if (userId) {
-      currentlyConnectedUsers.set(userId, socket.id);
-      logger.info({ userId, socketId: socket.id }, "User connected");
-    }
+    // SELF-ROOM: Put the Logged-In User into their own private room "personal mailbox"
+    // This allows sending messages to a specific User ID
+    socket.join(userId);
+    logger.info(
+      { userId, socketId: socket.id },
+      "Logged-In User joined their own room",
+    );
 
     socket.on("disconnect", () => {
-      if (userId) {
-        currentlyConnectedUsers.delete(userId);
-        logger.info({ userId, socketId: socket.id }, "User disconnected");
-      }
+      logger.info({ userId }, "Logged-In User disconnected");
     });
 
-    // Listen for private messages
+    //OUTGOING MESSAGE: The Logged-In User sends a message to someone else
     socket.on("private message", async ({ to, message }, callback) => {
-      const recipientSocketId = currentlyConnectedUsers.get(to);
       try {
-        // Validate data
         if (!to || !message) {
+          // 'to' is the External Recipient's ID
           return callback?.({ status: "error", message: "Missing fields" });
         }
 
-        // Save to DB
+        // Save the interaction to the database
         const saved = await PrivateMessage.create({
-          from: (socket as any).user.googleId ?? (socket as any).user._id,
-          to,
-          message,
+          from: userId, // Logged-In User
+          to: String(to), // External Recipient
+          message: message.trim(),
         });
 
-        // Echo the message back to the sender if successful
+        // CONFIRMATION: Tell the Logged-In User that it was sent successfully
         if (callback) {
           callback({ status: "ok", data: saved });
         }
 
-        // Send to recipient
+        // DELIVERY: Send the message to the External Recipient's "mailbox" (room)
+        // This broadcasts the message to every tab/device User 2 has open
+        io.to(String(to)).emit("private message", saved);
 
-        if (recipientSocketId) {
-          io.to(recipientSocketId).emit("private message", saved);
-        }
         logger.info(
-          { to, recipientSocketId },
-          "Private message delivered to recipient socket"
+          { from: userId, to, messageId: saved._id },
+          "Message delivered from Logged-In User to External Recipient room",
         );
       } catch (error) {
-        // Echo the message back to the sender if error occurs
+        logger.error(
+          { error, from: userId, to },
+          "Failed to send private message",
+        );
         if (callback) {
           callback({ status: "error", message: "Internal server error" });
-          logger.info(
-            { to, recipientSocketId },
-            "Error delivering private message to recipient socket"
-          );
         }
       }
     });

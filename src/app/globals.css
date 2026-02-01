@@ -52,8 +52,8 @@
   /* -------------------------------------------------------
      Chat / Messaging
      ------------------------------------------------------- */
-  --bg-color-chat: var(--color-brand-secondary);
-  --bg-color-chat-1: var(--color-brand-primary);
+  --bg-color-chat: var(--color-brand-primary);
+  --bg-color-chat-1: var(--color-brand-secondary);
   --bg-chat-gradient: var(--white);
 
   /* -------------------------------------------------------
