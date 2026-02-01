@@ -87,6 +87,7 @@
   "market_failedToRemoveBook": "Failed to remove book",
   "market_updateBookSuccess": "Book offer updated successfully",
   "market_updateBookError": "Failed to update book offer",
+  "market_logInToUse": "Log in to add books",
 
   "bookshelf_addBookTitle": "Add book to the Bookshelf",
   "bookshelf_addBookError": "Failed do add book",

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { MarketBook } from "@/interfaces/MarketBook";
 import { useMarketByStatus } from "./useMarketByStatus";
 import { filterBooks } from "./filterBooks";
+import { useSession } from "next-auth/react";
 import { BookMarketPanel } from "../browseOffersPanel/BookMarketPanel";
 import Header from "@/components/headers/Header";
 import Search from "../search/Search";
@@ -18,6 +19,8 @@ export default function Market() {
   const [searchCategory, setSearchCategory] = useState("allGenres");
   const [displayedBook, setDisplayedBook] = useState<MarketBook | null>(null);
   const t = useTranslations();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const marketBooks = useMemo(() => {
     if (!data) return [];
@@ -32,7 +35,11 @@ export default function Market() {
   }, [marketBooks, displayedBook]);
 
   const renderErrorMesage = () => {
-    if (isError) return <div>{t("market_loadingError")}</div>;
+    if (isError) {
+      return (
+        <div>{!user ? t("market_logInToUse") : t("market_loadingError")}</div>
+      );
+    }
   };
 
   const renderLoadingSpinner = () => {

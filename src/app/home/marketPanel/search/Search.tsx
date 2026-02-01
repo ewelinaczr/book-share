@@ -29,23 +29,28 @@ export default function Search({
 
   const labelToKey = useMemo(
     () => Object.fromEntries(popularBookGenres.map((g) => [g.label, g.key])),
-    []
+    [],
   );
 
   const selectedKey = labelToKey[searchCategory] ?? searchCategory;
 
-  const dropdownOptions = popularBookGenres.map((genreObj, index) => {
-    const booksByGenreCount = books?.filter((b) =>
-      b.book?.volumeInfo.categories?.includes(genreObj.label)
-    ).length;
+  const dropdownOptions = popularBookGenres
+    .map((genreObj, index) => {
+      const booksByGenreCount = books?.filter((b) =>
+        b.book?.volumeInfo.categories?.includes(genreObj.label),
+      ).length;
 
-    const count = index === 0 ? books?.length : booksByGenreCount;
+      const count = index === 0 ? books?.length : booksByGenreCount;
 
-    return {
-      value: genreObj.key,
-      label: `${t(`genre_${genreObj.key}`)} (${count})`,
-    };
-  });
+      return {
+        value: genreObj.key,
+        label: `${t(`genre_${genreObj.key}`)} ${count ? `(${count})` : ""}`,
+        count: count ?? 0,
+      };
+    })
+    .filter((option, index) => {
+      return index === 0 || option.count > 0;
+    });
 
   return (
     <div className={styles.inputContainer}>

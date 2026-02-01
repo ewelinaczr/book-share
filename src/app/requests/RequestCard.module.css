@@ -85,6 +85,7 @@
   .cardContainer {
     padding: 1rem;
     gap: 1rem;
+    flex-direction: column;
   }
   .infoContainer {
     grid-template-columns: 1fr;

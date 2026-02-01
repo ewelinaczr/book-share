@@ -36,3 +36,9 @@
   background-color: var(--text-color);
   cursor: not-allowed;
 }
+
+@media (max-width: 1150px) {
+  .button {
+    min-width: unset;
+  }
+}

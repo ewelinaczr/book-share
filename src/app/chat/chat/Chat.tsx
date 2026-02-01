@@ -42,7 +42,7 @@ export default function Chat({
         setChatMessages((prev) => [...prev, msg]);
       }
     },
-    [currentUserId, setChatMessages]
+    [currentUserId, setChatMessages],
   );
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function Chat({
       process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000",
       {
         auth: { accessToken: session.token },
-      }
+      },
     );
     socketRef.current?.on("private message", handleSocketEmission);
     return () => {
@@ -80,7 +80,7 @@ export default function Chat({
           } else {
             toast.error("Failed to send message");
           }
-        }
+        },
       );
     }
   };
@@ -125,14 +125,14 @@ export default function Chat({
               <div
                 className={cn(
                   styles.listItemWrapper,
-                  isOwnMessage ? styles.itemOwn : styles.itemReceived
+                  isOwnMessage ? styles.itemOwn : styles.itemReceived,
                 )}
               >
                 <p className={styles.timestamp}>{timeString}</p>
                 <div
                   className={cn(
                     styles.listItem,
-                    isOwnMessage ? styles.own : styles.received
+                    isOwnMessage ? styles.own : styles.received,
                   )}
                 >
                   {msg.message}
@@ -160,7 +160,6 @@ export default function Chat({
             ariaLabel="Attach file"
             buttonType={ButtonType.SECONDARY}
             onClick={() => {}}
-            customStyles={{ width: "15rem" }}
           >
             <div className={styles.buttonIcon}>
               <MdAttachFile /> {t("chat_attach")}
@@ -171,7 +170,6 @@ export default function Chat({
             ariaLabel="Send message"
             buttonType={ButtonType.PRIMARY}
             onClick={sendMessage}
-            customStyles={{ width: "15rem" }}
           >
             <div className={styles.buttonIcon}>
               <BsSend /> {t("chat_send")}

@@ -83,6 +83,7 @@
   "market_deleteConfirm": "Usuń gdy po zwrocie od {userName}",
   "market_contact": "Napisz do {userName}",
   "market_bookNotFound": "Książka nie znaleziona",
+  "market_logInToUse": "Zaloguj się, aby wymieniać książki",
 
   "market_bookRemoved": "Książka została usunięta z rynku",
   "market_failedToRemoveBook": "Nie udało się usunąć książki z rynku",

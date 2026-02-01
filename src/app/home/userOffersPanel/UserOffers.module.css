@@ -33,6 +33,13 @@
   display: flex;
 }
 
+.loginPrompt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 @media (max-width: 1150px) {
   .container {
     margin: 2rem 2rem 4rem 2rem;

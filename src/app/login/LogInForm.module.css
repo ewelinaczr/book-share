@@ -4,6 +4,7 @@
   justify-content: center;
   gap: 4rem;
   margin-top: 8rem;
+  margin-bottom: 2rem;
 }
 
 .formContainer {
@@ -79,11 +80,12 @@
 
 @media (max-width: 1150px) {
   .formContainer {
-    margin: 1rem 3rem;
+    margin: 0 3rem;
   }
 
   .formTitle {
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
+    line-height: 3rem;
   }
 
   .imageContainer {

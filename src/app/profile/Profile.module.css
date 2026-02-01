@@ -4,7 +4,7 @@
   justify-content: space-between;
   gap: 8rem;
   background: var(--bg-chat-gradient);
-  height: calc(100vh - 6rem);
+  height: 100%;
 }
 
 .authContainer {

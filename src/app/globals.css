@@ -31,6 +31,7 @@
   --text-color: var(--black);
   --text-color-1: var(--white);
   --text-color-2: var(--black);
+  --text-color-3: var(--black);
 
   /* -------------------------------------------------------
      Backgrounds – Global
@@ -124,6 +125,7 @@
   --text-color: #cbd5e1;
   --text-color-1: #ffffff;
   --text-color-2: #cbd5e1;
+  --text-color-3: var(--black);
 
   /* -------------------------------------------------------
       Backgrounds – Global
