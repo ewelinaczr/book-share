@@ -13,9 +13,21 @@ const PORT = Number(process.env.PORT ?? 4000);
 connectToDatabase()
   .then(() => {
     const server = http.createServer(app);
+    const productionUrl = process.env.APP_URL;
     const io = new Server(server, {
       cors: {
-        origin: process.env.APP_URL || "http://localhost:3000",
+        origin: (origin, callback) => {
+          const isLocalhost = origin && origin.startsWith("http://localhost");
+          const isProduction = origin === productionUrl;
+          const isVercelPreview = origin && origin.includes("book-share-jzri");
+
+          if (!origin || isLocalhost || isProduction || isVercelPreview) {
+            callback(null, true);
+          } else {
+            callback(new Error("CORS policy: This origin is not allowed."));
+          }
+        },
+        methods: ["GET", "POST"],
         credentials: true,
       },
     });
